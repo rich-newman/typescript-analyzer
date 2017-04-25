@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <Extern href="stdidcmd.h"/>
+    <Extern href="vsshlids.h"/>
+    <Include href="KnownImageIds.vsct"/>
+
+    <Commands package="guidVSPackage">
+        <Groups>
+            <!-- Context menu -->
+            <Group guid="WebLinterCmdSet" id="ContextMenuGroup" priority="0x0200" />
+
+            <!-- Configuration files -->
+            <Group guid="ConfigFileCmdSet" id="ToolsGroup" priority="0x9500">
+                <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"></Parent>
+            </Group>
+            <Group guid="ConfigFileCmdSet" id="ToolsMenuResetGroup" priority="0x0100">
+                <Parent guid="ConfigFileCmdSet" id="ToolsMenu"></Parent>
+            </Group>
+            <Group guid="ConfigFileCmdSet" id="ToolsMenuGroup" priority="0x0200">
+                <Parent guid="ConfigFileCmdSet" id="ToolsMenu"></Parent>
+            </Group>
+        </Groups>
+
+        <Menus>
+            <!-- Configuration files -->
+            <Menu guid="ConfigFileCmdSet" id="ToolsMenu" priority="0x0100" type="Menu">
+                <Parent guid="ConfigFileCmdSet" id="ToolsGroup" />
+                <Strings>
+                    <ButtonText>Web Analyzer</ButtonText>
+                </Strings>
+            </Menu>
+        </Menus>
+
+        <Buttons>
+            <!-- Context menu -->
+            <Button guid="WebLinterCmdSet" id="LintFilesCommand" priority="0x0100" type="Button">
+                <Parent guid="WebLinterCmdSet" id="ContextMenuGroup" />
+                <Icon guid="ImageCatalogGuid" id="RunChecked" />
+                <CommandFlag>IconIsMoniker</CommandFlag>
+                <CommandFlag>DynamicVisibility</CommandFlag>
+                <CommandFlag>DefaultInvisible</CommandFlag>
+                <Strings>
+                    <ButtonText>Run Web Analyzer</ButtonText>
+                </Strings>
+            </Button>
+            <Button guid="WebLinterCmdSet" id="CleanErrorsCommand" priority="0x0200" type="Button">
+                <Parent guid="WebLinterCmdSet" id="ContextMenuGroup" />
+                <Icon guid="ImageCatalogGuid" id="ClearWindowContent" />
+                <CommandFlag>IconIsMoniker</CommandFlag>
+                <CommandFlag>DynamicVisibility</CommandFlag>
+                <CommandFlag>DefaultInvisible</CommandFlag>
+                <Strings>
+                    <ButtonText>Clear all Web Analyzer errors</ButtonText>
+                </Strings>
+            </Button>
+
+            <!-- Configuration files -->
+            <Button guid="ConfigFileCmdSet" id="ResetConfigFiles" priority="0x0101" type="Button">
+                <Parent guid="ConfigFileCmdSet" id="ToolsMenuResetGroup" />
+                <Icon guid="ImageCatalogGuid" id="CleanData" />
+                <CommandFlag>IconIsMoniker</CommandFlag>
+                <Strings>
+                    <ButtonText>Reset All Settings...</ButtonText>
+                </Strings>
+            </Button>
+
+            <Button guid="ConfigFileCmdSet" id="EditCssLint" priority="0x0102" type="Button">
+                <Parent guid="ConfigFileCmdSet" id="ToolsMenuGroup" />
+                <Icon guid="ImageCatalogGuid" id="EditRowLeft" />
+                <CommandFlag>IconIsMoniker</CommandFlag>
+                <Strings>
+                    <ButtonText>Edit CSS Lint settings (.csslintrc)</ButtonText>
+                </Strings>
+            </Button>
+            <Button guid="ConfigFileCmdSet" id="EditEsLint" priority="0x0103" type="Button">
+                <Parent guid="ConfigFileCmdSet" id="ToolsMenuGroup" />
+                <Icon guid="ImageCatalogGuid" id="EditRowLeft" />
+                <CommandFlag>IconIsMoniker</CommandFlag>
+                <Strings>
+                    <ButtonText>Edit ESLint settings (.eslintrc)</ButtonText>
+                </Strings>
+            </Button>
+            <Button guid="ConfigFileCmdSet" id="EditCoffeeLint" priority="0x0104" type="Button">
+                <Parent guid="ConfigFileCmdSet" id="ToolsMenuGroup" />
+                <Icon guid="ImageCatalogGuid" id="EditRowLeft" />
+                <CommandFlag>IconIsMoniker</CommandFlag>
+                <Strings>
+                    <ButtonText>Edit CoffeeLint settings (coffeelint.json)</ButtonText>
+                </Strings>
+            </Button>
+            <Button guid="ConfigFileCmdSet" id="EditTSLint" priority="0x0105" type="Button">
+                <Parent guid="ConfigFileCmdSet" id="ToolsMenuGroup" />
+                <Icon guid="ImageCatalogGuid" id="EditRowLeft" />
+                <CommandFlag>IconIsMoniker</CommandFlag>
+                <Strings>
+                    <ButtonText>Edit TSLint settings (tslint.json)</ButtonText>
+                </Strings>
+            </Button>
+        </Buttons>
+    </Commands>
+
+    <CommandPlacements>
+        <CommandPlacement guid="WebLinterCmdSet" id="ContextMenuGroup" priority="0x0100">
+            <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />
+        </CommandPlacement>
+        <CommandPlacement guid="WebLinterCmdSet" id="ContextMenuGroup" priority="0x0100">
+            <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_WEBITEMNODE"/>
+        </CommandPlacement>
+        <CommandPlacement guid="WebLinterCmdSet" id="ContextMenuGroup" priority="0x0100">
+            <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_WEBFOLDER"/>
+        </CommandPlacement>
+        <CommandPlacement guid="WebLinterCmdSet" id="ContextMenuGroup" priority="0x0100">
+            <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE"/>
+        </CommandPlacement>
+        <CommandPlacement guid="WebLinterCmdSet" id="ContextMenuGroup" priority="0x0100">
+            <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_WEBPROJECT"/>
+        </CommandPlacement>
+        <CommandPlacement guid="WebLinterCmdSet" id="ContextMenuGroup" priority="0x0100">
+            <Parent guid="guidSHLMainMenu" id="IDM_VS_CSCD_PROJECT_ANALYZE"/>
+        </CommandPlacement>
+        <CommandPlacement guid="WebLinterCmdSet" id="ContextMenuGroup" priority="0x0600">
+            <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ERRORLIST"/>
+        </CommandPlacement>
+    </CommandPlacements>
+
+    <Symbols>
+        <!-- This is the package guid. -->
+        <GuidSymbol name="guidVSPackage" value="{a9b5a26c-0774-412b-9b0e-8007614a9c73}" />
+
+        <!-- Context menu -->
+        <GuidSymbol name="WebLinterCmdSet" value="{34114698-c8d5-4a10-abc0-78d72ab6e4a4}">
+            <IDSymbol name="ContextMenuGroup" value="0x1020" />
+            <IDSymbol name="LintFilesCommand" value="0x0100" />
+            <IDSymbol name="CleanErrorsCommand" value="0x0200" />
+        </GuidSymbol>
+
+        <!-- Tools menu -->
+        <GuidSymbol name="ConfigFileCmdSet" value="{f816d386-88a1-4af0-98e1-c079f74a8443}">
+            <IDSymbol name="ToolsGroup" value="0x1010" />
+            <IDSymbol name="ToolsMenu" value="0x1020" />
+            <IDSymbol name="ToolsMenuGroup" value="0x1030" />
+            <IDSymbol name="ToolsMenuResetGroup" value="0x1040" />
+            <IDSymbol name="ResetConfigFiles" value="0x0010" />
+            <IDSymbol name="EditCssLint" value="0x0100" />
+            <IDSymbol name="EditEsLint" value="0x0200" />
+            <IDSymbol name="EditCoffeeLint" value="0x0300" />
+            <IDSymbol name="EditTSLint" value="0x0400" />
+        </GuidSymbol>
+    </Symbols>
+</CommandTable>
