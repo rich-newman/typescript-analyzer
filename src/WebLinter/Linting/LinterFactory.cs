@@ -10,7 +10,11 @@ namespace WebLinter
     public static class LinterFactory
     {
         public static readonly string ExecutionPath = Path.Combine(Path.GetTempPath(), Constants.CACHE_NAME + Constants.VERSION);
+#if EXCLUDEALLEXCEPTTSLINT
         private static string[] _supported = new string[] { ".JS", ".ES6", ".JSX", ".TS", ".TSX", ".COFFEE", ".LITCOFFEE", ".ICED", ".CSS" };
+#else
+        private static string[] _supported = new string[] { ".TS", ".TSX" };
+#endif
         private static object _syncRoot = new object();
         private static AsyncLock _mutex = new AsyncLock();
 
@@ -34,15 +38,11 @@ namespace WebLinter
             {
                 switch (group.Key)
                 {
+#if EXCLUDEALLEXCEPTTSLINT
                     case ".JS":
                     case ".JSX":
                     case ".ES6":
                         AddLinter(dic, new EsLinter(settings), group);
-                        break;
-
-                    case ".TS":
-                    case ".TSX":
-                        AddLinter(dic, new TsLintLinter(settings), group);
                         break;
 
                     case ".COFFEE":
@@ -53,6 +53,11 @@ namespace WebLinter
 
                     case ".CSS":
                         AddLinter(dic, new CssLinter(settings), group);
+                        break;
+#endif
+                    case ".TS":
+                    case ".TSX":
+                        AddLinter(dic, new TsLintLinter(settings), group);
                         break;
                 }
             }

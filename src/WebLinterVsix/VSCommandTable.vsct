@@ -64,8 +64,7 @@
                     <ButtonText>Reset All Settings...</ButtonText>
                 </Strings>
             </Button>
-
-            <Button guid="ConfigFileCmdSet" id="EditCssLint" priority="0x0102" type="Button">
+          <!--Button guid="ConfigFileCmdSet" id="EditCssLint" priority="0x0102" type="Button">
                 <Parent guid="ConfigFileCmdSet" id="ToolsMenuGroup" />
                 <Icon guid="ImageCatalogGuid" id="EditRowLeft" />
                 <CommandFlag>IconIsMoniker</CommandFlag>
@@ -88,7 +87,7 @@
                 <Strings>
                     <ButtonText>Edit CoffeeLint settings (coffeelint.json)</ButtonText>
                 </Strings>
-            </Button>
+            </Button-->
             <Button guid="ConfigFileCmdSet" id="EditTSLint" priority="0x0105" type="Button">
                 <Parent guid="ConfigFileCmdSet" id="ToolsMenuGroup" />
                 <Icon guid="ImageCatalogGuid" id="EditRowLeft" />

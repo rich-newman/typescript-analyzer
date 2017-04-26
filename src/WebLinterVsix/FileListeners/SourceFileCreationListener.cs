@@ -14,12 +14,15 @@ using Microsoft.VisualStudio.Utilities;
 namespace WebLinterVsix.FileListeners
 {
     [Export(typeof(IVsTextViewCreationListener))]
+#if EXCLUDEALLEXCEPTTSLINT
+#else
     [ContentType("JavaScript")]
     [ContentType("Node.js")]
-    [ContentType("TypeScript")]
     [ContentType("CoffeeScript")]
     [ContentType("JSX")]
     [ContentType("CSS")]
+#endif
+    [ContentType("TypeScript")]
     [TextViewRole(PredefinedTextViewRoles.Document)]
     class SourceFileCreationListener : IVsTextViewCreationListener
     {
