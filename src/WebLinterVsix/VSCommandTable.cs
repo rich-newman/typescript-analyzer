@@ -7,9 +7,9 @@ namespace WebLinterVsix
     /// </summary>
     internal sealed partial class PackageGuids
     {
-        public const string guidVSPackageString = "a9b5a26c-0774-412b-9b0e-8007614a9c73";
-        public const string WebLinterCmdSetString = "34114698-c8d5-4a10-abc0-78d72ab6e4a4";
-        public const string ConfigFileCmdSetString = "f816d386-88a1-4af0-98e1-c079f74a8443";
+        public const string guidVSPackageString = "4E737333-D498-4553-8096-B2F6FFF930A2";
+        public const string WebLinterCmdSetString = "214001AC-2BD3-474A-A56C-B45DCB785E96";
+        public const string ConfigFileCmdSetString = "03997E40-2A1E-4241-AD40-E9296C0A58A0";
         public static Guid guidVSPackage = new Guid(guidVSPackageString);
         public static Guid WebLinterCmdSet = new Guid(WebLinterCmdSetString);
         public static Guid ConfigFileCmdSet = new Guid(ConfigFileCmdSetString);
