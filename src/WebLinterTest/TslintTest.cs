@@ -37,9 +37,16 @@ namespace WebLinterTest
         //}
 
         [TestMethod, TestCategory("TSLint")]
-        public async Task FileNotExist()
+        public async Task TsFileNotExist()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/doesntexist.js");
+            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/doesntexist.ts");
+            Assert.IsTrue(result.First().HasErrors);
+        }
+
+        [TestMethod, TestCategory("TSLint")]
+        public async Task TsxFileNotExist()
+        {
+            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/doesntexist.tsx");
             Assert.IsTrue(result.First().HasErrors);
         }
     }
