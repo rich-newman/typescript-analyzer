@@ -2,11 +2,11 @@ namespace WebLinterVsix
 {
 	static class Vsix
 	{
-		public const string Id = "36bf2130-106e-40f2-89ff-a2bdac6be879";
-		public const string Name = "Web Analyzer";
-		public const string Description = "Provides static analysis directly in Visual Studio for JavaScript, TypeScript, JSX, CSS and more";
-		public const string Version = "1.7";
-		public const string Author = "Mads Kristensen";
-		public const string Tags = "ESLint, TSLint, CoffeeLint, CSSLint";
+		public const string Id = "A95BEECA-9D08-48C5-882B-BAB22D5723BC";
+		public const string Name = "TypeScript Analyzer";
+		public const string Description = "Provides static analysis directly in Visual Studio for TypeScript files (.ts and .tsx) using TsLint";
+		public const string Version = "1.0";
+		public const string Author = "Mads Kristensen Rich Newman";
+		public const string Tags = "TSLint";
 	}
 }

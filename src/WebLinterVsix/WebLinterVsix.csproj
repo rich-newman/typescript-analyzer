@@ -113,18 +113,6 @@
       <LastGenOutput>VSCommandTable.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </VSCTCompile>
-    <Content Include="..\WebLinterTest\artifacts\.csslintrc">
-      <Link>Resources\Defaults\.csslintrc</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\WebLinterTest\artifacts\.eslintrc">
-      <Link>Resources\Defaults\.eslintrc</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\WebLinterTest\artifacts\coffeelint.json">
-      <Link>Resources\Defaults\coffeelint.json</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="..\WebLinterTest\artifacts\tslint.json">
       <Link>Resources\Defaults\tslint.json</Link>
       <IncludeInVSIX>true</IncludeInVSIX>

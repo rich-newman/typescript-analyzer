@@ -27,7 +27,7 @@
             <Menu guid="ConfigFileCmdSet" id="ToolsMenu" priority="0x0100" type="Menu">
                 <Parent guid="ConfigFileCmdSet" id="ToolsGroup" />
                 <Strings>
-                    <ButtonText>Web Analyzer</ButtonText>
+                    <ButtonText>TypeScript Analyzer</ButtonText>
                 </Strings>
             </Menu>
         </Menus>
@@ -41,7 +41,7 @@
                 <CommandFlag>DynamicVisibility</CommandFlag>
                 <CommandFlag>DefaultInvisible</CommandFlag>
                 <Strings>
-                    <ButtonText>Run Web Analyzer</ButtonText>
+                    <ButtonText>Run TypeScript Analyzer</ButtonText>
                 </Strings>
             </Button>
             <Button guid="WebLinterCmdSet" id="CleanErrorsCommand" priority="0x0200" type="Button">
@@ -51,7 +51,7 @@
                 <CommandFlag>DynamicVisibility</CommandFlag>
                 <CommandFlag>DefaultInvisible</CommandFlag>
                 <Strings>
-                    <ButtonText>Clear all Web Analyzer errors</ButtonText>
+                    <ButtonText>Clear all TypeScript Analyzer errors</ButtonText>
                 </Strings>
             </Button>
 
@@ -61,33 +61,9 @@
                 <Icon guid="ImageCatalogGuid" id="CleanData" />
                 <CommandFlag>IconIsMoniker</CommandFlag>
                 <Strings>
-                    <ButtonText>Reset All Settings...</ButtonText>
+                    <ButtonText>Reset TypeScript Analyzer Settings...</ButtonText>
                 </Strings>
             </Button>
-          <!--Button guid="ConfigFileCmdSet" id="EditCssLint" priority="0x0102" type="Button">
-                <Parent guid="ConfigFileCmdSet" id="ToolsMenuGroup" />
-                <Icon guid="ImageCatalogGuid" id="EditRowLeft" />
-                <CommandFlag>IconIsMoniker</CommandFlag>
-                <Strings>
-                    <ButtonText>Edit CSS Lint settings (.csslintrc)</ButtonText>
-                </Strings>
-            </Button>
-            <Button guid="ConfigFileCmdSet" id="EditEsLint" priority="0x0103" type="Button">
-                <Parent guid="ConfigFileCmdSet" id="ToolsMenuGroup" />
-                <Icon guid="ImageCatalogGuid" id="EditRowLeft" />
-                <CommandFlag>IconIsMoniker</CommandFlag>
-                <Strings>
-                    <ButtonText>Edit ESLint settings (.eslintrc)</ButtonText>
-                </Strings>
-            </Button>
-            <Button guid="ConfigFileCmdSet" id="EditCoffeeLint" priority="0x0104" type="Button">
-                <Parent guid="ConfigFileCmdSet" id="ToolsMenuGroup" />
-                <Icon guid="ImageCatalogGuid" id="EditRowLeft" />
-                <CommandFlag>IconIsMoniker</CommandFlag>
-                <Strings>
-                    <ButtonText>Edit CoffeeLint settings (coffeelint.json)</ButtonText>
-                </Strings>
-            </Button-->
             <Button guid="ConfigFileCmdSet" id="EditTSLint" priority="0x0105" type="Button">
                 <Parent guid="ConfigFileCmdSet" id="ToolsMenuGroup" />
                 <Icon guid="ImageCatalogGuid" id="EditRowLeft" />
