@@ -24,9 +24,6 @@ namespace WebLinterTest
             get { return new FileInfo("../../artifacts/").FullName; }
         }
 
-        public bool CoffeeLintEnable { get; set; } = true;
-        public bool CssLintEnable { get; set; } = true;
-        public bool ESLintEnable { get; set; } = true;
         public bool TSLintEnable { get; set; } = true;
         public bool TSLintWarningsAsErrors { get; set; }
     }

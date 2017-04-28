@@ -27,9 +27,6 @@ namespace WebLinterVsix
         public const int ToolsMenuGroup = 0x1030;
         public const int ToolsMenuResetGroup = 0x1040;
         public const int ResetConfigFiles = 0x0010;
-        public const int EditCssLint = 0x0100;
-        public const int EditEsLint = 0x0200;
-        public const int EditCoffeeLint = 0x0300;
         public const int EditTSLint = 0x0400;
     }
 }

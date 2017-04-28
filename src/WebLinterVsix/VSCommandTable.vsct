@@ -117,9 +117,6 @@
             <IDSymbol name="ToolsMenuGroup" value="0x1030" />
             <IDSymbol name="ToolsMenuResetGroup" value="0x1040" />
             <IDSymbol name="ResetConfigFiles" value="0x0010" />
-            <IDSymbol name="EditCssLint" value="0x0100" />
-            <IDSymbol name="EditEsLint" value="0x0200" />
-            <IDSymbol name="EditCoffeeLint" value="0x0300" />
             <IDSymbol name="EditTSLint" value="0x0400" />
         </GuidSymbol>
     </Symbols>

@@ -19,13 +19,6 @@ namespace WebLinterVsix
             IgnoreFolderNames = @"\node_modules\,\bower_components\,\typings\,\lib\,\vendor\,.min.";
             IgnoreNestedFiles = true;
             CleanErrorsOnBuild = true;
-
-            // Linters
-#if EXCLUDEALLEXCEPTTSLINT
-            CoffeeLintEnable = CssLintEnable = ESLintEnable = false;
-#else
-            CoffeeLintEnable = CssLintEnable = ESLintEnable = true;
-#endif
             TSLintEnable = true;
         }
 
@@ -54,37 +47,6 @@ namespace WebLinterVsix
         [DefaultValue(true)]
         public bool CleanErrorsOnBuild { get; set; }
 
-        // Linters
-#if EXCLUDEALLEXCEPTTSLINT
-        [Browsable(false)]
-#else
-        [Category("CoffeeLint")]
-        [DisplayName("Enable CoffeeLint")]
-        [Description("CoffeeLint is a linter for CoffeeScript files")]
-        [DefaultValue(true)]
-#endif
-        public bool CoffeeLintEnable { get; set; }
-
-#if EXCLUDEALLEXCEPTTSLINT
-        [Browsable(false)]
-#else
-        [Category("CSS Lint")]
-        [DisplayName("Enable CSS Lint")]
-        [Description("CSS Lint is a linter for CSS files")]
-        [DefaultValue(true)]
-#endif
-        public bool CssLintEnable { get; set; }
-
-#if EXCLUDEALLEXCEPTTSLINT
-        [Browsable(false)]
-#else
-        [Category("ESLint")]
-        [DisplayName("Enable ESLint")]
-        [Description("ESLint is a linter JavaScript and JSX files")]
-        [DefaultValue(true)]
-#endif
-        public bool ESLintEnable { get; set; }
-
         [Category("TS Lint")]
         [DisplayName("Enable TSLint")]
         [Description("TSLint is a linter for TypeScript files")]
@@ -97,16 +59,8 @@ namespace WebLinterVsix
         [DefaultValue(false)]
         public bool TSLintWarningsAsErrors { get; set; }
 
-#if EXCLUDEALLEXCEPTTSLINT
         [Browsable(false)]
         public bool ShowPromptToUpgrade { get; set; } = false;
-#else
-        [Category("Upgrade")]
-        [DisplayName("Show prompt to upgrade")]
-        [Description("If true, will show a prompt to upgrade when opening any file supported by the Web Analyzer.")]
-        [DefaultValue(false)]
-        public bool ShowPromptToUpgrade { get; set; } = true;
-#endif
 
         public IEnumerable<string> GetIgnorePatterns()
         {

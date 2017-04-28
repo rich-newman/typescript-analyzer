@@ -19,9 +19,7 @@ del /s /q *.npmignore > nul
 del /s /q *.patch > nul
 del /s /q *.txt > nul
 del /s /q *.yml > nul
-del /s /q .coffeelintignore > nul
 del /s /q .editorconfig > nul
-del /s /q .eslintrc > nul
 del /s /q .gitattributes > nul
 del /s /q .gitmodules > nul
 del /s /q .jscsrc > nul
@@ -32,7 +30,6 @@ del /s /q cakefile > nul
 del /s /q CHANGELOG > nul
 del /s /q CHANGES > nul
 del /s /q CNAME > nul
-del /s /q coffeelint.json > nul
 del /s /q example.js > nul
 del /s /q generate-* > nul
 del /s /q gruntfile.js > nul
