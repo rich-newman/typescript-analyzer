@@ -13,7 +13,7 @@ namespace WebLinter
         private const string TELEMETRY_KEY = "468caa30-c256-47c7-946d-1f0230ccec9d";
 
         /// <summary>Determines if telemetry should be reported.</summary>
-        public static bool Enabled { get; set; } = true;
+        public static bool Enabled { get; set; } = false;
 
         private static TelemetryClient GetAppInsightsClient()
         {
