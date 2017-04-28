@@ -11,7 +11,7 @@ namespace WebLinterVsix
 {
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", WebLinter.Constants.VERSION, IconResourceID = 400)]
-    [ProvideOptionPage(typeof(Settings), "Web", "Analyzer", 101, 111, true, new[] { "eslint", "tslint", "coffeelint", "csslint" }, ProvidesLocalizedCategoryName = false)]
+    [ProvideOptionPage(typeof(Settings), "TypeScript Analyzer", "TSLint", 101, 111, true, new[] { "tslint" }, ProvidesLocalizedCategoryName = false)]
     [ProvideAutoLoad(UIContextGuids80.SolutionExists)]
     [Guid(PackageGuids.guidVSPackageString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
