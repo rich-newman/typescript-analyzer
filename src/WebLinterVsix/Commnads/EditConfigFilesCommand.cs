@@ -17,10 +17,10 @@ namespace WebLinterVsix
 
             List<CommandID> list = new List<CommandID>
             {
-                new CommandID(PackageGuids.ConfigFileCmdSet, PackageIds.EditCssLint),
+                //new CommandID(PackageGuids.ConfigFileCmdSet, PackageIds.EditCssLint),
                 //new CommandID(PackageGuids.ConfigFileCmdSet, PackageIds.EditEsLint),
                 //new CommandID(PackageGuids.ConfigFileCmdSet, PackageIds.EditCoffeeLint),
-                //new CommandID(PackageGuids.ConfigFileCmdSet, PackageIds.EditTSLint),
+                new CommandID(PackageGuids.ConfigFileCmdSet, PackageIds.EditTSLint),
             };
 
             OleMenuCommandService commandService = ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
