@@ -55,7 +55,6 @@ namespace WebLinterVsix
         private void CleanErrors(object sender, EventArgs e)
         {
             TableDataSource.Instance.CleanAllErrors();
-            Telemetry.TrackEvent("VS Clean Errors");
         }
     }
 }

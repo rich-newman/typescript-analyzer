@@ -31,9 +31,8 @@ namespace WebLinter
                     return await client.UploadStringTaskAsync(url, json);
                 }
             }
-            catch (WebException ex)
+            catch (WebException)
             {
-                Telemetry.TrackException(ex);
                 Down();
                 return string.Empty;
             }
@@ -81,9 +80,8 @@ namespace WebLinter
                     // Give the node server some time to initialize
                     await Task.Delay(100);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Telemetry.TrackException(ex);
                     Down();
                 }
             }
@@ -116,9 +114,8 @@ namespace WebLinter
                         BasePort = endPointUsed.Port;
                     }
                 }
-                catch (SocketException ex)
+                catch (SocketException)
                 {
-                    Telemetry.TrackException(ex);
                     /* Couldn't get an available IPv6 port either */
                 }
             }

@@ -8,12 +8,6 @@ namespace WebLinterTest
     [TestClass]
     public class EslintTest
     {
-        [TestInitialize]
-        public void Setup()
-        {
-            Telemetry.Enabled = false;
-        }
-
         [TestMethod, TestCategory("ESLint")]
         public async Task Standard()
         {

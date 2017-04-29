@@ -29,7 +29,6 @@ namespace WebLinterVsix
             _events = Dte.Events.SolutionEvents;
             _events.AfterClosing += delegate { TableDataSource.Instance.CleanAllErrors(); };
 
-            Telemetry.SetDeviceName(Dte.Edition);
             Logger.Initialize(this, Vsix.Name);
 
             LintFilesCommand.Initialize(this);

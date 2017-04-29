@@ -47,8 +47,6 @@ namespace WebLinter
                 fileInfos.Add(fileInfo);
             }
 
-            Telemetry.TrackEvent(Name);
-
             return await Lint(fileInfos.ToArray());
         }
 

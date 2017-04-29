@@ -43,7 +43,6 @@ namespace WebLinterVsix
                 await LinterService.EnsureDefaultsAsync(true);
                 WebLinterPackage.Settings.ResetSettings();
                 WebLinterPackage.Dte.StatusBar.Text = "TypeScript Analyzer (tslint) configuration files have been reset";
-                Telemetry.TrackEvent($"VS Reset Configs");
             }
         }
     }
