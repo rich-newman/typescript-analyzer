@@ -5,9 +5,7 @@ VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3BDFE0EC-C4AF-422A-BED1-D5EC825FB6B5}"
 	ProjectSection(SolutionItems) = preProject
-		appveyor.yml = appveyor.yml
 		build\build.cmd = build\build.cmd
-		CHANGELOG.md = CHANGELOG.md
 		README.md = README.md
 	EndProjectSection
 EndProject
