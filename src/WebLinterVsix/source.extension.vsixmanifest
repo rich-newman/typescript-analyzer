@@ -4,7 +4,7 @@
     <Identity Id="A95BEECA-9D08-48C5-882B-BAB22D5723BC" Version="1.0" Language="en-US" Publisher="Rich Newman" />
     <DisplayName>TypeScript Analyzer</DisplayName>
     <Description xml:space="preserve">Provides static analysis directly in Visual Studio for TypeScript files (.ts and .tsx) using TSLint</Description>
-    <MoreInfo>https://github.com/madskristensen/WebLinter</MoreInfo>
+    <MoreInfo>https://github.com/rich-newman/typescript-analyzer</MoreInfo>
     <License>Resources\LICENSE</License>
     <Icon>Resources\icon.png</Icon>
     <PreviewImage>Resources\preview.png</PreviewImage>
