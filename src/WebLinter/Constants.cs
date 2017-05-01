@@ -1,4 +1,5 @@
-﻿namespace WebLinter
+﻿// Modifications Copyright Rich Newman 2017
+namespace WebLinter
 {
     public static class Constants
     {

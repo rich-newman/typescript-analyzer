@@ -1,3 +1,4 @@
+// Modifications Copyright Rich Newman 2017
 var http = require("http"),
     fs = require("fs");
 

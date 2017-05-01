@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Modifications Copyright Rich Newman 2017
+using System;
 using System.Runtime.InteropServices;
 using System.Windows.Threading;
 using EnvDTE;

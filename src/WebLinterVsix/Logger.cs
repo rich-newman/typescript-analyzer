@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Modifications Copyright Rich Newman 2017
+using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.Shell.Interop;
 using WebLinter;

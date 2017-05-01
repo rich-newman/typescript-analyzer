@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿// Modifications Copyright Rich Newman 2017
+using System.ComponentModel;
 using System.IO;
 using WebLinter;
 

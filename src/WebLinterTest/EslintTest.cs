@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿// Modifications Copyright Rich Newman 2017
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebLinter;
