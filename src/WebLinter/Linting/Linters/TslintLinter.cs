@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿// Modifications Copyright Rich Newman 2017
+using Newtonsoft.Json.Linq;
 
 namespace WebLinter
 {
@@ -28,7 +29,6 @@ namespace WebLinter
                 le.ColumnNumber = obj["startPosition"]?["character"]?.Value<int>() ?? 0;
                 le.IsError = Settings.TSLintWarningsAsErrors;
                 le.ErrorCode = obj["ruleName"]?.Value<string>();
-                //le.HelpLink = $"https://github.com/palantir/tslint?rule={le.ErrorCode}#supported-rules";
                 le.HelpLink = $"https://palantir.github.io/tslint/rules/{le.ErrorCode}";
                 le.Provider = this;
                 Result.Errors.Add(le);
