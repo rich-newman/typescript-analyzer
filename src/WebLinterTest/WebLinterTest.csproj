@@ -73,12 +73,12 @@
     <None Include="artifacts\eslint\a.jsx" />
     <Content Include="artifacts\eslint\b.js" />
     <Content Include="artifacts\tslint.json" />
-    <TypeScriptCompile Include="artifacts\tslint\b.ts" />
-    <TypeScriptCompile Include="artifacts\tslint\a.ts" />
+    <None Include="artifacts\tslint\b.ts" />
+    <None Include="artifacts\tslint\a.ts" />
     <Content Include="artifacts\eslint\a.js" />
-    <TypeScriptCompile Include="artifacts\tslint\c.tsx" />
-    <TypeScriptCompile Include="artifacts\tslint\d.tsx" />
-    <TypeScriptCompile Include="artifacts\tslint\e.ts" />
+    <None Include="artifacts\tslint\c.tsx" />
+    <None Include="artifacts\tslint\d.tsx" />
+    <None Include="artifacts\tslint\e.ts" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
