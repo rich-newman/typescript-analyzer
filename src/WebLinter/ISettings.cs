@@ -5,6 +5,6 @@ namespace WebLinter
     {
         bool TSLintEnable { get; }
 
-        bool TSLintWarningsAsErrors { get; }
+        bool TSLintShowErrors { get; }
     }
 }

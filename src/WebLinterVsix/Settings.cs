@@ -55,10 +55,10 @@ namespace WebLinterVsix
         public bool TSLintEnable { get; set; }
 
         [Category("TS Lint")]
-        [DisplayName("Warnings as errors")]
-        [Description("Shows TS Lint warnings as errors in the Error List")]
+        [DisplayName("Show errors")]
+        [Description("Shows TSLint errors as errors in the Error List. If false TSLint errors are shown as warnings. TSLint warnings are always shown as warnings in the Error List.")]
         [DefaultValue(false)]
-        public bool TSLintWarningsAsErrors { get; set; }
+        public bool TSLintShowErrors { get; set; }
 
         [Browsable(false)]
         public bool ShowPromptToUpgrade { get; set; } = false;
