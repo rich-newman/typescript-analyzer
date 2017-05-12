@@ -1,4 +1,5 @@
 // Modifications Copyright Rich Newman 2017
+// Node version is old (4.2.1, 13 Oct 15) but it doesn't matter as all it has to do is run this script
 var http = require("http"),
     fs = require("fs");
 
@@ -52,23 +53,26 @@ var start = function (port) {
 };
 
 var linters = {
-
     tslint: function (configFile, files) {
+        //try {
         var tslint = require("tslint");
         var options = {
-            formatter: "json",
-            configuration: JSON.parse(fs.readFileSync(configFile, "utf8").trim())
+            fix: false,
+            formatter: "json"
         };
-
-        var results = [];
+        var linter = new tslint.Linter(options);
 
         for (var i = 0; i < files.length; i++) {
-            var file = files[i];
-            var ll = new tslint(file, fs.readFileSync(file, "utf8"), options);
-            results = results.concat(JSON.parse(ll.lint().output));
+            var fileName = files[i];
+            var fileContents = fs.readFileSync(fileName, "utf8");
+            var configuration = tslint.Configuration.findConfiguration(configFile, fileName).results;
+            linter.lint(fileName, fileContents, configuration);
         }
-
-        return results;
+        return JSON.parse(linter.getResult().output);
+        //}
+        //catch (err) {
+        //    return err.message;
+        //}
     }
 
 };
