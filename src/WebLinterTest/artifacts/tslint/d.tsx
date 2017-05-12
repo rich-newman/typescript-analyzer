@@ -6,10 +6,9 @@
 import * as ReactDOM from "react-dom";
 
 export class MyTsx {
-    sayHello() {
+    public sayHello() {
         ReactDOM.render(
             <h1> Hello tsx World! </h1>,
-            document.getElementById("wrapper")
-        );
+            document.getElementById("wrapper"));
     }
 }

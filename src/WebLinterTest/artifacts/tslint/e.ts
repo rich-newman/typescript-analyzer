@@ -2,8 +2,8 @@
 
 function foo() {
     "use strict";
-    var i = "test";
-    var b = "hat";
+    const i = "test";
+    const b = "hat";
 
     if (i === b) {
         return false;

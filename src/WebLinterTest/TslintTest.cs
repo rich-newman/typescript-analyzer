@@ -15,7 +15,7 @@ namespace WebLinterTest
             var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/a.ts");
             Assert.IsTrue(result.First().HasErrors);
             Assert.IsFalse(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
-            Assert.AreEqual(7, result.First().Errors.Count);
+            Assert.AreEqual(13, result.First().Errors.Count);
             Assert.AreEqual("if statements must be braced", result.First().Errors.First().Message);
         }
 
@@ -34,8 +34,8 @@ namespace WebLinterTest
             var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/c.tsx");
             Assert.IsTrue(result.First().HasErrors);
             Assert.IsFalse(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
-            Assert.AreEqual(5, result.First().Errors.Count);
-            Assert.AreEqual("comment must start with lowercase letter", result.First().Errors.First().Message);
+            Assert.AreEqual(6, result.First().Errors.Count);
+            Assert.AreEqual("The class method 'sayHello' must be marked either 'private', 'public', or 'protected'", result.First().Errors.First().Message);
         }
 
         [TestMethod, TestCategory("TSLint")]
