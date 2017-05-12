@@ -4,4 +4,8 @@ function foo() {
 
     if (i == b)
         return false
+    else
+        return "Hello from foo"
 }
+
+console.log(foo());
