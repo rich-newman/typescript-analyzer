@@ -1,5 +1,4 @@
 // Modifications Copyright Rich Newman 2017
-// Node version is old (4.2.1, 13 Oct 15) but it doesn't matter as all it has to do is run this script
 var http = require("http"),
     fs = require("fs");
 
