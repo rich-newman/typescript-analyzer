@@ -24,6 +24,11 @@ namespace WebLinter
 
         public static async Task<LintingResult[]> LintAsync(ISettings settings, params string[] fileNames)
         {
+            return await LintAsync(settings, false, fileNames);
+        }
+
+        public static async Task<LintingResult[]> LintAsync(ISettings settings, bool fixErrors, params string[] fileNames)
+        {
             if (fileNames.Length == 0)
                 return new LintingResult[0];
 
@@ -37,7 +42,7 @@ namespace WebLinter
                 {
                     case ".TS":
                     case ".TSX":
-                        AddLinter(dic, new TsLintLinter(settings), group);
+                        AddLinter(dic, new TsLintLinter(settings, fixErrors), group);
                         break;
                 }
             }

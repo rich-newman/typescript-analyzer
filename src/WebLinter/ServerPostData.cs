@@ -10,5 +10,9 @@ namespace WebLinter
 
         [JsonProperty("files")]
         public IEnumerable<string> Files { get; set; }
+
+        [JsonProperty("fixerrors")]
+        public bool FixErrors { get; set; }
+
     }
 }

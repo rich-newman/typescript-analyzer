@@ -52,7 +52,7 @@ namespace WebLinterVsix
             return true;
         }
 
-        public static async Task LintAsync(bool showErrorList, params string[] fileNames)
+        public static async Task LintAsync(bool showErrorList, bool fixErrors, params string[] fileNames)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace WebLinterVsix
 
                 await EnsureDefaultsAsync();
 
-                var result = await LinterFactory.LintAsync(WebLinterPackage.Settings, fileNames);
+                var result = await LinterFactory.LintAsync(WebLinterPackage.Settings, fixErrors, fileNames);
 
                 if (result != null)
                     ErrorListService.ProcessLintingResults(result, showErrorList);

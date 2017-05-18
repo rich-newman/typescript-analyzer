@@ -33,6 +33,7 @@ namespace WebLinterVsix
             Logger.Initialize(this, Vsix.Name);
 
             LintFilesCommand.Initialize(this);
+            FixLintErrorsCommand.Initialize(this);
             CleanErrorsCommand.Initialize(this);
             EditConfigFilesCommand.Initialize(this);
             ResetConfigFilesCommand.Initialize(this);

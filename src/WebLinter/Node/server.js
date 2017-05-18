@@ -33,7 +33,7 @@ var start = function (port) {
 
                 if (linter) {
                     var data = JSON.parse(body);
-                    var result = linter(data.config, data.files);
+                    var result = linter(data.config, data.fixerrors, data.files);
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
                     res.write(JSON.stringify(result));
@@ -52,11 +52,11 @@ var start = function (port) {
 };
 
 var linters = {
-    tslint: function (configFile, files) {
-        //try {
+    tslint: function (configFile, fixErrors, files) {
+        try {
         var tslint = require("tslint");
         var options = {
-            fix: false,
+            fix: fixErrors,
             formatter: "json"
         };
         var linter = new tslint.Linter(options);
@@ -68,10 +68,10 @@ var linters = {
             linter.lint(fileName, fileContents, configuration);
         }
         return JSON.parse(linter.getResult().output);
-        //}
-        //catch (err) {
-        //    return err.message;
-        //}
+        }
+        catch (err) {
+            return err.message;
+        }
     }
 
 };

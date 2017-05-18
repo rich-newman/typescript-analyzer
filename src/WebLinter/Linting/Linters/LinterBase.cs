@@ -9,9 +9,10 @@ namespace WebLinter
 {
     public abstract class LinterBase
     {
-        public LinterBase(ISettings settings)
+        public LinterBase(ISettings settings, bool fixErrors)
         {
             Settings = settings;
+            FixErrors = fixErrors;
         }
 
         public static NodeServer Server { get; } = new NodeServer();
@@ -23,6 +24,7 @@ namespace WebLinter
         protected virtual bool IsEnabled { get; set; }
 
         protected ISettings Settings { get; }
+        protected bool FixErrors { get; }
 
         protected LintingResult Result { get; private set; }
 
@@ -68,7 +70,8 @@ namespace WebLinter
             var postMessage = new ServerPostData
             {
                 Config = Path.Combine(FindWorkingDirectory(files[0]), ConfigFileName),
-                Files = files.Select(f => f.FullName)
+                Files = files.Select(f => f.FullName),
+                FixErrors = FixErrors
             };
 
             return await Server.CallServerAsync(Name, postMessage);

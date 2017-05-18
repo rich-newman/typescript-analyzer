@@ -44,6 +44,16 @@
           <ButtonText>Run TypeScript Analyzer</ButtonText>
         </Strings>
       </Button>
+      <Button guid="WebLinterCmdSet" id="FixLintErrorsCommand" priority="0x0150" type="Button">
+        <Parent guid="WebLinterCmdSet" id="ContextMenuGroup" />
+        <Icon guid="ImageCatalogGuid" id="RunChecked" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Fix TypeScript Analyzer Errors If Possible</ButtonText>
+        </Strings>
+      </Button>
       <Button guid="WebLinterCmdSet" id="CleanErrorsCommand" priority="0x0200" type="Button">
         <Parent guid="WebLinterCmdSet" id="ContextMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="ClearWindowContent" />
@@ -107,6 +117,7 @@
     <GuidSymbol name="WebLinterCmdSet" value="{214001AC-2BD3-474A-A56C-B45DCB785E96}">
       <IDSymbol name="ContextMenuGroup" value="0x1020" />
       <IDSymbol name="LintFilesCommand" value="0x0100" />
+      <IDSymbol name="FixLintErrorsCommand" value="0x0150" />
       <IDSymbol name="CleanErrorsCommand" value="0x0200" />
     </GuidSymbol>
 

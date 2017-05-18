@@ -5,7 +5,7 @@ namespace WebLinter
 {
     internal class TsLintLinter : LinterBase
     {
-        public TsLintLinter(ISettings settings) : base(settings)
+        public TsLintLinter(ISettings settings, bool fixErrors) : base(settings, fixErrors)
         {
             Name = "TSLint";
             ConfigFileName = "tslint.json";

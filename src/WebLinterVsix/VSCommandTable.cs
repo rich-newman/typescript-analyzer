@@ -26,6 +26,7 @@ namespace WebLinterVsix
     {
         public const int ContextMenuGroup = 0x1020;
         public const int LintFilesCommand = 0x0100;
+        public const int FixLintErrorsCommand = 0x0150;
         public const int CleanErrorsCommand = 0x0200;
         public const int ToolsGroup = 0x1010;
         public const int ToolsMenu = 0x1020;

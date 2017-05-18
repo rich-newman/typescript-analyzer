@@ -1,5 +1,4 @@
-﻿// Modifications Copyright Rich Newman 2017
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
@@ -9,11 +8,12 @@ using WebLinter;
 
 namespace WebLinterVsix
 {
-    internal sealed class LintFilesCommand
+    // TODO huge overlap with LintFilesCommand - a base class is an easy refactor
+    internal sealed class FixLintErrorsCommand
     {
         private readonly Package _package;
 
-        private LintFilesCommand(Package package)
+        private FixLintErrorsCommand(Package package)
         {
             if (package == null)
             {
@@ -25,14 +25,15 @@ namespace WebLinterVsix
             OleMenuCommandService commandService = ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (commandService != null)
             {
-                var menuCommandID = new CommandID(PackageGuids.WebLinterCmdSet, PackageIds.LintFilesCommand);
-                var menuItem = new OleMenuCommand(async (s, e) => { await LintSelectedFiles(s, e); }, menuCommandID);
+                var menuCommandID = new CommandID(PackageGuids.WebLinterCmdSet, PackageIds.FixLintErrorsCommand);
+                var menuItem = new OleMenuCommand(async (s, e) => { await FixSelectedFiles(s, e); }, menuCommandID);
                 menuItem.BeforeQueryStatus += BeforeQueryStatus;
                 commandService.AddCommand(menuItem);
             }
         }
 
-        public static LintFilesCommand Instance { get; private set; }
+
+        public static FixLintErrorsCommand Instance { get; private set; }
 
         private IServiceProvider ServiceProvider
         {
@@ -41,7 +42,7 @@ namespace WebLinterVsix
 
         public static void Initialize(Package package)
         {
-            Instance = new LintFilesCommand(package);
+            Instance = new FixLintErrorsCommand(package);
         }
 
         private void BeforeQueryStatus(object sender, EventArgs e)
@@ -57,7 +58,7 @@ namespace WebLinterVsix
             }
         }
 
-        private async System.Threading.Tasks.Task LintSelectedFiles(object sender, EventArgs e)
+        private async System.Threading.Tasks.Task FixSelectedFiles(object sender, EventArgs e)
         {
             var paths = ProjectHelpers.GetSelectedItemPaths();
             List<string> files = new List<string>();
@@ -77,11 +78,11 @@ namespace WebLinterVsix
 
             if (files.Any())
             {
-                await LinterService.LintAsync(showErrorList: true, fixErrors: false, fileNames: files.ToArray());
+                await LinterService.LintAsync(showErrorList: true, fixErrors: true, fileNames: files.ToArray());
             }
             else
             {
-                WebLinterPackage.Dte.StatusBar.Text = "No files found to lint";
+                WebLinterPackage.Dte.StatusBar.Text = "No files found to fix";
             }
         }
 
