@@ -66,7 +66,7 @@ namespace WebLinterVsix
                 var result = await LinterFactory.LintAsync(WebLinterPackage.Settings, fixErrors, fileNames);
 
                 if (result != null)
-                    ErrorListService.ProcessLintingResults(result, showErrorList);
+                    ErrorListService.ProcessLintingResults(result, fileNames, showErrorList);
             }
             catch (Exception ex)
             {
