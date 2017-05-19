@@ -73,11 +73,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Commnads\FixLintErrorsCommand.cs" />
-    <Compile Include="Commnads\LintFilesCommandBase.cs" />
-    <Compile Include="Commnads\ResetConfigFilesCommand.cs" />
-    <Compile Include="Commnads\EditConfigFilesCommand.cs" />
-    <Compile Include="Commnads\CleanErrorsCommand.cs" />
+    <Compile Include="Commands\FixLintErrorsCommand.cs" />
+    <Compile Include="Commands\LintFilesCommandBase.cs" />
+    <Compile Include="Commands\ResetConfigFilesCommand.cs" />
+    <Compile Include="Commands\EditConfigFilesCommand.cs" />
+    <Compile Include="Commands\CleanErrorsCommand.cs" />
     <Compile Include="ErrorList\TableDataSource.cs" />
     <Compile Include="ErrorList\ErrorListService.cs" />
     <Compile Include="ErrorList\TableEntriesSnapshot.cs" />
@@ -85,7 +85,7 @@
     <Compile Include="FileListeners\SourceFileCreationListener.cs" />
     <Compile Include="Helpers\ProjectHelpers.cs" />
     <Compile Include="LinterService.cs" />
-    <Compile Include="Commnads\LintFilesCommand.cs" />
+    <Compile Include="Commands\LintFilesCommand.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs">
