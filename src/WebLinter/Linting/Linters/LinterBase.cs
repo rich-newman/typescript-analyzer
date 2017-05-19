@@ -69,8 +69,8 @@ namespace WebLinter
         {
             var postMessage = new ServerPostData
             {
-                Config = Path.Combine(FindWorkingDirectory(files[0]), ConfigFileName),
-                Files = files.Select(f => f.FullName),
+                Config = Path.Combine(FindWorkingDirectory(files[0]), ConfigFileName).Replace("\\", "/"),
+                Files = files.Select(f => f.FullName.Replace("\\", "/")),
                 FixErrors = FixErrors
             };
 
