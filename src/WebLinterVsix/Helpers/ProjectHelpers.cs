@@ -32,6 +32,12 @@ namespace WebLinterVsix
 
                 if (project != null)
                     yield return project.GetRootFolder();
+
+                // We can iterate over all the contained projects or we
+                // can just look at everything below the solution file
+                Solution solution = selItem.Object as Solution;
+                if (solution != null)
+                    yield return Path.GetDirectoryName(solution.FullName);
             }
         }
 
