@@ -3,6 +3,15 @@
 These are the changes to each version that have been released
 on the official Visual Studio extension gallery.
 
+## 1.3
+
+**2017-05-20**
+
+- Add menu option to allow TSLint to try to fix errors using its fixers
+- Allow linting on entire projects and solutions in Solution Explorer
+- Give message in status bar if try to run linting and it's disabled in Tools/Options
+
+
 ## 1.2
 
 **2017-05-12**

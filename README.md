@@ -16,6 +16,10 @@ The menu options for the TypeScript Analyzer are separate from the menu options 
 
 The TypeScript Analyzer has been upgraded to use TSLint version 5.2.0.  Please ensure you have upgraded to at least version 1.2 of the TypeScript Analyzer to get this version of TSLint.
 
+### Fix TypeScript Analyzer Errors
+
+The TypeScript Analyzer puts a menu option on the context menu in Solution Explorer that will attempt to fix linting errors in the file or files clicked on.  This uses TSLint's 'fix' option.  It updates files in place on the hard drive.  That is, it overwrites them immediately, so use this option with care.  It also can only fix errors for which fixers have been written.  Please refer to the TSLint documentation for more details.
+
 ### Default tslint.json
 
 The TypeScript Analyzer has a default tslint.json file.  This is used on initial install, or if it's reset with 'Tools/TypeScript Analyzer/Reset TypeScript Analyzer Settings'.  It can be overridden by including your own tslint.json in a project, or by editing it with 'Tools/TypeScript Analyzer/Edit TSLint settings'.
