@@ -74,6 +74,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Commnads\FixLintErrorsCommand.cs" />
+    <Compile Include="Commnads\LintFilesCommandBase.cs" />
     <Compile Include="Commnads\ResetConfigFilesCommand.cs" />
     <Compile Include="Commnads\EditConfigFilesCommand.cs" />
     <Compile Include="Commnads\CleanErrorsCommand.cs" />
