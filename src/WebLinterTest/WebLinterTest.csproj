@@ -80,6 +80,10 @@
     <None Include="artifacts\tslint\d.tsx" />
     <None Include="artifacts\tslint\e.ts" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="artifacts\tslint\aFixed.ts" />
+    <None Include="artifacts\tslint\cFixed.tsx" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
