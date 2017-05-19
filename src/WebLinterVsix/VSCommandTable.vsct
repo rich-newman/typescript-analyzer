@@ -36,7 +36,7 @@
       <!-- Context menu -->
       <Button guid="WebLinterCmdSet" id="LintFilesCommand" priority="0x0100" type="Button">
         <Parent guid="WebLinterCmdSet" id="ContextMenuGroup" />
-        <Icon guid="ImageCatalogGuid" id="Run" />
+        <Icon guid="ImageCatalogGuid" id="RunChecked" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
@@ -46,7 +46,7 @@
       </Button>
       <Button guid="WebLinterCmdSet" id="FixLintErrorsCommand" priority="0x0150" type="Button">
         <Parent guid="WebLinterCmdSet" id="ContextMenuGroup" />
-        <Icon guid="ImageCatalogGuid" id="RunChecked" />
+        <Icon guid="ImageCatalogGuid" id="RunOutline" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
