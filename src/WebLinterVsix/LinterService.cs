@@ -12,6 +12,8 @@ namespace WebLinterVsix
     {
         private static bool _defaultsCreated;
 
+        public static bool IsLinterEnabled => WebLinterPackage.Settings.TSLintEnable;
+
         public static bool IsFileSupported(string fileName)
         {
             // Check if filename is absolute because when debugging, script files are sometimes dynamically created.

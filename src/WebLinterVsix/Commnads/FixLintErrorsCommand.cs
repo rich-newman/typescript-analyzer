@@ -60,6 +60,11 @@ namespace WebLinterVsix
 
         private async System.Threading.Tasks.Task FixSelectedFiles(object sender, EventArgs e)
         {
+            if (!LinterService.IsLinterEnabled)
+            {
+                WebLinterPackage.Dte.StatusBar.Text = "TSLint is not enabled in Tools/Options";
+                return;
+            }
             var paths = ProjectHelpers.GetSelectedItemPaths();
             List<string> files = new List<string>();
 

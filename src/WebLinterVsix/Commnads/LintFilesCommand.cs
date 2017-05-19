@@ -7,6 +7,7 @@ using System.Linq;
 using Microsoft.VisualStudio.Shell;
 using WebLinter;
 
+// TODO Can be refactored to simpler syntax
 namespace WebLinterVsix
 {
     internal sealed class LintFilesCommand
@@ -59,6 +60,11 @@ namespace WebLinterVsix
 
         private async System.Threading.Tasks.Task LintSelectedFiles(object sender, EventArgs e)
         {
+            if (!LinterService.IsLinterEnabled)
+            {
+                WebLinterPackage.Dte.StatusBar.Text = "TSLint is not enabled in Tools/Options";
+                return;
+            }
             var paths = ProjectHelpers.GetSelectedItemPaths();
             List<string> files = new List<string>();
 
