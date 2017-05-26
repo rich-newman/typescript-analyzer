@@ -72,17 +72,30 @@
     <EmbeddedResource Include="Node\node_modules.7z" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="edge\x64\edge_nativeclr.node" />
-    <None Include="edge\x86\edge_nativeclr.node" />
     <EmbeddedResource Include="Node\edge.7z" />
+    <None Include="..\..\packages\Edge.js.7.10.1\content\edge\x64\edge_nativeclr.node">
+      <Link>edge\x64\edge_nativeclr.node</Link>
+    </None>
+    <None Include="..\..\packages\Edge.js.7.10.1\content\edge\x86\edge_nativeclr.node">
+      <Link>edge\x86\edge_nativeclr.node</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="edge\double_edge.js" />
-    <Content Include="edge\edge.js" />
-    <Content Include="edge\x64\node.dll" />
-    <Content Include="edge\x86\node.dll" />
+    <Content Include="..\..\packages\Edge.js.7.10.1\content\edge\double_edge.js">
+      <Link>edge\double_edge.js</Link>
+    </Content>
+    <Content Include="..\..\packages\Edge.js.7.10.1\content\edge\edge.js">
+      <Link>edge\edge.js</Link>
+    </Content>
+    <Content Include="..\..\packages\Edge.js.7.10.1\content\edge\x64\node.dll">
+      <Link>edge\x64\node.dll</Link>
+    </Content>
+    <Content Include="..\..\packages\Edge.js.7.10.1\content\edge\x86\node.dll">
+      <Link>edge\x86\node.dll</Link>
+    </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>"$(SolutionDir)build\build.cmd"</PreBuildEvent>
