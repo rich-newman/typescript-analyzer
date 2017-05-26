@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace WebLinter
 {
     public static class LinterFactory
     {
-        public static readonly string ExecutionPath = Path.Combine(Path.GetTempPath(), Constants.CACHE_NAME + Constants.VERSION);
         private static string[] _supported = new string[] { ".TS", ".TSX" };
         private static object _syncRoot = new object();
         private static AsyncLock _mutex = new AsyncLock();
@@ -76,38 +76,37 @@ namespace WebLinter
         {
             using (await _mutex.LockAsync())
             {
-                //string codeBase = typeof(EdgeJs.Edge).Assembly.CodeBase;
-                //UriBuilder uriBuilder = new UriBuilder(codeBase);
-                //string path = Uri.UnescapeDataString(uriBuilder.Path);
-                //string test = Path.GetDirectoryName(path);
-                ////Environment.SetEnvironmentVariable("EDGE_BASE_DIR", ExecutionPath);
-                //var test2 = Environment.GetEnvironmentVariable("EDGE_BASE_DIR");
-                var node_modules = Path.Combine(ExecutionPath, "node_modules");
-                var log_file = Path.Combine(ExecutionPath, "log.txt");
+                // TODO can be a property
+                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uriBuilder = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uriBuilder.Path);
+                string executionPath = Path.GetDirectoryName(path);
 
-                if (!Directory.Exists(node_modules) || !File.Exists(log_file) ||
-                    (Directory.Exists(node_modules) && Directory.GetDirectories(node_modules).Length < 18))
+                var edgePath = Path.Combine(executionPath, "edge");
+                var node_modulesPath = Path.Combine(edgePath, "node_modules");
+                var log_file = Path.Combine(executionPath, "log.txt");
+
+                // TODO the directories check
+                if (!Directory.Exists(edgePath) || !File.Exists(log_file) ||
+                    (Directory.Exists(edgePath) && Directory.GetDirectories(node_modulesPath).Length < 18))
                 {
-                    if (Directory.Exists(ExecutionPath))
-                        Directory.Delete(ExecutionPath, recursive: true);
-
-                    Directory.CreateDirectory(ExecutionPath);
+                    if (Directory.Exists(edgePath))
+                        Directory.Delete(edgePath, recursive: true);
 
                     var tasks = new List<Task>
                     {
-                        SaveResourceFileAsync(ExecutionPath, "WebLinter.Node.node_modules.7z", "node_modules.7z"),
-                        SaveResourceFileAsync(ExecutionPath, "WebLinter.Node.7z.exe", "7z.exe"),
-                        SaveResourceFileAsync(ExecutionPath, "WebLinter.Node.7z.dll", "7z.dll"),
-                        SaveResourceFileAsync(ExecutionPath, "WebLinter.Node.prepare.cmd", "prepare.cmd"),
-                        SaveResourceFileAsync(ExecutionPath, "WebLinter.Node.server.js", "server.js"),
-                        SaveResourceFileAsync(ExecutionPath, "WebLinter.Node.node.7z", "node.7z"),
+                        SaveResourceFileAsync(executionPath, "WebLinter.Node.node_modules.7z", "node_modules.7z"),
+                        SaveResourceFileAsync(executionPath, "WebLinter.Node.7z.exe", "7z.exe"),
+                        SaveResourceFileAsync(executionPath, "WebLinter.Node.7z.dll", "7z.dll"),
+                        SaveResourceFileAsync(executionPath, "WebLinter.Node.prepare.cmd", "prepare.cmd"),
+                        SaveResourceFileAsync(executionPath, "WebLinter.Node.edge.7z", "edge.7z"),
                     };
 
                     await Task.WhenAll(tasks.ToArray());
 
                     ProcessStartInfo start = new ProcessStartInfo
                     {
-                        WorkingDirectory = ExecutionPath,
+                        WorkingDirectory = executionPath,
                         CreateNoWindow = true,
                         WindowStyle = ProcessWindowStyle.Hidden,
                         FileName = "cmd.exe",
@@ -128,6 +127,7 @@ namespace WebLinter
 
         private static async Task SaveResourceFileAsync(string path, string resourceName, string fileName)
         {
+            File.Delete(Path.Combine(path, fileName));
             using (Stream stream = typeof(LinterFactory).Assembly.GetManifestResourceStream(resourceName))
             using (FileStream fs = new FileStream(Path.Combine(path, fileName), FileMode.Create))
             {
