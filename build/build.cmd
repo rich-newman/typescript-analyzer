@@ -1,6 +1,7 @@
+REM Modifications Copyright Rich Newman 2017
 @echo off
 
-if exist %~dp0..\src\WebLinter\Node\node_modules.7z goto:done
+if exist %~dp0..\src\WebLinter\Node\node_modules.7z goto:node_modules_done
 
 pushd %~dp0..\src\WebLinter\Node
 
@@ -42,6 +43,12 @@ echo Compressing artifacts and cleans up...
 "%~dp07z.exe" a -r -mx9 node_modules.7z node_modules > nul
 rmdir /S /Q node_modules > nul
 
+:node_modules_done
+if exist %~dp0..\src\WebLinter\Node\edge.7z goto:done
+
+pushd %~dp0..\src\WebLinter\Node
+
+"%~dp07z.exe"  a -r -mx9 edge.7z ..\edge > nul
 
 :done
 echo Done
