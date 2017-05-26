@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using EdgeJs;
 
 namespace WebLinter
 {
@@ -18,25 +19,86 @@ namespace WebLinter
 
         public int BasePort { get; private set; }
 
+        //public async Task<string> CallServerAsync(string path, ServerPostData postData)
+        //{
+        //    await EnsureInitializedAsync();
+
+        //    string url = $"{BASE_URL}:{BasePort}/{path.ToLowerInvariant()}";
+        //    string json = JsonConvert.SerializeObject(postData);
+
+        //    try
+        //    {
+        //        using (WebClient client = new WebClient())
+        //        {
+        //            return await client.UploadStringTaskAsync(url, json);
+        //        }
+        //    }
+        //    catch (WebException)
+        //    {
+        //        Down();
+        //        return string.Empty;
+        //    }
+        //}
+
         public async Task<string> CallServerAsync(string path, ServerPostData postData)
         {
-            await EnsureInitializedAsync();
-
-            string url = $"{BASE_URL}:{BasePort}/{path.ToLowerInvariant()}";
-            string json = JsonConvert.SerializeObject(postData);
-
+            // Works (actually lints) if we manually copy the edge folder into path
+            // C:\Users\{user}\AppData\Local\Microsoft\VisualStudio\15.0_b8342a0bExp\Extensions\Rich Newman\TypeScript Analyzer\1.3
+            // and then have node_modules with tslint and typescript as a subfolder of edge
+            object result = "";
+            //await EnsureInitializedAsync();
             try
             {
-                using (WebClient client = new WebClient())
-                {
-                    return await client.UploadStringTaskAsync(url, json);
-                }
+                //                var increment = Edge.Func(@"
+                //    var current = 0;
+
+                //    return function (data, callback) {
+                //        current += data;
+                //        callback(null, current);
+                //    }
+                //");
+                //                result = await increment(4);
+                var func = Edge.Func(@"
+
+                    function lintts(configFile, fixErrors, files) {
+                        try {
+                            var fs = require('fs');
+                            var tslint = require('tslint');
+                            var options = {
+                                fix: fixErrors,
+                                formatter: 'json'
+                            };
+                            var linter = new tslint.Linter(options);
+
+                            for (var i = 0; i < files.length; i++)
+                            {
+                                var fileName = files[i];
+                                var fileContents = fs.readFileSync(fileName, 'utf8');
+                                var configuration = tslint.Configuration.findConfiguration(configFile, fileName).results;
+                                linter.lint(fileName, fileContents, configuration);
+                            }
+                            return JSON.parse(linter.getResult().output);
+                        }
+                        catch (err) {
+                            return err.message + ': ' + __dirname;
+                        }
+                    }
+
+                    return function (data, callback) {
+                        var input = JSON.parse(data);
+                        var result = lintts(input.config, input.fixerrors, input.files);
+                        callback(null, JSON.stringify(result));
+                    }
+                ");
+                string json = JsonConvert.SerializeObject(postData);
+                result = await func(json);
             }
-            catch (WebException)
+            catch (Exception e)
             {
-                Down();
-                return string.Empty;
+                string test = e.Message;
             }
+
+            return result.ToString();
         }
 
         public void Down()

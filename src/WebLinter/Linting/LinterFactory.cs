@@ -76,10 +76,16 @@ namespace WebLinter
         {
             using (await _mutex.LockAsync())
             {
+                string codeBase = typeof(EdgeJs.Edge).Assembly.CodeBase;
+                UriBuilder uriBuilder = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uriBuilder.Path);
+                string test = Path.GetDirectoryName(path);
+                //Environment.SetEnvironmentVariable("EDGE_BASE_DIR", ExecutionPath);
+                var test2 = Environment.GetEnvironmentVariable("EDGE_BASE_DIR");
                 var node_modules = Path.Combine(ExecutionPath, "node_modules");
                 var log_file = Path.Combine(ExecutionPath, "log.txt");
 
-                if (!Directory.Exists(node_modules) || !File.Exists(log_file) || 
+                if (!Directory.Exists(node_modules) || !File.Exists(log_file) ||
                     (Directory.Exists(node_modules) && Directory.GetDirectories(node_modules).Length < 18))
                 {
                     if (Directory.Exists(ExecutionPath))

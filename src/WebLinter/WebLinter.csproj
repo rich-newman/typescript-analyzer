@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EdgeJs">
+      <HintPath>..\..\packages\Edge.js.7.10.1\lib\net40\EdgeJs.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -70,10 +73,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Node\node.7z" />
+    <None Include="edge\x64\edge_nativeclr.node" />
+    <None Include="edge\x86\edge_nativeclr.node" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Node\server.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="edge\double_edge.js" />
+    <Content Include="edge\edge.js" />
+    <Content Include="edge\x64\node.dll" />
+    <Content Include="edge\x86\node.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
