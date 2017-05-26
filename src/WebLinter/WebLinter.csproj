@@ -72,13 +72,10 @@
     <EmbeddedResource Include="Node\node_modules.7z" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Node\node.7z" />
     <None Include="edge\x64\edge_nativeclr.node" />
     <None Include="edge\x86\edge_nativeclr.node" />
+    <EmbeddedResource Include="Node\edge.7z" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Node\server.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="edge\double_edge.js" />
