@@ -48,7 +48,7 @@ if exist %~dp0..\src\WebLinter\Node\edge.7z goto:done
 
 pushd %~dp0..\src\WebLinter\Node
 
-"%~dp07z.exe"  a -r -mx9 edge.7z ..\edge > nul
+"%~dp07z.exe"  a -r -mx9 edge.7z ..\..\..\packages\Edge.js.7.10.1\content\edge > nul
 
 :done
 echo Done
