@@ -37,30 +37,24 @@ namespace WebLinter
                     }
 
                     return function (data, callback) {
-                        try {
-                            var result = lintts(data.Config, data.FixErrors, data.Files);
-                            callback(null, result);
-                        }
-                        catch (err) {
-                            callback(null, err.message);
-                        }
+                        var result = lintts(data.Config, data.FixErrors, data.Files);
+                        callback(null, result);
                     }
                 ");
         }
 
         public async Task<string> CallServerAsync(string path, ServerPostData postData)
         {
-            object result = "";
             try
             {
-                result = await lintFunc(postData);
+                object result = await lintFunc(postData);
+                return result.ToString();
             }
             catch (Exception e)
             {
-                // TODO this is a bit rubbish
-                result = e.Message;
+                System.Diagnostics.Debug.WriteLine("Error in linter call: " + e.Message);
+                return null;
             }
-            return result.ToString();
         }
     }
 }
