@@ -1,6 +1,4 @@
-﻿// Modifications Copyright Rich Newman 2017
-using EdgeJs;
-using Newtonsoft.Json;
+﻿using EdgeJs;
 using System;
 using System.Threading.Tasks;
 
@@ -34,6 +32,7 @@ namespace WebLinter
                             var configuration = tslint.Configuration.findConfiguration(configFile, fileName).results;
                             linter.lint(fileName, fileContents, configuration);
                         }
+                        // We can't return the failure objects as the graph is circular somewhere
                         return linter.getResult().output;
                     }
 
