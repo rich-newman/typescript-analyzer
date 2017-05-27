@@ -34,13 +34,13 @@ namespace WebLinter
                             var configuration = tslint.Configuration.findConfiguration(configFile, fileName).results;
                             linter.lint(fileName, fileContents, configuration);
                         }
-                        return JSON.parse(linter.getResult().output);
+                        return linter.getResult().output;
                     }
 
                     return function (data, callback) {
                         try {
                             var result = lintts(data.Config, data.FixErrors, data.Files);
-                            callback(null, JSON.stringify(result));
+                            callback(null, result);
                         }
                         catch (err) {
                             callback(null, err.message);
