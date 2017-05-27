@@ -36,7 +36,7 @@ var start = function (port) {
                     var result = linter(data.config, data.fixerrors, data.files);
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.write(JSON.stringify(result));
+                    res.write(result);
                 }
             }
             catch (e) {
@@ -67,7 +67,7 @@ var linters = {
             var configuration = tslint.Configuration.findConfiguration(configFile, fileName).results;
             linter.lint(fileName, fileContents, configuration);
         }
-        return JSON.parse(linter.getResult().output);
+        return linter.getResult().output;
         }
         catch (err) {
             return err.message;
