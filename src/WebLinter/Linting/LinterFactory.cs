@@ -69,6 +69,26 @@ namespace WebLinter
             }
         }
 
+        private static string executionPath;
+        private static string edgePath;
+        private static string node_modulesPath;
+        private static string log_file;
+
+        static LinterFactory()
+        {
+            SetPaths();
+        }
+
+        private static void SetPaths() {
+            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            UriBuilder uriBuilder = new UriBuilder(codeBase);
+            string path = Uri.UnescapeDataString(uriBuilder.Path);
+            executionPath = Path.GetDirectoryName(path);
+            edgePath = Path.Combine(executionPath, "edge");
+            node_modulesPath = Path.Combine(edgePath, "node_modules");
+            log_file = Path.Combine(executionPath, "log.txt");
+        }
+
         /// <summary>
         /// Initializes the Node environment.
         /// </summary>
@@ -76,19 +96,8 @@ namespace WebLinter
         {
             using (await _mutex.LockAsync())
             {
-                // TODO can be a property
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uriBuilder = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uriBuilder.Path);
-                string executionPath = Path.GetDirectoryName(path);
-
-                var edgePath = Path.Combine(executionPath, "edge");
-                var node_modulesPath = Path.Combine(edgePath, "node_modules");
-                var log_file = Path.Combine(executionPath, "log.txt");
-
-                // TODO the directories check
                 if (!Directory.Exists(edgePath) || !File.Exists(log_file) ||
-                    (Directory.Exists(edgePath) && Directory.GetDirectories(node_modulesPath).Length < 18))
+                    (Directory.Exists(edgePath) && Directory.GetDirectories(node_modulesPath).Length < 34))
                 {
                     if (Directory.Exists(edgePath))
                         Directory.Delete(edgePath, recursive: true);
