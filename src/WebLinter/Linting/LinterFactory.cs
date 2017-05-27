@@ -69,10 +69,10 @@ namespace WebLinter
             }
         }
 
-        private static string executionPath;
-        private static string edgePath;
-        private static string node_modulesPath;
-        private static string log_file;
+        private static string _executionPath;
+        private static string _edgePath;
+        private static string _node_modulesPath;
+        private static string _logFile;
 
         static LinterFactory()
         {
@@ -83,10 +83,10 @@ namespace WebLinter
             string codeBase = Assembly.GetExecutingAssembly().CodeBase;
             UriBuilder uriBuilder = new UriBuilder(codeBase);
             string path = Uri.UnescapeDataString(uriBuilder.Path);
-            executionPath = Path.GetDirectoryName(path);
-            edgePath = Path.Combine(executionPath, "edge");
-            node_modulesPath = Path.Combine(edgePath, "node_modules");
-            log_file = Path.Combine(executionPath, "log.txt");
+            _executionPath = Path.GetDirectoryName(path);
+            _edgePath = Path.Combine(_executionPath, "edge");
+            _node_modulesPath = Path.Combine(_edgePath, "node_modules");
+            _logFile = Path.Combine(_executionPath, "log.txt");
         }
 
         /// <summary>
@@ -96,26 +96,26 @@ namespace WebLinter
         {
             using (await _mutex.LockAsync())
             {
-                if (!Directory.Exists(edgePath) || !File.Exists(log_file) ||
-                    (Directory.Exists(edgePath) && Directory.GetDirectories(node_modulesPath).Length < 34))
+                if (!Directory.Exists(_edgePath) || !File.Exists(_logFile) ||
+                    (Directory.Exists(_edgePath) && Directory.GetDirectories(_node_modulesPath).Length < 34))
                 {
-                    if (Directory.Exists(edgePath))
-                        Directory.Delete(edgePath, recursive: true);
+                    if (Directory.Exists(_edgePath))
+                        Directory.Delete(_edgePath, recursive: true);
 
                     var tasks = new List<Task>
                     {
-                        SaveResourceFileAsync(executionPath, "WebLinter.Node.node_modules.7z", "node_modules.7z"),
-                        SaveResourceFileAsync(executionPath, "WebLinter.Node.7z.exe", "7z.exe"),
-                        SaveResourceFileAsync(executionPath, "WebLinter.Node.7z.dll", "7z.dll"),
-                        SaveResourceFileAsync(executionPath, "WebLinter.Node.prepare.cmd", "prepare.cmd"),
-                        SaveResourceFileAsync(executionPath, "WebLinter.Node.edge.7z", "edge.7z"),
+                        SaveResourceFileAsync(_executionPath, "WebLinter.Node.node_modules.7z", "node_modules.7z"),
+                        SaveResourceFileAsync(_executionPath, "WebLinter.Node.7z.exe", "7z.exe"),
+                        SaveResourceFileAsync(_executionPath, "WebLinter.Node.7z.dll", "7z.dll"),
+                        SaveResourceFileAsync(_executionPath, "WebLinter.Node.prepare.cmd", "prepare.cmd"),
+                        SaveResourceFileAsync(_executionPath, "WebLinter.Node.edge.7z", "edge.7z"),
                     };
 
                     await Task.WhenAll(tasks.ToArray());
 
                     ProcessStartInfo start = new ProcessStartInfo
                     {
-                        WorkingDirectory = executionPath,
+                        WorkingDirectory = _executionPath,
                         CreateNoWindow = true,
                         WindowStyle = ProcessWindowStyle.Hidden,
                         FileName = "cmd.exe",
@@ -126,7 +126,7 @@ namespace WebLinter
                     await p.WaitForExitAsync();
 
                     // If this file is written, then the initialization was successful.
-                    using (var writer = new StreamWriter(log_file))
+                    using (var writer = new StreamWriter(_logFile))
                     {
                         await writer.WriteAsync(DateTime.Now.ToLongDateString());
                     }
