@@ -5,14 +5,8 @@ namespace WebLinter
 {
     public class ServerPostData
     {
-        [JsonProperty("config")]
         public string Config { get; set; }
-
-        [JsonProperty("files")]
         public IEnumerable<string> Files { get; set; }
-
-        [JsonProperty("fixerrors")]
         public bool FixErrors { get; set; }
-
     }
 }

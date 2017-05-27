@@ -8,10 +8,10 @@ namespace WebLinter
 {
     public class NodeServer
     {
-        Func<object, Task<object>> func;
+        private Func<object, Task<object>> lintFunc;
         public NodeServer()
         {
-            func = CreateLintFunc();
+            lintFunc = CreateLintFunc();
         }
 
         private Func<object, Task<object>> CreateLintFunc()
@@ -39,8 +39,7 @@ namespace WebLinter
 
                     return function (data, callback) {
                         try {
-                            var input = JSON.parse(data);
-                            var result = lintts(input.config, input.fixerrors, input.files);
+                            var result = lintts(data.Config, data.FixErrors, data.Files);
                             callback(null, JSON.stringify(result));
                         }
                         catch (err) {
@@ -55,8 +54,7 @@ namespace WebLinter
             object result = "";
             try
             {
-                string json = JsonConvert.SerializeObject(postData);
-                result = await func(json);
+                result = await lintFunc(postData);
             }
             catch (Exception e)
             {
