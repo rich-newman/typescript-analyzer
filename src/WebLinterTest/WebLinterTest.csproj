@@ -62,7 +62,6 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="AssemblyMethods.cs" />
     <Compile Include="CssLintTest.cs" />
     <Compile Include="CoffeelintTest.cs" />
     <Compile Include="Settings.cs" />
