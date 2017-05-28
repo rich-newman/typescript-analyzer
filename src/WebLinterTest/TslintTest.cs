@@ -1,39 +1,42 @@
 ﻿// Modifications Copyright Rich Newman 2017
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using WebLinter;
 using System.IO;
 
 namespace WebLinterTest
 {
-    [TestClass]
     public class TsLintTest
     {
-        [TestMethod, TestCategory("TSLint")]
+        [Fact]
+        [Trait("Category", "TSLint")]
         public async Task StandardTs()
         {
+            await LinterFactory.InitializeAsync();
             var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/a.ts");
-            Assert.IsTrue(result.First().HasErrors);
-            Assert.IsFalse(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
-            Assert.AreEqual(13, result.First().Errors.Count);
-            Assert.AreEqual("if statements must be braced", result.First().Errors.First().Message);
+            Assert.True(result.First().HasErrors);
+            Assert.False(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
+            Assert.Equal(13, result.First().Errors.Count);
+            Assert.Equal("if statements must be braced", result.First().Errors.First().Message);
         }
 
-        [TestMethod, TestCategory("TSLint")]
+        [Fact]
+        [Trait("Category", "TSLint")]
         public async Task StandardTsFixErrors()
         {
+            await LinterFactory.InitializeAsync();
             try
             {
                 File.Copy("../../artifacts/tslint/a.ts", "../../artifacts/tslint/aTest.ts", true);
                 var result = await LinterFactory.LintAsync(Settings.Instance, true, "../../artifacts/tslint/aTest.ts");
-                Assert.IsTrue(result.First().HasErrors);
-                Assert.IsFalse(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
-                Assert.AreEqual(4, result.First().Errors.Count);
-                Assert.AreEqual("if statements must be braced", result.First().Errors.First().Message);
+                Assert.True(result.First().HasErrors);
+                Assert.False(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
+                Assert.Equal(4, result.First().Errors.Count);
+                Assert.Equal("if statements must be braced", result.First().Errors.First().Message);
                 string actual = File.ReadAllText("../../artifacts/tslint/aTest.ts");
                 string expected = File.ReadAllText("../../artifacts/tslint/aFixed.ts");
-                Assert.AreEqual(expected, actual);
+                Assert.Equal(expected, actual);
             }
             finally
             {
@@ -41,53 +44,61 @@ namespace WebLinterTest
             }
         }
 
-        [TestMethod, TestCategory("TSLint")]
+        [Fact]
+        [Trait("Category", "TSLint")]
         public async Task StandardTsNoErrors()
         {
+            await LinterFactory.InitializeAsync();
             var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/e.ts");
-            Assert.IsFalse(result.First().HasErrors);
-            Assert.AreEqual(0, result.First().Errors.Count);
-            Assert.IsFalse(string.IsNullOrEmpty(result.First().FileNames.First()), "File name is empty");
+            Assert.False(result.First().HasErrors);
+            Assert.Equal(0, result.First().Errors.Count);
+            Assert.False(string.IsNullOrEmpty(result.First().FileNames.First()), "File name is empty");
         }
 
-        [TestMethod, TestCategory("TSLint")]
+        [Fact]
+        [Trait("Category", "TSLint")]
         public async Task StandardTsx()
         {
+            await LinterFactory.InitializeAsync();
             var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/c.tsx");
-            Assert.IsTrue(result.First().HasErrors);
-            Assert.IsFalse(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
-            Assert.AreEqual(6, result.First().Errors.Count);
-            Assert.AreEqual("The class method 'sayHello' must be marked either 'private', 'public', or 'protected'", result.First().Errors.First().Message);
+            Assert.True(result.First().HasErrors);
+            Assert.False(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
+            Assert.Equal(6, result.First().Errors.Count);
+            Assert.Equal("The class method 'sayHello' must be marked either 'private', 'public', or 'protected'", result.First().Errors.First().Message);
         }
 
-        [TestMethod, TestCategory("TSLint")]
+        [Fact]
+        [Trait("Category", "TSLint")]
         public async Task StandardTsxFixErrors()
         {
+            await LinterFactory.InitializeAsync();
             try
             {
                 File.Copy("../../artifacts/tslint/c.tsx", "../../artifacts/tslint/cTest.tsx", true);
                 var result = await LinterFactory.LintAsync(Settings.Instance, true, "../../artifacts/tslint/cTest.tsx");
-                Assert.IsTrue(result.First().HasErrors);
-                Assert.IsFalse(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
-                Assert.AreEqual(1, result.First().Errors.Count);
-                Assert.AreEqual("The class method 'sayHello' must be marked either 'private', 'public', or 'protected'", result.First().Errors.First().Message);
+                Assert.True(result.First().HasErrors);
+                Assert.False(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
+                Assert.Equal(1, result.First().Errors.Count);
+                Assert.Equal("The class method 'sayHello' must be marked either 'private', 'public', or 'protected'", result.First().Errors.First().Message);
                 string actual = File.ReadAllText("../../artifacts/tslint/cTest.tsx");
                 string expected = File.ReadAllText("../../artifacts/tslint/cFixed.tsx");
-                Assert.AreEqual(expected, actual);
+                Assert.Equal(expected, actual);
             }
             finally
             {
                 File.Delete("../../artifacts/tslint/cTest.tsx");
             }
-}
+        }
 
-[TestMethod, TestCategory("TSLint")]
+        [Fact]
+        [Trait("Category", "TSLint")]
         public async Task StandardTsxNoErrors()
         {
+            await LinterFactory.InitializeAsync();
             var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/d.tsx");
-            Assert.IsFalse(result.First().HasErrors);
-            Assert.AreEqual(0, result.First().Errors.Count);
-            Assert.IsFalse(string.IsNullOrEmpty(result.First().FileNames.First()), "File name is empty");
+            Assert.False(result.First().HasErrors);
+            Assert.Equal(0, result.First().Errors.Count);
+            Assert.False(string.IsNullOrEmpty(result.First().FileNames.First()), "File name is empty");
         }
 
         //[TestMethod, TestCategory("TSLint")]
@@ -96,24 +107,28 @@ namespace WebLinterTest
         //    var result = LinterFactory.Lint(Settings.CWD, Settings.Instance, "../../artifacts/tslint/b.ts", "../../artifacts/tslint/a.ts");
         //    var first = result.First();
         //    var firstErrors = first.Errors.ToArray();
-        //    Assert.IsTrue(first.HasErrors);
-        //    Assert.IsFalse(string.IsNullOrEmpty(firstErrors.First().FileName), "File name is empty");
-        //    Assert.AreEqual(14, firstErrors.Length);
-        //    Assert.AreEqual("if statements must be braced", firstErrors.First().Message);
+        //    Assert.True(first.HasErrors);
+        //    Assert.False(string.IsNullOrEmpty(firstErrors.First().FileName), "File name is empty");
+        //    Assert.Equal(14, firstErrors.Length);
+        //    Assert.Equal("if statements must be braced", firstErrors.First().Message);
         //}
 
-        [TestMethod, TestCategory("TSLint")]
+        [Fact]
+        [Trait("Category", "TSLint")]
         public async Task TsFileNotExist()
         {
+            await LinterFactory.InitializeAsync();
             var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/doesntexist.ts");
-            Assert.IsTrue(result.First().HasErrors);
+            Assert.True(result.First().HasErrors);
         }
 
-        [TestMethod, TestCategory("TSLint")]
+        [Fact]
+        [Trait("Category", "TSLint")]
         public async Task TsxFileNotExist()
         {
+            await LinterFactory.InitializeAsync();
             var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/doesntexist.tsx");
-            Assert.IsTrue(result.First().HasErrors);
+            Assert.True(result.First().HasErrors);
         }
     }
 }
