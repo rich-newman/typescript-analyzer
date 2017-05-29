@@ -97,7 +97,7 @@ namespace WebLinter
             using (await _mutex.LockAsync())
             {
                 if (!Directory.Exists(_edgePath) || !File.Exists(_logFile) ||
-                    (Directory.Exists(_edgePath) && Directory.GetDirectories(_node_modulesPath).Length < 34))
+                    (Directory.Exists(_edgePath) && (Directory.GetDirectories(_node_modulesPath).Length < 34 || !CheckEdge())))
                 {
                     if (Directory.Exists(_edgePath))
                         Directory.Delete(_edgePath, recursive: true);
@@ -132,6 +132,16 @@ namespace WebLinter
                     }
                 }
             }
+        }
+
+        // If any of these files get deleted VS won't open a project: so make sure they are there as far as possible
+        private static bool CheckEdge()
+        {
+            string subFolder = IntPtr.Size == 4 ? "x86" : "x64";
+            return File.Exists(Path.Combine(_edgePath, "edge.js"))
+                && File.Exists(Path.Combine(_edgePath, "double_edge.js"))
+                && File.Exists(Path.Combine(_edgePath, subFolder, "node.dll"))
+                && File.Exists(Path.Combine(_edgePath, subFolder, "edge_nativeclr.node"));
         }
 
         private static async Task SaveResourceFileAsync(string path, string resourceName, string fileName)
