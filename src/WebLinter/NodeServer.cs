@@ -20,27 +20,16 @@ namespace WebLinter
 
         public async Task<string> CallServerAsync(string path, ServerPostData postData)
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
             await EnsureInitializedAsync();
-            sw.Stop();
-            Debug.WriteLine("EnsureInitializedAsync: " + sw.ElapsedMilliseconds);
 
             string url = $"{BASE_URL}:{BasePort}/{path.ToLowerInvariant()}";
             string json = JsonConvert.SerializeObject(postData);
-            File.WriteAllText(@"c:\temp\json.txt", json);
 
             try
             {
                 using (WebClient client = new WebClient())
                 {
-                    sw = new Stopwatch();
-                    sw.Start();
-                    string result = await client.UploadStringTaskAsync(url, json);
-                    sw.Stop();
-                    Debug.WriteLine("client.UploadStringTaskAsync: " + sw.ElapsedMilliseconds);
-                    File.WriteAllText(@"c:\temp\result.txt", result);
-                    return result;
+                    return await client.UploadStringTaskAsync(url, json);
                 }
             }
             catch (WebException)
