@@ -56,7 +56,7 @@ namespace WebLinterVsix
                 }
                 else if (columnName == StandardTableKeyNames.Text)
                 {
-                    content = $"({_errors[index].Provider.Name}) {_errors[index].Message}";
+                    content = $"({_errors[index].Provider.Name}Edge) {_errors[index].Message}";
                 }
                 else if (columnName == StandardTableKeyNames.ErrorSeverity)
                 {
