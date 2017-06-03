@@ -30,6 +30,9 @@ namespace WebLinterTest
             {
                 File.Copy("../../artifacts/tslint/a.ts", "../../artifacts/tslint/aTest.ts", true);
                 var result = await LinterFactory.LintAsync(Settings.Instance, true, "../../artifacts/tslint/aTest.ts");
+                // Now, bizarrely, we have to fix twice to fix var -> const with the recommended TSLint rules
+                // See TSLint issues #2835, #2843, #2625
+                result = await LinterFactory.LintAsync(Settings.Instance, true, "../../artifacts/tslint/aTest.ts");
                 Assert.True(result.First().HasErrors);
                 Assert.False(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
                 Assert.Equal(4, result.First().Errors.Count);

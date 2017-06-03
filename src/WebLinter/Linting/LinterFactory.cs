@@ -97,7 +97,7 @@ namespace WebLinter
             using (await _mutex.LockAsync())
             {
                 if (!Directory.Exists(_edgePath) || !File.Exists(_logFile) ||
-                    (Directory.Exists(_edgePath) && (Directory.GetDirectories(_node_modulesPath).Length < 34 || !CheckEdge())))
+                    (Directory.Exists(_edgePath) && (Directory.GetDirectories(_node_modulesPath).Length < 33 || !CheckEdge())))
                 {
                     if (Directory.Exists(_edgePath))
                         Directory.Delete(_edgePath, recursive: true);
