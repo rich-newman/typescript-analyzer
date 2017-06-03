@@ -6,8 +6,8 @@ pushd %~dp0..\src\WebLinter\Node
 
 echo Installing packages...
 call npm install ^
-     tslint@5.2.0 ^
-     typescript@2.3.2 ^
+     tslint@5.4.2 ^
+     typescript@2.3.4 ^
      --no-optional --quiet > nul
 
 
