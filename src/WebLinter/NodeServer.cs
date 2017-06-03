@@ -1,5 +1,6 @@
 ﻿using EdgeJs;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace WebLinter
@@ -9,12 +10,26 @@ namespace WebLinter
         private Func<object, Task<object>> lintFunc;
         public NodeServer()
         {
-            lintFunc = CreateLintFunc();
+            try
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                CreateLintFunc();
+                sw.Stop();
+                Debug.WriteLine("CreateLintFunc: " + sw.ElapsedMilliseconds);
+            }
+            catch (Exception)
+            {
+                Debug.WriteLine("NodeServer");
+                throw;
+            }
         }
 
-        private Func<object, Task<object>> CreateLintFunc()
+        private void CreateLintFunc()
         {
-            return Edge.Func(@"
+            try
+            {
+                lintFunc = Edge.Func(@"
                     var fs = require('fs');
                     var tslint = require('tslint');
 
@@ -41,13 +56,25 @@ namespace WebLinter
                         callback(null, result);
                     }
                 ");
+            }
+            catch (Exception)
+            {
+                Debug.WriteLine("CreateLintFunc");
+                throw;
+            }
         }
 
         public async Task<string> CallServerAsync(string path, ServerPostData postData)
         {
             try
             {
+
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
                 object result = await lintFunc(postData);
+                sw.Stop();
+                Debug.WriteLine("lintFunc(postData): " + sw.ElapsedMilliseconds);
+
                 return result.ToString();
             }
             catch (Exception e)

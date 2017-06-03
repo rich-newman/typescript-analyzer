@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using EnvDTE;
 using WebLinter;
+using System.Diagnostics;
 
 namespace WebLinterVsix
 {
@@ -56,6 +57,10 @@ namespace WebLinterVsix
 
         public static async Task LintAsync(bool showErrorList, bool fixErrors, params string[] fileNames)
         {
+            Stopwatch sw = new Stopwatch();
+            string text = "EDGE TIMING LINT RUN\r\n";
+            text += DateTime.Now.ToLongTimeString() + "::" + sw.ElapsedMilliseconds + "\r\n";
+            sw.Start();
             try
             {
                 WebLinterPackage.Dte.StatusBar.Text = "Analyzing...";
@@ -63,10 +68,18 @@ namespace WebLinterVsix
 
                 await EnsureDefaultsAsync();
 
+                text += "FINISHED INITIALIZATION\r\n";
+                long elapsed = sw.ElapsedMilliseconds;
+                text += DateTime.Now.ToLongTimeString() + "::" + elapsed + "\r\n";
                 var result = await LinterFactory.LintAsync(WebLinterPackage.Settings, fixErrors, fileNames);
 
                 if (result != null)
                     ErrorListService.ProcessLintingResults(result, fileNames, showErrorList);
+
+                text += "LINTING COMPLETE\r\n";
+                text += DateTime.Now.ToLongTimeString() + "::" + sw.ElapsedMilliseconds + "::" + (sw.ElapsedMilliseconds - elapsed) + "\r\n";
+                text += "==============================================================================================================\r\n";
+                File.AppendAllText(@"c:\temp\lintruns.txt", text);
             }
             catch (Exception ex)
             {
