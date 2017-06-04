@@ -30,18 +30,20 @@ namespace WebLinterVsix
         // TODO detect if we're just cleaning
         public override int UpdateSolution_Begin(ref int pfCancelUpdate)
         {
-            bool cancelBuild = false;
-            System.Threading.Tasks.Task<bool> task = LintSelectedFiles(fixErrors: false, callSync: true);
-            // We've called sync on the UI thread so the task should be complete when we return
-            // Don't block the UI thread if it's not
-            if (task.IsCompleted)
-                cancelBuild = task.Result;
-            pfCancelUpdate = cancelBuild ? 1 : 0;
-            if(cancelBuild)
-                WebLinterPackage.Dte.StatusBar.Text = "Build cancelled because of TSLint Errors";
-            //else
-            //    WebLinterPackage.Dte.StatusBar.Text = "TEMPTEMP: build can continue";
-
+            try
+            {
+                bool cancelBuild = false;
+                System.Threading.Tasks.Task<bool> task = LintSelectedFiles(fixErrors: false, callSync: true);
+                // If we've called sync correctly task should be completed here, if not we may not have results anyway
+                bool completed = task.IsCompleted;  //task.Wait(10); 
+                if (completed) cancelBuild = task.Result;
+                pfCancelUpdate = cancelBuild ? 1 : 0;
+                if (cancelBuild) WebLinterPackage.Dte.StatusBar.Text = "Build failed because of TSLint Errors";
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex);
+            }
             return VSConstants.S_OK;
         }
 

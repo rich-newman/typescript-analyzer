@@ -33,12 +33,19 @@ namespace WebLinter
                             linter.lint(fileName, fileContents, configuration);
                         }
                         // We can't return the failure objects as the graph is circular somewhere
+                        //sleep(3);
                         return linter.getResult().output;
                     }
 
                     return function (data, callback) {
                         var result = lintts(data.Config, data.FixErrors, data.Files);
                         callback(null, result);
+                    }
+
+                    function sleep(seconds) 
+                    {
+                      var e = new Date().getTime() + (seconds * 1000);
+                      while (new Date().getTime() <= e) {}
                     }
                 ");
         }
@@ -49,9 +56,10 @@ namespace WebLinter
             // duration of the Edge call
             try
             {
-                // TODO we need a timeout
-                object result = lintFunc(postData).Result;
-                return result.ToString();
+                Task<object> task = lintFunc(postData);
+                // Don't block UI thread for more than two seconds: build will continue if we time out
+                bool completed = task.Wait(2000);
+                return completed ? task.Result.ToString() : null;
             }
             catch (Exception e)
             {
