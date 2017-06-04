@@ -28,7 +28,7 @@ namespace WebLinter
 
         protected LintingResult Result { get; private set; }
 
-        public async Task<LintingResult> Run(params string[] files)
+        public async Task<LintingResult> Run(bool callSync, params string[] files)
         {
             Result = new LintingResult(files);
 
@@ -50,12 +50,12 @@ namespace WebLinter
                 fileInfos.Add(fileInfo);
             }
 
-            return await Lint(fileInfos.ToArray());
+            return await Lint(callSync, fileInfos.ToArray());
         }
 
-        protected virtual async Task<LintingResult> Lint(params FileInfo[] files)
+        protected virtual async Task<LintingResult> Lint(bool callSync, params FileInfo[] files)
         {
-            string output = await RunProcess(files);
+            string output = await RunProcess(callSync, files);
 
             if (!string.IsNullOrEmpty(output))
             {
@@ -65,7 +65,7 @@ namespace WebLinter
             return Result;
         }
 
-        protected async Task<string> RunProcess(params FileInfo[] files)
+        protected async Task<string> RunProcess(bool callSync, params FileInfo[] files)
         {
             var postMessage = new ServerPostData
             {
@@ -74,8 +74,30 @@ namespace WebLinter
                 FixErrors = FixErrors
             };
 
+            // Testing code for callSync: we mustn't deadlock if we're not actually calling sync
+            // (the call can fail, but we can't lock the entire UI)
+            //var test = await LongRunningMethodAsync("World");
+
+            if (callSync)
+            {
+                var result = Server.CallServerSync(Name, postMessage);
+                return result;
+            }
+
             return await Server.CallServerAsync(Name, postMessage);
         }
+
+
+        //private Task<string> LongRunningMethodAsync(string message)
+        //{
+        //    return Task.Run<string>(() => LongRunningMethod(message));
+        //}
+
+        //private string LongRunningMethod(string message)
+        //{
+        //    System.Threading.Thread.Sleep(2000);
+        //    return "Hello " + message;
+        //}
 
         protected virtual string FindWorkingDirectory(FileInfo file)
         {

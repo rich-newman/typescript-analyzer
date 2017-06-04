@@ -54,8 +54,9 @@ namespace WebLinterVsix
             return true;
         }
 
-        public static async Task LintAsync(bool showErrorList, bool fixErrors, params string[] fileNames)
+        public static async Task<bool> LintAsync(bool showErrorList, bool fixErrors, bool callSync, params string[] fileNames)
         {
+            bool hasVSErrors = false;
             try
             {
                 WebLinterPackage.Dte.StatusBar.Text = "Analyzing...";
@@ -63,10 +64,13 @@ namespace WebLinterVsix
 
                 await EnsureDefaultsAsync();
 
-                var result = await LinterFactory.LintAsync(WebLinterPackage.Settings, fixErrors, fileNames);
+                var result = await LinterFactory.LintAsync(WebLinterPackage.Settings, fixErrors, callSync, fileNames);
 
                 if (result != null)
+                {
                     ErrorListService.ProcessLintingResults(result, fileNames, showErrorList);
+                    hasVSErrors = result.Any(r => r.HasVsErrors);
+                }
             }
             catch (Exception ex)
             {
@@ -77,6 +81,7 @@ namespace WebLinterVsix
                 WebLinterPackage.Dte.StatusBar.Clear();
                 WebLinterPackage.Dte.StatusBar.Animate(false, vsStatusAnimation.vsStatusAnimationGeneral);
             }
+            return hasVSErrors;
         }
 
         public static async Task EnsureDefaultsAsync(bool force = false)

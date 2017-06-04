@@ -24,10 +24,10 @@ namespace WebLinter
 
         public static async Task<LintingResult[]> LintAsync(ISettings settings, params string[] fileNames)
         {
-            return await LintAsync(settings, false, fileNames);
+            return await LintAsync(settings, false, false, fileNames);
         }
 
-        public static async Task<LintingResult[]> LintAsync(ISettings settings, bool fixErrors, params string[] fileNames)
+        public static async Task<LintingResult[]> LintAsync(ISettings settings, bool fixErrors, bool callSync, params string[] fileNames)
         {
             if (fileNames.Length == 0)
                 return new LintingResult[0];
@@ -51,7 +51,7 @@ namespace WebLinter
             {
                 await InitializeAsync();
 
-                return await Task.WhenAll(dic.Select(group => group.Key.Run(group.Value.ToArray())));
+                return await Task.WhenAll(dic.Select(group => group.Key.Run(callSync, group.Value.ToArray())));
             }
 
             return new LintingResult[0];

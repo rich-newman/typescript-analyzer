@@ -43,6 +43,23 @@ namespace WebLinter
                 ");
         }
 
+        public string CallServerSync(string path, ServerPostData postData)
+        {
+            // We assume we're called on the UI thread and it doesn't matter if we block it for the
+            // duration of the Edge call
+            try
+            {
+                // TODO we need a timeout
+                object result = lintFunc(postData).Result;
+                return result.ToString();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Error in linter call: " + e.Message);
+                return null;
+            }
+        }
+
         public async Task<string> CallServerAsync(string path, ServerPostData postData)
         {
             try

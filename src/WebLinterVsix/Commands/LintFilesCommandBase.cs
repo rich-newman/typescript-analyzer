@@ -6,8 +6,10 @@ using System.Linq;
 
 namespace WebLinterVsix
 {
-    internal class LintFilesCommandBase
+    internal class LintFilesCommandBase: BuildEventsBase
     {
+        internal LintFilesCommandBase(Package package) : base(package) { }
+
         protected void BeforeQueryStatus(object sender, EventArgs e)
         {
             var button = (OleMenuCommand)sender;
@@ -15,21 +17,23 @@ namespace WebLinterVsix
             button.Visible = paths.Any(f => string.IsNullOrEmpty(Path.GetExtension(f)) || LinterService.IsFileSupported(f));
         }
 
-        protected async System.Threading.Tasks.Task LintSelectedFiles(bool fixErrors)
+        protected async System.Threading.Tasks.Task<bool> LintSelectedFiles(bool fixErrors, bool callSync = false)
         {
             if (!LinterService.IsLinterEnabled)
             {
                 WebLinterPackage.Dte.StatusBar.Text = "TSLint is not enabled in Tools/Options";
-                return;
+                return false;
             }
             List<string> files = GetFilesInSelectedItemPaths();
             if (files.Any())
             {
-                await LinterService.LintAsync(showErrorList: true, fixErrors: fixErrors, fileNames: files.ToArray());
+                return await LinterService.LintAsync(showErrorList: true, fixErrors: fixErrors, 
+                                                        callSync: callSync, fileNames: files.ToArray());
             }
             else
             {
                 WebLinterPackage.Dte.StatusBar.Text = $"No files found to {(fixErrors ? "fix" : "lint")}";
+                return false;
             }
         }
 
