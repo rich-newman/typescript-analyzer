@@ -1,10 +1,6 @@
 ﻿using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WebLinterVsix
 {
@@ -12,9 +8,9 @@ namespace WebLinterVsix
     {
         private readonly IVsSolution _solution;
         private readonly IVsSolutionBuildManager3 _buildManager;
-        private uint _cookie1 = VSConstants.VSCOOKIE_NIL;
+        //private uint _cookie1 = VSConstants.VSCOOKIE_NIL;
         private uint _cookie2 = VSConstants.VSCOOKIE_NIL;
-        private uint _cookie3 = VSConstants.VSCOOKIE_NIL;
+        //private uint _cookie3 = VSConstants.VSCOOKIE_NIL;
 
         public BuildEventsBase(IServiceProvider serviceProvider)
         {
@@ -48,21 +44,21 @@ namespace WebLinterVsix
         public void Dispose()
         {
             // Ignore failures in UnadviseSolutionEvents
-            if (this._cookie1 != VSConstants.VSCOOKIE_NIL)
-            {
-                this._solution.UnadviseSolutionEvents(this._cookie1);
-                this._cookie1 = VSConstants.VSCOOKIE_NIL;
-            }
+            //if (this._cookie1 != VSConstants.VSCOOKIE_NIL)
+            //{
+            //    this._solution.UnadviseSolutionEvents(this._cookie1);
+            //    this._cookie1 = VSConstants.VSCOOKIE_NIL;
+            //}
             if (this._cookie2 != VSConstants.VSCOOKIE_NIL)
             {
                 ((IVsSolutionBuildManager2)this._buildManager).UnadviseUpdateSolutionEvents(this._cookie2);
                 this._cookie2 = VSConstants.VSCOOKIE_NIL;
             }
-            if (this._cookie3 != VSConstants.VSCOOKIE_NIL)
-            {
-                this._buildManager.UnadviseUpdateSolutionEvents3(this._cookie3);
-                this._cookie3 = VSConstants.VSCOOKIE_NIL;
-            }
+            //if (this._cookie3 != VSConstants.VSCOOKIE_NIL)
+            //{
+            //    this._buildManager.UnadviseUpdateSolutionEvents3(this._cookie3);
+            //    this._cookie3 = VSConstants.VSCOOKIE_NIL;
+            //}
         }
 
         public virtual int UpdateSolution_Begin(ref int pfCancelUpdate)
