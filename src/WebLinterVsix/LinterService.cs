@@ -86,6 +86,8 @@ namespace WebLinterVsix
 
         public static async Task EnsureDefaultsAsync(bool force = false, bool callSync = false)
         {
+            // Not sure about the defaultsCreated flag here: if you delete your own tslint.json whilst
+            // VS is running we're going to fail until you restart
             if (!_defaultsCreated || force)
             {
                 string sourceFolder = GetVsixFolder();

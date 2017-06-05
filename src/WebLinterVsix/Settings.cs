@@ -20,6 +20,7 @@ namespace WebLinterVsix
             IgnoreFolderNames = @"\node_modules\,\bower_components\,\typings\,\lib\,\vendor\,.min.";
             IgnoreNestedFiles = true;
             CleanErrorsOnBuild = true;
+            RunOnBuild = false;
             TSLintEnable = true;
         }
 
@@ -47,6 +48,12 @@ namespace WebLinterVsix
         [Description("Clean the analyzer errors from the Error List when 'Rebuild' or 'Clean' is executed.")]
         [DefaultValue(true)]
         public bool CleanErrorsOnBuild { get; set; }
+
+        [Category("Advanced settings")]
+        [DisplayName("Run on build")]
+        [Description("Runs the analyzer before a build.  Will cause build to fail if there are any TSLint errors in the Visual Studio Error List.  This can only happen if 'Show errors' (below) is true.")]
+        [DefaultValue(false)]
+        public bool RunOnBuild { get; set; }
 
         [Category("TS Lint")]
         [DisplayName("Enable TSLint")]

@@ -29,7 +29,7 @@ namespace WebLinterVsix
         {
             if (WebLinterPackage.Settings.CleanErrorsOnBuild &&
                (Action == vsBuildAction.vsBuildActionClean ||
-               (Action == vsBuildAction.vsBuildActionRebuildAll && !LintFilesCommand.RunOnBuild)))
+               (Action == vsBuildAction.vsBuildActionRebuildAll && !WebLinterPackage.Settings.RunOnBuild)))
             {
                 TableDataSource.Instance.CleanAllErrors();
             }

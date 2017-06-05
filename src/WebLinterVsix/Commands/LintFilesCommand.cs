@@ -19,8 +19,6 @@ namespace WebLinterVsix
         private readonly Package _package;
         private readonly CommandEvents _commandEvents;
 
-        public static bool RunOnBuild = true;
-
         private LintFilesCommand(Package package): base(package)
         {
             _package = package ?? throw new ArgumentNullException("package");
@@ -43,7 +41,7 @@ namespace WebLinterVsix
                                                             (int)I.StartNoDebug };
         private void _commandEvents_BeforeExecute(string Guid, int ID, object CustomIn, object CustomOut, ref bool CancelDefault)
         {
-            if (!RunOnBuild || !Guid.StartsWith("{5E") || Guid != "{5EFC7975-14BC-11CF-9B2B-00AA00573819}") return;
+            if (!WebLinterPackage.Settings.RunOnBuild || !Guid.StartsWith("{5E") || Guid != "{5EFC7975-14BC-11CF-9B2B-00AA00573819}") return;
             if (!_buildIds.Contains(ID)) return;
             _isBuilding = true;
         }
@@ -52,7 +50,7 @@ namespace WebLinterVsix
         {
             try
             {
-                if (!_isBuilding || !RunOnBuild) return VSConstants.S_OK;
+                if (!_isBuilding || !WebLinterPackage.Settings.RunOnBuild) return VSConstants.S_OK;
                 bool cancelBuild = false;
                 System.Threading.Tasks.Task<bool> task = LintSelectedFiles(fixErrors: false, callSync: true);
                 // If we've called sync correctly task should be completed here, if not we may not have results anyway
