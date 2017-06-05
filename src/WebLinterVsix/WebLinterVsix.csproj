@@ -46,7 +46,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WebLinterVsix</RootNamespace>
-    <AssemblyName>TypeScriptAnalyzerEdge</AssemblyName>
+    <AssemblyName>TypeScriptAnalyzer</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
