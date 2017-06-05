@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace WebLinter
@@ -12,7 +13,6 @@ namespace WebLinter
     {
         public static readonly string ExecutionPath = Path.Combine(Path.GetTempPath(), Constants.CACHE_NAME + Constants.VERSION);
         private static string[] _supported = new string[] { ".TS", ".TSX" };
-        private static object _syncRoot = new object();
         private static AsyncLock _mutex = new AsyncLock();
 
         public static bool IsFileSupported(string fileName)
@@ -24,15 +24,15 @@ namespace WebLinter
 
         public static async Task<LintingResult[]> LintAsync(ISettings settings, params string[] fileNames)
         {
-            return await LintAsync(settings, false, fileNames);
+            return await LintAsync(settings, false, false, fileNames);
         }
 
-        public static async Task<LintingResult[]> LintAsync(ISettings settings, bool fixErrors, params string[] fileNames)
+        public static async Task<LintingResult[]> LintAsync(ISettings settings, bool fixErrors, bool callSync, params string[] fileNames)
         {
-            if (fileNames.Length == 0)
-                return new LintingResult[0];
+            if (fileNames.Length == 0)  return new LintingResult[0];
 
-            string extension = Path.GetExtension(fileNames[0]).ToUpperInvariant();
+            await InitializeAsync(callSync);
+
             var groupedFiles = fileNames.GroupBy(f => Path.GetExtension(f).ToUpperInvariant());
             Dictionary<LinterBase, IEnumerable<string>> dic = new Dictionary<LinterBase, IEnumerable<string>>();
 
@@ -49,9 +49,9 @@ namespace WebLinter
 
             if (dic.Count != 0)
             {
-                await InitializeAsync();
+                await InitializeAsync(callSync);
 
-                return await Task.WhenAll(dic.Select(group => group.Key.Run(group.Value.ToArray())));
+                return await Task.WhenAll(dic.Select(group => group.Key.Run(callSync, group.Value.ToArray())));
             }
 
             return new LintingResult[0];
@@ -72,16 +72,20 @@ namespace WebLinter
         /// <summary>
         /// Initializes the Node environment.
         /// </summary>
-        public static async Task InitializeAsync()
+        public static async Task InitializeAsync(bool callSync = false)
         {
             using (await _mutex.LockAsync())
             {
                 var node_modules = Path.Combine(ExecutionPath, "node_modules");
                 var log_file = Path.Combine(ExecutionPath, "log.txt");
 
-                if (!Directory.Exists(node_modules) || !File.Exists(log_file) || 
+                if (!Directory.Exists(node_modules) || !File.Exists(log_file) ||
                     (Directory.Exists(node_modules) && Directory.GetDirectories(node_modules).Length < 18))
                 {
+                    // We don't allow all this longrunning crap to execute on the UI thread.  If we do a build
+                    // before it's completed async, or after someone's deleted a file, then we'll just fail silently
+                    if (callSync) throw new Exception("Node set up not valid on sync call, TSLint not run");
+
                     if (Directory.Exists(ExecutionPath))
                         Directory.Delete(ExecutionPath, recursive: true);
 
@@ -122,6 +126,7 @@ namespace WebLinter
 
         private static async Task SaveResourceFileAsync(string path, string resourceName, string fileName)
         {
+            File.Delete(Path.Combine(path, fileName));
             using (Stream stream = typeof(LinterFactory).Assembly.GetManifestResourceStream(resourceName))
             using (FileStream fs = new FileStream(Path.Combine(path, fileName), FileMode.Create))
             {

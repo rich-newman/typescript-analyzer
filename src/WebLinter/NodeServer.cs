@@ -18,9 +18,9 @@ namespace WebLinter
 
         public int BasePort { get; private set; }
 
-        public async Task<string> CallServerAsync(string path, ServerPostData postData)
+        public async Task<string> CallServer(string path, ServerPostData postData, bool callSync)
         {
-            await EnsureInitializedAsync();
+            await EnsureInitializedAsync(callSync);
 
             string url = $"{BASE_URL}:{BasePort}/{path.ToLowerInvariant()}";
             string json = JsonConvert.SerializeObject(postData);
@@ -29,7 +29,17 @@ namespace WebLinter
             {
                 using (WebClient client = new WebClient())
                 {
-                    return await client.UploadStringTaskAsync(url, json);
+                    if(callSync)
+                    {
+                        Task<string> task = Task.Run(async () => 
+                                                     await client.UploadStringTaskAsync(url, json));
+                        bool completed = task.Wait(2000);
+                        return completed ? task.Result : null;
+                    }
+                    else
+                    {
+                        return await client.UploadStringTaskAsync(url, json);
+                    }
                 }
             }
             catch (WebException)
@@ -56,13 +66,13 @@ namespace WebLinter
             }
         }
 
-        private async Task EnsureInitializedAsync()
+        private async Task EnsureInitializedAsync(bool callSync)
         {
             using (await _mutex.LockAsync())
             {
                 if (_process != null && !_process.HasExited)
                     return;
-
+                if (callSync) throw new Exception("Unable to lint: webserver not correctly initialized");
                 try
                 {
                     Down();

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace WebLinter
 {
@@ -11,11 +12,11 @@ namespace WebLinter
 
         public List<string> FileNames { get; set; } = new List<string>();
 
-        public bool HasErrors
-        {
-            get { return Errors.Count > 0; }
-        }
+        public bool HasErrors => Errors.Count > 0;
 
         public IList<LintingError> Errors { get; } = new List<LintingError>();
+        // HasVsErrors is true iff there exists a TSLint error that will be
+        // displayed as a Visual Studio error in the Error Window
+        public bool HasVsErrors { get; set; }
     }
 }

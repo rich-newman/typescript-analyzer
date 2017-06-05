@@ -8,17 +8,17 @@ namespace WebLinterVsix
     {
         public static void ProcessLintingResults(IEnumerable<LintingResult> results, string[] fileNames, bool showErrorList)
         {
-            IEnumerable<LintingError> errors = results.Where(r => r.HasErrors).SelectMany(r => r.Errors);
-            IEnumerable<string> clean = fileNames.Where(f => !errors.Select(e => e.FileName).Contains(f));
+            IEnumerable<LintingError> allErrors = results.Where(r => r.HasErrors).SelectMany(r => r.Errors);
+            IEnumerable<string> lintedFilesWithNoErrors = fileNames.Where(f => !allErrors.Select(e => e.FileName).Contains(f));
 
-            if (errors.Any())
+            if (allErrors.Any())
             {
-                TableDataSource.Instance.AddErrors(errors);
+                TableDataSource.Instance.AddErrors(allErrors);
                 if (showErrorList)
                     TableDataSource.Instance.BringToFront();
             }
 
-            TableDataSource.Instance.CleanErrors(clean);
+            TableDataSource.Instance.CleanErrors(lintedFilesWithNoErrors);
         }
     }
 }

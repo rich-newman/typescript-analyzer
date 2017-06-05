@@ -12,7 +12,7 @@ namespace WebLinterVsix
     {
         private readonly Package _package;
 
-        private FixLintErrorsCommand(Package package)
+        private FixLintErrorsCommand(Package package) : base(package)
         {
             _package = package ?? throw new ArgumentNullException("package");
             if (ServiceProvider.GetService(typeof(IMenuCommandService)) is OleMenuCommandService commandService)

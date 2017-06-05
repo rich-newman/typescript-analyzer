@@ -51,7 +51,7 @@ namespace WebLinterVsix.FileListeners
                     // Don't run linter again if error list already contains errors for the file.
                     if (!TableDataSource.Instance.HasErrors(_document.FilePath))
                     {
-                        await LinterService.LintAsync(false, false, _document.FilePath);
+                        await LinterService.LintAsync(false, false, false, _document.FilePath);
                     }
                 });
 
@@ -111,7 +111,7 @@ namespace WebLinterVsix.FileListeners
         {
             if (e.FileActionType == FileActionTypes.ContentSavedToDisk)
             {
-                await LinterService.LintAsync(false, false, e.FilePath);
+                await LinterService.LintAsync(false, false, false, e.FilePath);
             }
         }
     }

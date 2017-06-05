@@ -54,19 +54,23 @@ namespace WebLinterVsix
             return true;
         }
 
-        public static async Task LintAsync(bool showErrorList, bool fixErrors, params string[] fileNames)
+        public static async Task<bool> LintAsync(bool showErrorList, bool fixErrors, bool callSync, params string[] fileNames)
         {
+            bool hasVSErrors = false;
             try
             {
                 WebLinterPackage.Dte.StatusBar.Text = "Analyzing...";
                 WebLinterPackage.Dte.StatusBar.Animate(true, vsStatusAnimation.vsStatusAnimationGeneral);
 
-                await EnsureDefaultsAsync();
+                await EnsureDefaultsAsync(false, callSync);
 
-                var result = await LinterFactory.LintAsync(WebLinterPackage.Settings, fixErrors, fileNames);
+                var result = await LinterFactory.LintAsync(WebLinterPackage.Settings, fixErrors, callSync, fileNames);
 
                 if (result != null)
+                {
                     ErrorListService.ProcessLintingResults(result, fileNames, showErrorList);
+                    hasVSErrors = result.Any(r => r.HasVsErrors);
+                }
             }
             catch (Exception ex)
             {
@@ -77,10 +81,13 @@ namespace WebLinterVsix
                 WebLinterPackage.Dte.StatusBar.Clear();
                 WebLinterPackage.Dte.StatusBar.Animate(false, vsStatusAnimation.vsStatusAnimationGeneral);
             }
+            return hasVSErrors;
         }
 
-        public static async Task EnsureDefaultsAsync(bool force = false)
+        public static async Task EnsureDefaultsAsync(bool force = false, bool callSync = false)
         {
+            // Not sure about the defaultsCreated flag here: if you delete your own tslint.json whilst
+            // VS is running we're going to fail until you restart
             if (!_defaultsCreated || force)
             {
                 string sourceFolder = GetVsixFolder();
@@ -98,7 +105,10 @@ namespace WebLinterVsix
                             using (var source = File.Open(sourceFile, FileMode.Open))
                             using (var dest = File.Create(destFile))
                             {
-                                await source.CopyToAsync(dest);
+                                if (callSync)
+                                    source.CopyTo(dest);
+                                else
+                                    await source.CopyToAsync(dest);
                             }
                         }
                     }
