@@ -10,6 +10,37 @@ namespace WebLinterVsix
     {
         private static DTE2 _dte = WebLinterPackage.Dte;
 
+        public static string GetSolutionPath()
+        {
+            Solution solution = _dte.Solution;
+            if (solution == null) return null;
+            return Path.GetDirectoryName(solution.FullName);
+        }
+
+        public static IEnumerable<string> GetSelectedItemProjectPaths()
+        {
+            HashSet<string> seenPaths = new HashSet<string>();
+            var items = (Array)_dte.ToolWindows.SolutionExplorer.SelectedItems;
+
+            foreach (UIHierarchyItem selItem in items)
+            {
+                Project project = selItem.Object is ProjectItem item ? item.ContainingProject 
+                                     : selItem.Object is Project projectItem ? projectItem : null;
+                if (project != null)
+                {
+                    string projectRootFolder = project.GetRootFolder();
+                    if (projectRootFolder != null && !seenPaths.Contains(projectRootFolder))
+                    {
+                        seenPaths.Add(projectRootFolder);
+                        yield return projectRootFolder;
+                    }
+                }
+                Solution solution = selItem.Object as Solution;
+                if (solution != null)
+                    yield return Path.GetDirectoryName(solution.FullName);
+            }
+        }
+
         public static IEnumerable<string> GetSelectedItemPaths()
         {
             var items = (Array)_dte.ToolWindows.SolutionExplorer.SelectedItems;
@@ -17,7 +48,6 @@ namespace WebLinterVsix
             foreach (UIHierarchyItem selItem in items)
             {
                 ProjectItem item = selItem.Object as ProjectItem;
-
                 if (item != null && item.Properties != null)
                 {
                     string file= item.Properties.Item("FullPath").Value.ToString();
@@ -29,12 +59,9 @@ namespace WebLinterVsix
                 }
 
                 Project project = selItem.Object as Project;
-
                 if (project != null)
                     yield return project.GetRootFolder();
 
-                // We can iterate over all the contained projects or we
-                // can just look at everything below the solution file
                 Solution solution = selItem.Object as Solution;
                 if (solution != null)
                     yield return Path.GetDirectoryName(solution.FullName);
