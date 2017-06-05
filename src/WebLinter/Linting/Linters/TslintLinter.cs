@@ -15,7 +15,7 @@ namespace WebLinter
         protected override void ParseErrors(string output)
         {
             var array = JArray.Parse(output);
-
+            bool hasVSErrors = false;
             foreach (JObject obj in array)
             {
                 string fileName = obj["name"]?.Value<string>().Replace("/", "\\");
@@ -29,11 +29,13 @@ namespace WebLinter
                 le.ColumnNumber = obj["startPosition"]?["character"]?.Value<int>() ?? 0;
                 le.IsError = Settings.TSLintShowErrors ? 
                     obj["ruleSeverity"]?.Value<string>() == "ERROR" : false;
+                hasVSErrors = hasVSErrors || le.IsError;
                 le.ErrorCode = obj["ruleName"]?.Value<string>();
                 le.HelpLink = $"https://palantir.github.io/tslint/rules/{le.ErrorCode}";
                 le.Provider = this;
                 Result.Errors.Add(le);
             }
+            Result.HasVsErrors = hasVSErrors;
         }
     }
 }

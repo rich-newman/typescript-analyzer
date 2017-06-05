@@ -43,17 +43,19 @@ namespace WebLinter
                 ");
         }
 
-        public async Task<string> CallServerAsync(string path, ServerPostData postData)
+        public async Task<string> CallServer(string path, ServerPostData postData, bool callSync = false)
         {
-            try
+            if (callSync)
+            {
+                Task<object> task = lintFunc(postData);
+                // Don't block UI thread for more than two seconds: build will continue if we time out
+                bool completed = task.Wait(2000);
+                return completed ? task.Result.ToString() : null;
+            }
+            else
             {
                 object result = await lintFunc(postData);
                 return result.ToString();
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("Error in linter call: " + e.Message);
-                return null;
             }
         }
     }

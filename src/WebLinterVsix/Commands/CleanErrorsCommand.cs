@@ -27,10 +27,11 @@ namespace WebLinterVsix
 
         private void OnBuildBegin(vsBuildScope Scope, vsBuildAction Action)
         {
-            if (Action == vsBuildAction.vsBuildActionClean || Action == vsBuildAction.vsBuildActionRebuildAll)
+            if (WebLinterPackage.Settings.CleanErrorsOnBuild &&
+               (Action == vsBuildAction.vsBuildActionClean ||
+               (Action == vsBuildAction.vsBuildActionRebuildAll && !WebLinterPackage.Settings.RunOnBuild)))
             {
-                if (WebLinterPackage.Settings.CleanErrorsOnBuild)
-                    TableDataSource.Instance.CleanAllErrors();
+                TableDataSource.Instance.CleanAllErrors();
             }
         }
 
