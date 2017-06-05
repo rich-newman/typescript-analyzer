@@ -33,7 +33,6 @@ namespace WebLinter
                             linter.lint(fileName, fileContents, configuration);
                         }
                         // We can't return the failure objects as the graph is circular somewhere
-                        //sleep(3);
                         return linter.getResult().output;
                     }
 
@@ -41,45 +40,31 @@ namespace WebLinter
                         var result = lintts(data.Config, data.FixErrors, data.Files);
                         callback(null, result);
                     }
-
-                    function sleep(seconds) 
-                    {
-                      var e = new Date().getTime() + (seconds * 1000);
-                      while (new Date().getTime() <= e) {}
-                    }
                 ");
         }
 
-        public string CallServerSync(string path, ServerPostData postData)
+        public async Task<string> CallServer(string path, ServerPostData postData, bool callSync = false)
         {
-            // We assume we're called on the UI thread and it doesn't matter if we block it for the
-            // duration of the Edge call
-            try
-            {
-                Task<object> task = lintFunc(postData);
-                // Don't block UI thread for more than two seconds: build will continue if we time out
-                bool completed = task.Wait(2000);
-                return completed ? task.Result.ToString() : null;
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("Error in linter call: " + e.Message);
-                return null;
-            }
-        }
-
-        public async Task<string> CallServerAsync(string path, ServerPostData postData)
-        {
-            try
-            {
-                object result = await lintFunc(postData);
-                return result.ToString();
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("Error in linter call: " + e.Message);
-                return null;
-            }
+            //try
+            //{
+                if (callSync)
+                {
+                    Task<object> task = lintFunc(postData);
+                    // Don't block UI thread for more than two seconds: build will continue if we time out
+                    bool completed = task.Wait(2000);
+                    return completed ? task.Result.ToString() : null;
+                }
+                else
+                {
+                    object result = await lintFunc(postData);
+                    return result.ToString();
+                }
+            //}
+            //catch (Exception e)
+            //{
+            //    System.Diagnostics.Debug.WriteLine("Error in linter call: " + e.Message);
+            //    return null;
+            //}
         }
     }
 }

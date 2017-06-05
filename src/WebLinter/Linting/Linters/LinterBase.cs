@@ -77,14 +77,7 @@ namespace WebLinter
             // Testing code for callSync: we mustn't deadlock if we're not actually calling sync
             // (the call can fail, but we can't lock the entire UI)
             //var test = await LongRunningMethodAsync("World");
-
-            if (callSync)
-            {
-                var result = Server.CallServerSync(Name, postMessage);
-                return result;
-            }
-
-            return await Server.CallServerAsync(Name, postMessage);
+            return await Server.CallServer(Name, postMessage, callSync);
         }
 
 
