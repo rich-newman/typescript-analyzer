@@ -74,23 +74,8 @@ namespace WebLinter
                 FixErrors = FixErrors
             };
 
-            // Testing code for callSync: we mustn't deadlock if we're not actually calling sync
-            // (the call can fail, but we can't lock the entire UI)
-            //var test = await LongRunningMethodAsync("World");
             return await Server.CallServer(Name, postMessage, callSync);
         }
-
-
-        //private Task<string> LongRunningMethodAsync(string message)
-        //{
-        //    return Task.Run<string>(() => LongRunningMethod(message));
-        //}
-
-        //private string LongRunningMethod(string message)
-        //{
-        //    System.Threading.Thread.Sleep(2000);
-        //    return "Hello " + message;
-        //}
 
         protected virtual string FindWorkingDirectory(FileInfo file)
         {
