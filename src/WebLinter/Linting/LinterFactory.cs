@@ -12,7 +12,6 @@ namespace WebLinter
     public static class LinterFactory
     {
         private static string[] _supported = new string[] { ".TS", ".TSX" };
-        private static object _syncRoot = new object();
         private static AsyncLock _mutex = new AsyncLock();
 
         public static bool IsFileSupported(string fileName)
@@ -29,10 +28,11 @@ namespace WebLinter
 
         public static async Task<LintingResult[]> LintAsync(ISettings settings, bool fixErrors, bool callSync, params string[] fileNames)
         {
-            if (fileNames.Length == 0)
-                return new LintingResult[0];
+            if (fileNames.Length == 0)  return new LintingResult[0];
 
-            string extension = Path.GetExtension(fileNames[0]).ToUpperInvariant();
+            // Creating a new linter initializes edge, which needs InitializeAsync (normally it's happened anyway by now)
+            await InitializeAsync(callSync);
+
             var groupedFiles = fileNames.GroupBy(f => Path.GetExtension(f).ToUpperInvariant());
             Dictionary<LinterBase, IEnumerable<string>> dic = new Dictionary<LinterBase, IEnumerable<string>>();
 
@@ -48,11 +48,7 @@ namespace WebLinter
             }
 
             if (dic.Count != 0)
-            {
-                await InitializeAsync();
-
                 return await Task.WhenAll(dic.Select(group => group.Key.Run(callSync, group.Value.ToArray())));
-            }
 
             return new LintingResult[0];
         }
@@ -92,13 +88,15 @@ namespace WebLinter
         /// <summary>
         /// Initializes the Node environment.
         /// </summary>
-        public static async Task InitializeAsync()
+        public static async Task InitializeAsync(bool callSync = false)
         {
             using (await _mutex.LockAsync())
             {
-                if (!Directory.Exists(_edgePath) || !File.Exists(_logFile) ||
-                    (Directory.Exists(_edgePath) && (Directory.GetDirectories(_node_modulesPath).Length < 33 || !CheckEdge())))
+                if (!IsEdgeSetUpValid())
                 {
+                    // We don't allow all this longrunning crap to execute on the UI thread.  If we do a build
+                    // before it's completed async, or after someone's deleted a file, then we'll just fail silently
+                    if (callSync) throw new Exception("Edge set up not valid on sync call, TSLint not run");
                     if (Directory.Exists(_edgePath))
                         Directory.Delete(_edgePath, recursive: true);
 
@@ -134,8 +132,14 @@ namespace WebLinter
             }
         }
 
+        public static bool IsEdgeSetUpValid()
+        {
+            return Directory.Exists(_edgePath) && File.Exists(_logFile) && Directory.Exists(_node_modulesPath) &&
+                    Directory.GetDirectories(_node_modulesPath).Length >= 33 && CheckEdgeFiles();
+        }
+
         // If any of these files get deleted VS won't open a project: so make sure they are there as far as possible
-        private static bool CheckEdge()
+        private static bool CheckEdgeFiles()
         {
             string subFolder = IntPtr.Size == 4 ? "x86" : "x64";
             return File.Exists(Path.Combine(_edgePath, "edge.js"))
