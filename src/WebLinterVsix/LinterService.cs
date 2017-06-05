@@ -62,7 +62,7 @@ namespace WebLinterVsix
                 WebLinterPackage.Dte.StatusBar.Text = "Analyzing...";
                 WebLinterPackage.Dte.StatusBar.Animate(true, vsStatusAnimation.vsStatusAnimationGeneral);
 
-                await EnsureDefaultsAsync();
+                await EnsureDefaultsAsync(false, callSync);
 
                 var result = await LinterFactory.LintAsync(WebLinterPackage.Settings, fixErrors, callSync, fileNames);
 
@@ -84,7 +84,7 @@ namespace WebLinterVsix
             return hasVSErrors;
         }
 
-        public static async Task EnsureDefaultsAsync(bool force = false)
+        public static async Task EnsureDefaultsAsync(bool force = false, bool callSync = false)
         {
             if (!_defaultsCreated || force)
             {
@@ -103,7 +103,10 @@ namespace WebLinterVsix
                             using (var source = File.Open(sourceFile, FileMode.Open))
                             using (var dest = File.Create(destFile))
                             {
-                                await source.CopyToAsync(dest);
+                                if (callSync)
+                                    source.CopyTo(dest);
+                                else
+                                    await source.CopyToAsync(dest);
                             }
                         }
                     }
