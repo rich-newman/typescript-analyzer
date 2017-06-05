@@ -45,7 +45,7 @@ namespace WebLinterVsix
 
         [Category("Advanced settings")]
         [DisplayName("Clean errors on build")]
-        [Description("Clean the analyzer errors from the Error List when 'Rebuild' or 'Clean' is executed.")]
+        [Description("Clean the analyzer errors from the Error List when 'Rebuild Solution' or 'Clean' is executed.")]
         [DefaultValue(true)]
         public bool CleanErrorsOnBuild { get; set; }
 
