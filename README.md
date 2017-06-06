@@ -14,11 +14,17 @@ The menu options for the TypeScript Analyzer are separate from the menu options 
 
 ### TSLint Version
 
-The TypeScript Analyzer has been upgraded to use TSLint version 5.2.0.  Please ensure you have upgraded to at least version 1.2 of the TypeScript Analyzer to get this version of TSLint.
+The TypeScript Analyzer has been upgraded to use TSLint version 5.4.2.
 
 ### Fix TypeScript Analyzer Errors
 
 The TypeScript Analyzer puts a menu option on the context menu in Solution Explorer that will attempt to fix linting errors in the file or files clicked on.  This uses TSLint's 'fix' option.  It updates files in place on the hard drive.  That is, it overwrites them immediately, so use this option with care.  It also can only fix errors for which fixers have been written.  Please refer to the TSLint documentation for more details.
+
+### Run on Build
+
+There is a 'Run on build' option under Tools/Options/TypeScript Analyzer.  By default this is set to false.  If it is true the analyzer will run before any build and report linting errors in the files being built.
+
+If, additionally, 'Show errors' is set to true then the analyzer will fail a build if it finds any errors when linting the build files.  For these purposes 'errors' are anything displayed as errors in the Error List Window.  See the section on Errors/Warnings below.
 
 ### Default tslint.json
 

@@ -3,6 +3,14 @@
 These are the changes to each version that have been released
 on the official Visual Studio extension gallery.
 
+## 1.4
+
+**2017-06-06**
+
+- Underlying TSLint upgraded to 5.4.2, TypeScript 2.3.4.
+- Option to run the linter before any build added to Tools/Options.  This will stop the build if any TSLint errors show as Visual Studio errors in the Visual Studio Error List.  This can only happen if 'Show errors' is also set to true.
+- Default tslint.json updated to comply with current schema.  This is the tslint.json made available on an initial install or on Tools/Reset TypeScript Analyzer Settings. 
+
 ## 1.3
 
 **2017-05-20**
