@@ -64,7 +64,7 @@ namespace WebLinterVsix
                 // If we've called sync correctly task should be completed here, if not we may not have results anyway
                 // Exceptions are in general swallowed and logged by the linter, which will return false here
                 bool completed = task.IsCompleted;  //task.Wait(10);
-                if (!completed) throw new Exception("Linting task failed to complete correctly");
+                if (!completed) throw new Exception("Linting on build failed to complete correctly");
                 cancelBuild = task.Result;
                 pfCancelUpdate = cancelBuild ? 1 : 0;
                 if (cancelBuild) WebLinterPackage.Dte.StatusBar.Text = "Build failed because of TSLint Errors";
