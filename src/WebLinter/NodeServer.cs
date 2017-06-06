@@ -48,9 +48,10 @@ namespace WebLinter
             if (callSync)
             {
                 Task<object> task = lintFunc(postData);
-                // Don't block UI thread for more than two seconds: build will continue if we time out
-                bool completed = task.Wait(2000);
-                return completed ? task.Result.ToString() : null;
+                // Don't block UI thread for more than 5 seconds: build will continue if we time out
+                bool completed = task.Wait(5000);
+                if (!completed) throw new Exception("TsLint call on build timed out.  Timeout is 5 seconds.");
+                return completed ? task.Result?.ToString() : null;
             }
             else
             {
