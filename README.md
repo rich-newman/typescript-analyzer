@@ -4,9 +4,9 @@ This is experimental code that uses [@tjanczuk's edge project](https://github.co
 
 The original code uses a node web server that is spun up in a separate process and then responds to regular HTTP requests.
 
-It's not actually clear to me whether running the JavaScript in-process is a Good Thing.  I think it's faster on first call, although even this isn't abundantly clear, and there's a chance the rather complex call sequence can bring down our process.  Which is definitely a Bad Thing.
+It's not actually clear to me whether running the JavaScript in-process is a Good Thing.  Some speed testing shows that initial set up is slow using both methods, with edge surprisingly a little bit slower.  However, subsequent calls are about 33% faster with the edge version on a large project.  This difference is significantly smaller in percentage terms on a small project.  This is again pretty surprising.  Of course, there's also a slim chance the rather complex call sequence in edge can bring down our process, although the exception handling seems to work and it has had some testing.
 
-We don't save anything in code size either: edge includes chunky node dlls.  The only obvious advantages are the code is slightly easier and of course calling JavaScript directly from C# is kind of cool.
+We don't save anything in code size: edge includes chunky node dlls.  The other obvious advantages are the code is slightly easier to read and of course calling JavaScript directly from C# is kind of cool.
 
 ## Note on RunOnBuild
 
