@@ -14,7 +14,21 @@ namespace WebLinter
 
         protected override void ParseErrors(string output)
         {
-            var array = JArray.Parse(output);
+            JArray array;
+            try
+            {
+                array = JArray.Parse(output);
+            }
+            catch (System.Exception ex)
+            {
+                //string message = "Unable to parse output from tslint. List of linting errors is expected.\r\n";
+                //message += "tslint Output: " + output + "\r\n";
+                //message += "Parsing Exception: " + ex.Message;
+                string message = $@"Unable to parse output from tslint. List of linting errors is expected.
+tslint Output: {output}
+Parsing Exception: {ex.Message}";
+                throw new System.FormatException(message, ex);
+            }
             bool hasVSErrors = false;
             foreach (JObject obj in array)
             {
