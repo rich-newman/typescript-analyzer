@@ -22,6 +22,7 @@ namespace WebLinterVsix
             CleanErrorsOnBuild = true;
             RunOnBuild = false;
             TSLintEnable = true;
+            TSLintShowErrors = false;
         }
 
         public override void ResetSettings()
