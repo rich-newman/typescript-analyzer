@@ -90,12 +90,14 @@ namespace WebLinter
         /// </summary>
         public static async Task InitializeAsync(bool callSync = false)
         {
-            using (await _mutex.LockAsync())
+            using (await _mutex.Lock(callSync))
             {
                 if (!IsEdgeSetUpValid())
                 {
-                    // We don't allow all this longrunning crap to execute on the UI thread.  If we do a build
-                    // before it's completed async, or after someone's deleted a file, then we'll just fail silently
+                    // This is called async at startup.  If we do a build before it's completed it gets
+                    // called sync but the mutex will block the call until the previous async call has
+                    // completed, so we shouldn't get here: we should be set up correctly.
+                    // If we do a build  after someone's deleted a file, then we'll fail here.
                     if (callSync) throw new Exception("Edge set up not valid on sync call, TSLint not run");
                     if (Directory.Exists(_edgePath))
                         Directory.Delete(_edgePath, recursive: true);
