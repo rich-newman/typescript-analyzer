@@ -3,6 +3,14 @@
 These are the changes to each version that have been released
 on the official Visual Studio extension gallery.
 
+## 1.5
+
+**2017-06-24**
+
+- Underlying TSLint upgraded to 5.4.3.
+- Bugfixes for initialization when running a build with 'run on build' enabled.
+- Improved exception handling for parsing of tslint results
+
 ## 1.4
 
 **2017-06-06**

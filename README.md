@@ -14,7 +14,7 @@ The menu options for the TypeScript Analyzer are separate from the menu options 
 
 ### TSLint Version
 
-The TypeScript Analyzer has been upgraded to use TSLint version 5.4.2.
+The TypeScript Analyzer is using TSLint version 5.4.3.
 
 ### Fix TypeScript Analyzer Errors
 
