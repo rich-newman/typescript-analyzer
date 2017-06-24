@@ -11,7 +11,7 @@ namespace WebLinterTest
         [Trait("Category", "ESLint")]
         public async Task Standard()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/eslint/a.js");
+            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/eslint/a.js");
             Assert.True(result.Length == 0);
         }
 
@@ -19,7 +19,7 @@ namespace WebLinterTest
         [Trait("Category", "ESLint")]
         public async Task MultipleInput()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/eslint/a.js", "../../artifacts/eslint/b.js");
+            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/eslint/a.js", "../../artifacts/eslint/b.js");
             Assert.True(result.Length == 0);
         }
 
@@ -27,7 +27,7 @@ namespace WebLinterTest
         [Trait("Category", "ESLint")]
         public async Task JSX()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/eslint/a.jsx");
+            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/eslint/a.jsx");
             Assert.True(result.Length == 0);
         }
 
@@ -35,7 +35,7 @@ namespace WebLinterTest
         [Trait("Category", "ESLint")]
         public async Task FileNotExist()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/eslint/doesntexist.js");
+            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/eslint/doesntexist.js");
             Assert.True(result.Length == 0);
         }
     }

@@ -11,7 +11,7 @@ namespace WebLinterTest
         [Trait("Category", "CoffeeLint")]
         public async Task Standard()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/coffeelint/a.coffee");
+            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/coffeelint/a.coffee");
             Assert.True(result.Length == 0);
         }
 
@@ -19,7 +19,7 @@ namespace WebLinterTest
         [Trait("Category", "CoffeeLint")]
         public async Task Multiple()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/coffeelint/a.coffee", "../../artifacts/coffeelint/b.coffee");
+            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/coffeelint/a.coffee", "../../artifacts/coffeelint/b.coffee");
             Assert.True(result.Length == 0);
         }
 
@@ -27,7 +27,7 @@ namespace WebLinterTest
         [Trait("Category", "CoffeeLint")]
         public async Task FileDontExist()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/coffeelint/doesntexist.coffee");
+            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/coffeelint/doesntexist.coffee");
             Assert.True(result.Length == 0);
         }
     }

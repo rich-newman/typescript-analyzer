@@ -66,7 +66,7 @@ namespace WebLinterVsix
                 {
                     try
                     {
-                        await LinterFactory.InitializeAsync();
+                        await LinterFactory.EnsureEdgeFolderCreated();
                     }
                     catch (Exception ex)
                     {

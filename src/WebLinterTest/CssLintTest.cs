@@ -11,7 +11,7 @@ namespace WebLinterTest
         [Trait("Category", "CssLint")]
         public async Task Standard()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/csslint/a.css");
+            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/csslint/a.css");
             Assert.True(result.Length == 0);
         }
 
@@ -19,7 +19,7 @@ namespace WebLinterTest
         [Trait("Category", "CssLint")]
         public async Task Multiple()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/csslint/a.css", "../../artifacts/csslint/b.css");
+            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/csslint/a.css", "../../artifacts/csslint/b.css");
             Assert.True(result.Length == 0);
         }
 
@@ -27,7 +27,7 @@ namespace WebLinterTest
         [Trait("Category", "CssLint")]
         public async Task FileNotExist()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/csslint/doesntexist.css");
+            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/csslint/doesntexist.css");
             // Running on css file should have same result as any other non-TS file
             Assert.True(result.Length == 0);
 

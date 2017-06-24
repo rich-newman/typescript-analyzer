@@ -21,17 +21,17 @@ namespace WebLinter
             return _supported.Contains(extension);
         }
 
-        public static async Task<LintingResult[]> LintAsync(ISettings settings, params string[] fileNames)
+        public static async Task<LintingResult[]> Lint(ISettings settings, params string[] fileNames)
         {
-            return await LintAsync(settings, false, false, fileNames);
+            return await Lint(settings, false, false, fileNames);
         }
 
-        public static async Task<LintingResult[]> LintAsync(ISettings settings, bool fixErrors, bool callSync, params string[] fileNames)
+        public static async Task<LintingResult[]> Lint(ISettings settings, bool fixErrors, bool callSync, params string[] fileNames)
         {
             if (fileNames.Length == 0)  return new LintingResult[0];
 
-            // Creating a new linter initializes edge, which needs InitializeAsync (normally it's happened anyway by now)
-            await InitializeAsync(callSync);
+            // Creating a new linter initializes edge, which needs EnsureEdgeFolderCreated (normally it's happened anyway by now)
+            await EnsureEdgeFolderCreated(callSync);
 
             var groupedFiles = fileNames.GroupBy(f => Path.GetExtension(f).ToUpperInvariant());
             Dictionary<LinterBase, IEnumerable<string>> dic = new Dictionary<LinterBase, IEnumerable<string>>();
@@ -88,7 +88,7 @@ namespace WebLinter
         /// <summary>
         /// Initializes the Node environment.
         /// </summary>
-        public static async Task InitializeAsync(bool callSync = false)
+        public static async Task EnsureEdgeFolderCreated(bool callSync = false)
         {
             using (await _mutex.Lock(callSync))
             {
