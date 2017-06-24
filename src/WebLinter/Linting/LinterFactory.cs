@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace WebLinter
@@ -22,16 +21,16 @@ namespace WebLinter
             return _supported.Contains(extension);
         }
 
-        public static async Task<LintingResult[]> LintAsync(ISettings settings, params string[] fileNames)
+        public static async Task<LintingResult[]> Lint(ISettings settings, params string[] fileNames)
         {
-            return await LintAsync(settings, false, false, fileNames);
+            return await Lint(settings, false, false, fileNames);
         }
 
-        public static async Task<LintingResult[]> LintAsync(ISettings settings, bool fixErrors, bool callSync, params string[] fileNames)
+        public static async Task<LintingResult[]> Lint(ISettings settings, bool fixErrors, bool callSync, params string[] fileNames)
         {
             if (fileNames.Length == 0)  return new LintingResult[0];
 
-            await InitializeAsync(callSync);
+            await EnsureNodeFolderCreated(callSync);
 
             var groupedFiles = fileNames.GroupBy(f => Path.GetExtension(f).ToUpperInvariant());
             Dictionary<LinterBase, IEnumerable<string>> dic = new Dictionary<LinterBase, IEnumerable<string>>();
@@ -68,7 +67,7 @@ namespace WebLinter
         /// <summary>
         /// Initializes the Node environment.
         /// </summary>
-        public static async Task InitializeAsync(bool callSync = false)
+        public static async Task EnsureNodeFolderCreated(bool callSync = false)
         {
             using (await _mutex.Lock(callSync))
             {

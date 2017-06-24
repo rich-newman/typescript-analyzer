@@ -54,7 +54,7 @@ namespace WebLinterVsix
             return true;
         }
 
-        public static async Task<bool> LintAsync(bool showErrorList, bool fixErrors, bool callSync, params string[] fileNames)
+        public static async Task<bool> Lint(bool showErrorList, bool fixErrors, bool callSync, params string[] fileNames)
         {
             bool hasVSErrors = false;
             try
@@ -62,9 +62,9 @@ namespace WebLinterVsix
                 WebLinterPackage.Dte.StatusBar.Text = "Analyzing...";
                 WebLinterPackage.Dte.StatusBar.Animate(true, vsStatusAnimation.vsStatusAnimationGeneral);
 
-                await EnsureDefaultsAsync(false, callSync);
+                await CopyResourceFilesToUserProfile(false, callSync);
 
-                var result = await LinterFactory.LintAsync(WebLinterPackage.Settings, fixErrors, callSync, fileNames);
+                var result = await LinterFactory.Lint(WebLinterPackage.Settings, fixErrors, callSync, fileNames);
 
                 if (result != null)
                 {
@@ -84,7 +84,7 @@ namespace WebLinterVsix
             return hasVSErrors;
         }
 
-        public static async Task EnsureDefaultsAsync(bool force = false, bool callSync = false)
+        public static async Task CopyResourceFilesToUserProfile(bool force = false, bool callSync = false)
         {
             // Not sure about the defaultsCreated flag here: if you delete your own tslint.json whilst
             // VS is running we're going to fail until you restart

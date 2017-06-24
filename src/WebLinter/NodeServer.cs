@@ -20,7 +20,7 @@ namespace WebLinter
 
         public async Task<string> CallServer(string path, ServerPostData postData, bool callSync)
         {
-            await EnsureInitializedAsync(callSync);
+            await EnsureNodeProcessIsRunning(callSync);
 
             string url = $"{BASE_URL}:{BasePort}/{path.ToLowerInvariant()}";
             string json = JsonConvert.SerializeObject(postData);
@@ -67,7 +67,7 @@ namespace WebLinter
             }
         }
 
-        private async Task EnsureInitializedAsync(bool callSync)
+        private async Task EnsureNodeProcessIsRunning(bool callSync)
         {
             using (await _mutex.Lock(callSync))
             {

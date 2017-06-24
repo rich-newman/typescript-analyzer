@@ -13,7 +13,7 @@ namespace WebLinterTest
         [TestMethod, TestCategory("TSLint")]
         public async Task StandardTs()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/a.ts");
+            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/tslint/a.ts");
             Assert.IsTrue(result.First().HasErrors);
             Assert.IsFalse(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
             Assert.AreEqual(13, result.First().Errors.Count);
@@ -26,10 +26,10 @@ namespace WebLinterTest
             try
             {
                 File.Copy("../../artifacts/tslint/a.ts", "../../artifacts/tslint/aTest.ts", true);
-                var result = await LinterFactory.LintAsync(Settings.Instance, true, false, "../../artifacts/tslint/aTest.ts");
+                var result = await LinterFactory.Lint(Settings.Instance, true, false, "../../artifacts/tslint/aTest.ts");
                 // Now, bizarrely, we have to fix twice to fix var -> const with the recommended TSLint rules
                 // See TSLint issues #2835, #2843, #2625
-                result = await LinterFactory.LintAsync(Settings.Instance, true, false, "../../artifacts/tslint/aTest.ts");
+                result = await LinterFactory.Lint(Settings.Instance, true, false, "../../artifacts/tslint/aTest.ts");
                 Assert.IsTrue(result.First().HasErrors);
                 Assert.IsFalse(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
                 Assert.AreEqual(4, result.First().Errors.Count);
@@ -47,7 +47,7 @@ namespace WebLinterTest
         [TestMethod, TestCategory("TSLint")]
         public async Task StandardTsNoErrors()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/e.ts");
+            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/tslint/e.ts");
             Assert.IsFalse(result.First().HasErrors);
             Assert.AreEqual(0, result.First().Errors.Count);
             Assert.IsFalse(string.IsNullOrEmpty(result.First().FileNames.First()), "File name is empty");
@@ -56,7 +56,7 @@ namespace WebLinterTest
         [TestMethod, TestCategory("TSLint")]
         public async Task StandardTsx()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/c.tsx");
+            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/tslint/c.tsx");
             Assert.IsTrue(result.First().HasErrors);
             Assert.IsFalse(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
             Assert.AreEqual(6, result.First().Errors.Count);
@@ -69,7 +69,7 @@ namespace WebLinterTest
             try
             {
                 File.Copy("../../artifacts/tslint/c.tsx", "../../artifacts/tslint/cTest.tsx", true);
-                var result = await LinterFactory.LintAsync(Settings.Instance, true, false, "../../artifacts/tslint/cTest.tsx");
+                var result = await LinterFactory.Lint(Settings.Instance, true, false, "../../artifacts/tslint/cTest.tsx");
                 Assert.IsTrue(result.First().HasErrors);
                 Assert.IsFalse(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
                 Assert.AreEqual(1, result.First().Errors.Count);
@@ -87,7 +87,7 @@ namespace WebLinterTest
 [TestMethod, TestCategory("TSLint")]
         public async Task StandardTsxNoErrors()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/d.tsx");
+            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/tslint/d.tsx");
             Assert.IsFalse(result.First().HasErrors);
             Assert.AreEqual(0, result.First().Errors.Count);
             Assert.IsFalse(string.IsNullOrEmpty(result.First().FileNames.First()), "File name is empty");
@@ -108,14 +108,14 @@ namespace WebLinterTest
         [TestMethod, TestCategory("TSLint")]
         public async Task TsFileNotExist()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/doesntexist.ts");
+            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/tslint/doesntexist.ts");
             Assert.IsTrue(result.First().HasErrors);
         }
 
         [TestMethod, TestCategory("TSLint")]
         public async Task TsxFileNotExist()
         {
-            var result = await LinterFactory.LintAsync(Settings.Instance, "../../artifacts/tslint/doesntexist.tsx");
+            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/tslint/doesntexist.tsx");
             Assert.IsTrue(result.First().HasErrors);
         }
     }

@@ -27,7 +27,7 @@ namespace WebLinterVsix
             List<string> files = GetFilesInSelectedItemPaths();
             if (files.Any())
             {
-                return await LinterService.LintAsync(showErrorList: true, fixErrors: fixErrors, 
+                return await LinterService.Lint(showErrorList: true, fixErrors: fixErrors, 
                                                         callSync: false, fileNames: files.ToArray());
             }
             else
@@ -42,7 +42,7 @@ namespace WebLinterVsix
             if (!LinterService.IsLinterEnabled) return false;
             List<string> files = GetBuildFilesToLint(isBuildingSolution);
             if (!files.Any()) return false;
-            return await LinterService.LintAsync(showErrorList: true, fixErrors: false, callSync: true, fileNames: files.ToArray());
+            return await LinterService.Lint(showErrorList: true, fixErrors: false, callSync: true, fileNames: files.ToArray());
         }
 
         private static List<string> GetBuildFilesToLint(bool isBuildingSolution)
