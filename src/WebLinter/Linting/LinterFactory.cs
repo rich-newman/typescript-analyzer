@@ -48,11 +48,7 @@ namespace WebLinter
             }
 
             if (dic.Count != 0)
-            {
-                await InitializeAsync(callSync);
-
                 return await Task.WhenAll(dic.Select(group => group.Key.Run(callSync, group.Value.ToArray())));
-            }
 
             return new LintingResult[0];
         }
@@ -74,7 +70,7 @@ namespace WebLinter
         /// </summary>
         public static async Task InitializeAsync(bool callSync = false)
         {
-            using (await _mutex.LockAsync())
+            using (await _mutex.Lock(callSync))
             {
                 var node_modules = Path.Combine(ExecutionPath, "node_modules");
                 var log_file = Path.Combine(ExecutionPath, "log.txt");
@@ -82,8 +78,10 @@ namespace WebLinter
                 if (!Directory.Exists(node_modules) || !File.Exists(log_file) ||
                     (Directory.Exists(node_modules) && Directory.GetDirectories(node_modules).Length < 18))
                 {
-                    // We don't allow all this longrunning crap to execute on the UI thread.  If we do a build
-                    // before it's completed async, or after someone's deleted a file, then we'll just fail silently
+                    // This is called async at startup.  If we do a build before it's completed it gets
+                    // called sync but the mutex will block the call until the previous async call has
+                    // completed, so we shouldn't get here: we should be set up correctly.
+                    // If we do a build  after someone's deleted a file, then we'll fail here.
                     if (callSync) throw new Exception("Node set up not valid on sync call, TSLint not run");
 
                     if (Directory.Exists(ExecutionPath))

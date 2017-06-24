@@ -69,11 +69,11 @@ namespace WebLinter
 
         private async Task EnsureInitializedAsync(bool callSync)
         {
-            using (await _mutex.LockAsync())
+            using (await _mutex.Lock(callSync))
             {
                 if (_process != null && !_process.HasExited)
                     return;
-                if (callSync) throw new Exception("Unable to lint: webserver not correctly initialized");
+                //if (callSync) throw new Exception("Unable to lint: webserver not correctly initialized");
                 try
                 {
                     Down();
@@ -90,7 +90,10 @@ namespace WebLinter
                     _process = Process.Start(start);
 
                     // Give the node server some time to initialize
-                    await Task.Delay(100);
+                    if (callSync)
+                        System.Threading.Thread.Sleep(100);
+                    else
+                        await Task.Delay(100);
                 }
                 catch (Exception)
                 {
