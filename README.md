@@ -1,6 +1,8 @@
 ## TypeScript Analyzer
 
-An extension to Visual Studio 2017 that runs TSLint on TypeScript files.  
+An extension to Visual Studio 2017 that runs TSLint on TypeScript files. 
+
+To install visit [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=RichNewman.TypeScriptAnalyzer) or search for 'TypeScript Analyzer' in Extensions and Updates in Visual Studio 2017.
 
 ### Background
 
