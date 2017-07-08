@@ -137,7 +137,7 @@ namespace WebLinter
         public static bool IsEdgeSetUpValid()
         {
             return Directory.Exists(_edgePath) && File.Exists(_logFile) && Directory.Exists(_node_modulesPath) &&
-                    Directory.GetDirectories(_node_modulesPath).Length >= 33 && CheckEdgeFiles();
+                    Directory.GetDirectories(_node_modulesPath).Length >= 32 && CheckEdgeFiles();
         }
 
         // If any of these files get deleted VS won't open a project: so make sure they are there as far as possible
