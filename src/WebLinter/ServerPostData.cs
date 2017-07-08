@@ -14,5 +14,8 @@ namespace WebLinter
         [JsonProperty("fixerrors")]
         public bool FixErrors { get; set; }
 
+        [JsonProperty("usetsconfig")]
+        public bool UseTSConfig { get; set; }
+
     }
 }

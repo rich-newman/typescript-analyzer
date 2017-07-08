@@ -23,6 +23,12 @@ namespace WebLinter
             await EnsureNodeProcessIsRunning(callSync);
 
             string url = $"{BASE_URL}:{BasePort}/{path.ToLowerInvariant()}";
+
+            //postData.UseTSConfig = true;
+            ////postData.Files = new string[] { @"C:/Dotnet/CompletedDocsLintTest/CompletedDocsLintTest/tsconfig.json" };
+            //postData.Files = new string[] { @"C:/Dotnet/CompletedDocsLintTest/CompletedDocsLintTest/tsconfig.json",
+            //@"C:/Dotnet/CompletedDocsLintTest/CompletedDocsLintTest/a/tsconfig.json" };
+
             string json = JsonConvert.SerializeObject(postData);
 
             try
@@ -43,8 +49,9 @@ namespace WebLinter
                     }
                 }
             }
-            catch (WebException)
+            catch (WebException ex)
             {
+                Debug.WriteLine(ex.Message);
                 Down();
                 return string.Empty;
             }
