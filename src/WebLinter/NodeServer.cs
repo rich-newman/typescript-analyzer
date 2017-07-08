@@ -86,7 +86,11 @@ namespace WebLinter
                         UseShellExecute = false,
                         CreateNoWindow = true
                     };
-
+#if DEBUG
+                    start.WindowStyle = ProcessWindowStyle.Normal;
+                    start.CreateNoWindow = false;
+                    start.Arguments = "--inspect " + start.Arguments;
+#endif
                     _process = Process.Start(start);
 
                     // Give the node server some time to initialize
