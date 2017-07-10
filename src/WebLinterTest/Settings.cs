@@ -27,5 +27,6 @@ namespace WebLinterTest
 
         public bool TSLintEnable { get; set; } = true;
         public bool TSLintShowErrors { get; set; }
+        public bool TSLintUseTSConfig { get; set; }
     }
 }

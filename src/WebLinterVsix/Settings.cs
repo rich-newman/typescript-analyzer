@@ -23,6 +23,7 @@ namespace WebLinterVsix
             RunOnBuild = false;
             TSLintEnable = true;
             TSLintShowErrors = false;
+            TSLintUseTSConfig = false;
         }
 
         public override void ResetSettings()
@@ -67,6 +68,12 @@ namespace WebLinterVsix
         [Description("Shows TSLint errors as errors in the Error List. If false TSLint errors are shown as warnings. TSLint warnings are always shown as warnings in the Error List.")]
         [DefaultValue(false)]
         public bool TSLintShowErrors { get; set; }
+
+        [Category("TS Lint")]
+        [DisplayName("Use tsconfig.json files")]
+        [Description("Searches for tsconfig.json files included in the Visual Studio project file, and lints using the configuration in those.  If no tsconfig.json files are found the linter is not called.")]
+        [DefaultValue(false)]
+        public bool TSLintUseTSConfig { get; set; }
 
         [Browsable(false)]
         public bool ShowPromptToUpgrade { get; set; } = false;
