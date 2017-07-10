@@ -71,7 +71,8 @@ namespace WebLinter
             {
                 Config = Path.Combine(FindWorkingDirectory(files[0]), ConfigFileName).Replace("\\", "/"),
                 Files = files.Select(f => f.FullName.Replace("\\", "/")),
-                FixErrors = FixErrors
+                FixErrors = FixErrors,
+                UseTSConfig = Settings.TSLintUseTSConfig
             };
 
             return await Server.CallServer(Name, postMessage, callSync);

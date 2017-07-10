@@ -55,6 +55,7 @@
     <Compile Include="CssLintTest.cs" />
     <Compile Include="CoffeelintTest.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="tsconfigTest.cs" />
     <Compile Include="TslintTest.cs" />
     <Compile Include="EslintTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,7 +73,12 @@
     <None Include="artifacts\coffeelint\a.coffee" />
     <None Include="artifacts\eslint\a.jsx" />
     <Content Include="artifacts\eslint\b.js" />
+    <Content Include="artifacts\tsconfig\multiple\tsconfigTest.csproj" />
+    <Content Include="artifacts\tsconfig\none\tsconfigEmptyTest.csproj" />
     <Content Include="artifacts\tslint.json" />
+    <None Include="artifacts\tsconfig\multiple\a\tsconfig.json" />
+    <None Include="artifacts\tsconfig\multiple\b\tsconfig.json" />
+    <None Include="artifacts\tsconfig\multiple\tsconfig.json" />
     <None Include="artifacts\tslint\b.ts" />
     <None Include="artifacts\tslint\a.ts" />
     <Content Include="artifacts\eslint\a.js" />
@@ -83,6 +89,15 @@
   <ItemGroup>
     <None Include="artifacts\tslint\aFixed.ts" />
     <None Include="artifacts\tslint\cFixed.tsx" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <TypeScriptCompile Include="artifacts\tsconfig\multiple\a\c\file4.ts" />
+    <TypeScriptCompile Include="artifacts\tsconfig\multiple\a\file1.ts" />
+    <TypeScriptCompile Include="artifacts\tsconfig\multiple\b\file2.ts" />
+    <TypeScriptCompile Include="artifacts\tsconfig\multiple\b\file3.ts" />
+    <TypeScriptCompile Include="artifacts\tsconfig\multiple\test.ts" />
+    <TypeScriptCompile Include="artifacts\tsconfig\none\b\file2.ts" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

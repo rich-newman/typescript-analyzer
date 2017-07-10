@@ -1,0 +1,18 @@
+﻿{
+  "compilerOptions": {
+    "allowJs": false,
+    "target": "es5",
+    "module": "none",
+    "outFile": "bundle.js",
+    "sourceMap": true
+  },
+  "include": [
+    "../src/**/*",
+    "./**/*"
+  ],
+  "exclude": [
+    "node.d.ts",
+    "mocha.d.ts",
+    "b/file2.ts"
+  ]
+}
