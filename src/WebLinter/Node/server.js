@@ -54,48 +54,18 @@ var start = function (port) {
 var linters = {
     tslint: function (configFile, fixErrors, files, usetsconfig) {
         console.log(configFile);
-        console.log(files[0]);
+        files.forEach(f => console.log(f));
         console.log(usetsconfig);
         try {
-            var tslint = require("tslint");
             var options = {
                 fix: fixErrors,
                 formatter: "json"
             };
 
             if (usetsconfig) {
-                // Easy to get confused between tsconfig.json which is in files[], and 
-                // tslint.json which is tsConfigFileConfiguration here
-                var failures = [];
-                for (var tsconfigctr = 0; tsconfigctr < files.length; tsconfigctr++) {
-                    var program = tslint.Linter.createProgram(files[tsconfigctr]);
-                    var tsfiles = tslint.Linter.getFileNames(program);
-                    var tsConfigLinter = new tslint.Linter(options, program);
-
-                    for (var i = 0; i < tsfiles.length; i++) {
-                        var sourceFile = program.getSourceFile(tsfiles[i]);
-                        var tsConfigFileContents = sourceFile.getFullText();
-                        var tsConfigFileConfiguration = tslint.Configuration.findConfiguration(configFile, tsfiles[i]).results;
-                        tsConfigLinter.lint(tsfiles[i], tsConfigFileContents, tsConfigFileConfiguration);
-                    }
-                    failures = failures.concat(tsConfigLinter.getResult().failures);
-                }
-                var failuresJSON = failures.map(function (failure) { return failure.toJson(); });
-                return JSON.stringify(failuresJSON);
-                //var results = tsfiles.map(file => {
-                //    var fileContents = program.getSourceFile(file).getFullText();
-                //    var linter = new tslint.Linter(file, fileContents, options, program);
-                //    return linter.lint();
-                //});
+                return linttsconfigs(configFile, files, options);
             } else {
-                var linter = new tslint.Linter(options);
-                for (var i = 0; i < files.length; i++) {
-                    var fileName = files[i];
-                    var fileContents = fs.readFileSync(fileName, "utf8");
-                    var configuration = tslint.Configuration.findConfiguration(configFile, fileName).results;
-                    linter.lint(fileName, fileContents, configuration);
-                }
-                return linter.getResult().output;
+                return lintFiles(configFile, files, options);
             }
         }
         catch (err) {
@@ -105,5 +75,37 @@ var linters = {
     }
 
 };
+
+function lintFiles(configFile, files, options) {
+    var tslint = require("tslint");
+    var linter = new tslint.Linter(options);
+    for (var i = 0; i < files.length; i++) {
+        var fileName = files[i];
+        var fileContents = fs.readFileSync(fileName, "utf8");
+        var configuration = tslint.Configuration.findConfiguration(configFile, fileName).results;
+        linter.lint(fileName, fileContents, configuration);
+    }
+    return linter.getResult().output;
+
+}
+
+function linttsconfigs(tslintConfigFile, tsconfigFiles, options) {
+    var tslint = require("tslint");
+    var failures = [];
+    for (var tsconfigCtr = 0; tsconfigCtr < tsconfigFiles.length; tsconfigCtr++) {
+        var program = tslint.Linter.createProgram(tsconfigFiles[tsconfigCtr]);
+        var tsFiles = tslint.Linter.getFileNames(program);
+        var linter = new tslint.Linter(options, program);
+
+        for (var i = 0; i < tsFiles.length; i++) {
+            var tsFileContents = program.getSourceFile(tsFiles[i]).getFullText();
+            var tslintConfiguration = tslint.Configuration.findConfiguration(tslintConfigFile, tsFiles[i]).results;
+            linter.lint(tsFiles[i], tsFileContents, tslintConfiguration);
+        }
+        failures = failures.concat(linter.getResult().failures);
+    }
+    var failuresJson = failures.map(function (failure) { return failure.toJson(); });
+    return JSON.stringify(failuresJson);
+}
 
 start(process.argv[2]);
