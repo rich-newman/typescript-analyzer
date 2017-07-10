@@ -24,11 +24,15 @@ namespace WebLinter
 
             string url = $"{BASE_URL}:{BasePort}/{path.ToLowerInvariant()}";
 
-            //postData.UseTSConfig = true;
-            ////postData.Files = new string[] { @"C:/Dotnet/CompletedDocsLintTest/CompletedDocsLintTest/tsconfig.json" };
-            //postData.Files = new string[] { @"C:/Dotnet/CompletedDocsLintTest/CompletedDocsLintTest/tsconfig.json",
-            //@"C:/Dotnet/CompletedDocsLintTest/CompletedDocsLintTest/a/tsconfig.json" };
-
+            // TODO Remove test code
+#if DEBUG
+            if (postData.UseTSConfig)
+            {
+                //postData.Files = new string[] { @"C:/Dotnet/CompletedDocsLintTest/CompletedDocsLintTest/tsconfig.json" };
+                postData.Files = new string[] { @"C:/Dotnet/CompletedDocsLintTest/CompletedDocsLintTest/tsconfig.json",
+            @"C:/Dotnet/CompletedDocsLintTest/CompletedDocsLintTest/a/tsconfig.json" };
+            }
+#endif
             string json = JsonConvert.SerializeObject(postData);
 
             try
