@@ -59,7 +59,7 @@ namespace WebLinterVsix
 
         [Category("TS Lint")]
         [DisplayName("Enable TSLint")]
-        [Description("TSLint is a linter for TypeScript files")]
+        [Description("TSLint is a linter for TypeScript files.")]
         [DefaultValue(true)]
         public bool TSLintEnable { get; set; }
 
@@ -71,7 +71,7 @@ namespace WebLinterVsix
 
         [Category("TS Lint")]
         [DisplayName("Use tsconfig.json files")]
-        [Description("Searches for tsconfig.json files included in the Visual Studio project file, and lints using the configuration in those.  If no tsconfig.json files are found the linter is not called.")]
+        [Description("Searches for tsconfig.json files included in the Visual Studio project file, and lints using the configuration in those.")]
         [DefaultValue(false)]
         public bool TSLintUseTSConfig { get; set; }
 
