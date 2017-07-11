@@ -14,8 +14,29 @@ namespace WebLinterVsix
 
         public static bool IsLinterEnabled => WebLinterPackage.Settings.TSLintEnable;
 
+        //public static Project GetProject()
+        //{
+        //    foreach (Project project in WebLinterPackage.Dte.Solution.Projects)
+        //    {
+        //        return project;
+        //    }
+        //    return null;
+        //}
+
         public static bool IsFileSupported(string fileName)
         {
+            //if (fileName.EndsWith("tsconfig.json"))
+            //{
+            //    // AM Use this to get the tsconfig.jsons in CompletedDocsLintTest
+            //    // May be worth playing with getting outFile again as well
+            //    var project = GetProject();
+            //    var solution = WebLinterPackage.Dte.Solution;
+            //    Helpers.Tsconfig[] tsconfigs = Helpers.TsconfigLocations.FindInProject(project, solution).ToArray();
+
+
+            //    var itemTest = WebLinterPackage.Dte.Solution.FindProjectItem(fileName);
+            //    System.Diagnostics.Debug.WriteLine("itemTest is null is " + (itemTest == null));
+            //}
             // Check if filename is absolute because when debugging, script files are sometimes dynamically created.
             if (string.IsNullOrEmpty(fileName) || !Path.IsPathRooted(fileName))
                 return false;
@@ -34,21 +55,15 @@ namespace WebLinterVsix
             if (WebLinterPackage.Settings.IgnoreNestedFiles && WebLinterPackage.Dte.Solution != null)
             {
                 var item = WebLinterPackage.Dte.Solution.FindProjectItem(fileName);
-
-                if (item == null)
-                    return false;
+                if (item == null) return false;
 
                 // item.Collection is not supported in Node.js projects
                 if (item.ContainingProject.Kind.Equals("{9092aa53-fb77-4645-b42d-1ccca6bd08bd}", StringComparison.OrdinalIgnoreCase))
                     return true;
 
-                if (item.Collection != null && item.Collection.Parent != null)
-                {
-                    var parent = item.Collection.Parent as ProjectItem;
-
-                    if (parent != null && parent.Kind == EnvDTE.Constants.vsProjectItemKindPhysicalFile)
-                        return false;
-                }
+                if (item.Collection?.Parent is ProjectItem parent && 
+                    parent.Kind == EnvDTE.Constants.vsProjectItemKindPhysicalFile)
+                    return false;
             }
 
             return true;
