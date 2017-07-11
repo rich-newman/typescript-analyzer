@@ -129,6 +129,23 @@ namespace WebLinterTest
         }
 
         [TestMethod, TestCategory("tsconfig")]
+        public void FindInSelectedItemsTsconfig()
+        {
+            string mainProjectFullName = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfigTest.csproj");
+            Project mainProject = FindProject(mainProjectFullName, solution);
+            string mainProjectTsconfigFullName = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
+            ProjectItem tsconfig = FindProjectItemInProject(mainProjectTsconfigFullName, mainProject);
+            MockUIHierarchyItem mockTsconfigHierarchyItem = new MockUIHierarchyItem() { Object = tsconfig };
+            UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockTsconfigHierarchyItem };
+
+            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems, solution).ToArray();
+
+            string expected = mainProjectTsconfigFullName;
+            Assert.AreEqual(1, results.Length);
+            Assert.IsTrue(Contains(results, expected));
+        }
+
+        [TestMethod, TestCategory("tsconfig")]
         public void FindInSelectedItemsNoTsconfig()
         {
             string emptyProjectFullName = Path.GetFullPath(@"../../artifacts/tsconfig/none/tsconfigEmptyTest.csproj");
