@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using WebLinterVsix.Helpers;
 
 namespace WebLinterVsix
 {
@@ -24,7 +25,8 @@ namespace WebLinterVsix
                 WebLinterPackage.Dte.StatusBar.Text = "TSLint is not enabled in Tools/Options";
                 return false;
             }
-            List<string> files = GetFilesInSelectedItemPaths();
+            List<string> files = WebLinterPackage.Settings.TSLintUseTSConfig ? GetTsconfigFilesFromSelectedItemPaths() 
+                : GetFilesInSelectedItemPaths();
             if (files.Any())
             {
                 return await LinterService.Lint(showErrorList: true, fixErrors: fixErrors, 
@@ -68,6 +70,18 @@ namespace WebLinterVsix
             List<string> files = new List<string>();
             foreach (string path in paths)
                 AddFilesInPath(path, files);
+            return files;
+        }
+
+        private static List<string> GetTsconfigFilesFromSelectedItemPaths()
+        {
+            Array items = (Array)WebLinterPackage.Dte.ToolWindows.SolutionExplorer.SelectedItems;
+            IEnumerable<Tsconfig> tsconfigs = TsconfigLocations.FindFromSelectedItems(items, WebLinterPackage.Dte.Solution);
+            // TODO there's no point in making them lazy iterators if the first thing we do is just turn them into a concrete List
+            // We may as well just construct the List<string> in the Tsconfig method
+            List<string> files = new List<string>();
+            foreach (Tsconfig tsconfig in tsconfigs)
+                files.Add(tsconfig.FullName);
             return files;
         }
 
