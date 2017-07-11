@@ -15,7 +15,10 @@ namespace WebLinterVsix
         {
             var button = (OleMenuCommand)sender;
             var paths = ProjectHelpers.GetSelectedItemPaths();
-            button.Visible = paths.Any(f => string.IsNullOrEmpty(Path.GetExtension(f)) || LinterService.IsFileSupported(f));
+            button.Visible = paths.Any(f => string.IsNullOrEmpty(Path.GetExtension(f)) || 
+                                            LinterService.IsFileSupported(f) ||
+                                            (WebLinterPackage.Settings.TSLintUseTSConfig && 
+                                                TsconfigLocations.IsValidTsconfig(f, null, false)));
         }
 
         protected async System.Threading.Tasks.Task<bool> LintSelectedFiles(bool fixErrors)

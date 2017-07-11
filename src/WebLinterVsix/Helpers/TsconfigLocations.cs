@@ -131,7 +131,7 @@ namespace WebLinterVsix.Helpers
             }
         }
 
-        private static bool IsValidTsconfig(string fileName, Solution openSolution, bool checkIfInSolution = true)
+        public static bool IsValidTsconfig(string fileName, Solution openSolution, bool checkIfInSolution = true)
         {
             if (string.IsNullOrEmpty(fileName) || !Path.IsPathRooted(fileName)) return false;
             if (!fileName.EndsWith("tsconfig.json", true, null)) return false;

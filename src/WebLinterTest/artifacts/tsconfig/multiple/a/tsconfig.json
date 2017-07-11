@@ -7,7 +7,6 @@
     "sourceMap": true
   },
   "include": [
-    "../src/**/*",
     "./**/*"
   ],
   "exclude": [

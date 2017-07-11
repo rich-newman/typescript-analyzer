@@ -13,6 +13,6 @@
   "exclude": [
     "node.d.ts",
     "mocha.d.ts",
-    "b/file2.ts"
+    "b/file3.ts"
   ]
 }
