@@ -41,6 +41,7 @@ namespace WebLinter
                 {
                     case ".TS":
                     case ".TSX":
+                    case ".JSON":
                         AddLinter(dic, new TsLintLinter(settings, fixErrors), group);
                         break;
                 }

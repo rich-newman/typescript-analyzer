@@ -14,29 +14,8 @@ namespace WebLinterVsix
 
         public static bool IsLinterEnabled => WebLinterPackage.Settings.TSLintEnable;
 
-        //public static Project GetProject()
-        //{
-        //    foreach (Project project in WebLinterPackage.Dte.Solution.Projects)
-        //    {
-        //        return project;
-        //    }
-        //    return null;
-        //}
-
         public static bool IsFileSupported(string fileName)
         {
-            //if (fileName.EndsWith("tsconfig.json"))
-            //{
-            //    // AM Use this to get the tsconfig.jsons in CompletedDocsLintTest
-            //    // May be worth playing with getting outFile again as well
-            //    var project = GetProject();
-            //    var solution = WebLinterPackage.Dte.Solution;
-            //    Helpers.Tsconfig[] tsconfigs = Helpers.TsconfigLocations.FindInProject(project, solution).ToArray();
-
-
-            //    var itemTest = WebLinterPackage.Dte.Solution.FindProjectItem(fileName);
-            //    System.Diagnostics.Debug.WriteLine("itemTest is null is " + (itemTest == null));
-            //}
             // Check if filename is absolute because when debugging, script files are sometimes dynamically created.
             if (string.IsNullOrEmpty(fileName) || !Path.IsPathRooted(fileName))
                 return false;
