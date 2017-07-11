@@ -85,6 +85,8 @@
     <Compile Include="ErrorList\SinkManager.cs" />
     <Compile Include="FileListeners\SourceFileCreationListener.cs" />
     <Compile Include="Helpers\ProjectHelpers.cs" />
+    <Compile Include="Helpers\Tsconfig.cs" />
+    <Compile Include="Helpers\TsconfigLocations.cs" />
     <Compile Include="LinterService.cs" />
     <Compile Include="Commands\LintFilesCommand.cs" />
     <Compile Include="Logger.cs" />

@@ -1,32 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
+using EnvDTE;
 
-namespace WebLinter.Helpers
+namespace WebLinterVsix.Helpers
 {
+    /// <summary>
+    /// Represents a tsconfig.json file
+    /// A simple wrapper around FileInfo currently: parsing to be added
+    /// </summary>
     public class Tsconfig
     {
         private FileInfo fileInfo;
-        public static Tsconfig[] FindInProject(string projectFullName)
-        {
-            
-            return null;
-        }
-
-        public static Tsconfig FindFromProjectItem(string projectItemFullName)
-        {
-            Tsconfig tsconfig = new Tsconfig("");
-
-            return null;
-        }
 
         public Tsconfig(string fileName)
         {
             fileInfo = new FileInfo(fileName);
-            //fileInfo.n
         }
 
         public string FullName { get { return fileInfo.FullName; } }
