@@ -19,7 +19,7 @@ namespace WebLinterVsix
     public sealed class WebLinterPackage : Package
     {
         public static DTE2 Dte;
-        public static Settings Settings;
+        public static ISettings Settings;
         private SolutionEvents _events;
 
         protected override void Initialize()
