@@ -14,7 +14,8 @@ namespace WebLinter
 
         public bool HasErrors => Errors.Count > 0;
 
-        public IList<LintingError> Errors { get; } = new List<LintingError>();
+        public HashSet<LintingError> Errors { get; } = new HashSet<LintingError>();
+
         // HasVsErrors is true iff there exists a TSLint error that will be
         // displayed as a Visual Studio error in the Error Window
         public bool HasVsErrors { get; set; }

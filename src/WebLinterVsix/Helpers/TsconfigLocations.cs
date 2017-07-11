@@ -69,7 +69,7 @@ namespace WebLinterVsix.Helpers
 
         public static IEnumerable<Tsconfig> FindInProjectItem(ProjectItem projectItem, Solution openSolution)
         {
-            string fileName = projectItem.Properties.Item("FullPath")?.Value?.ToString();
+            string fileName = projectItem.Properties?.Item("FullPath")?.Value?.ToString();
             if (fileName != null && IsValidTsconfig(fileName, openSolution))
                 yield return new Tsconfig(fileName);
             if (projectItem.ProjectItems == null) yield break;

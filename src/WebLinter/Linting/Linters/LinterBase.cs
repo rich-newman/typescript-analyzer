@@ -43,7 +43,7 @@ namespace WebLinter
 
                 if (!fileInfo.Exists)
                 {
-                    Result.Errors.Add(new LintingError(fileInfo.FullName) { Message = "The file doesn't exist" });
+                    Result.Errors.Add(new LintingError(fileInfo.FullName, 0, 0, true, "") { Message = "The file doesn't exist" });
                     return Result;
                 }
 
