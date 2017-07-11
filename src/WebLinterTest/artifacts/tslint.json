@@ -1,5 +1,6 @@
 {
   "rules": {
+    "completed-docs": [ true ],
     "adjacent-overload-signatures": true,
     "align": [ true, "parameters", "statements" ],
     "array-type": [ true, "array-simple" ],
