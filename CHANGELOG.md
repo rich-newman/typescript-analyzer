@@ -3,6 +3,13 @@
 These are the changes to each version that have been released
 on the official Visual Studio extension gallery.
 
+## 1.6
+
+**2017-07-10**
+
+- Underlying TSLint upgraded to 5.5.0, TypeScript 2.4.1.
+- (Allow for simpler debugging of node calls)
+
 ## 1.5
 
 **2017-06-24**
