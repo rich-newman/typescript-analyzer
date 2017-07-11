@@ -29,26 +29,10 @@ namespace WebLinterVsix.Helpers
             return null;
         }
 
-        // TODO may be better - needs testing
         public static IEnumerable<Tsconfig> FindFromProjectItemEnumerable(string projectItemFullName, Solution openSolution)
         {
-            ProjectItem projectItem = openSolution.FindProjectItem(projectItemFullName);
-            if (projectItem == null) yield break;
-            //Project project = projectItem.ContainingProject;
-
-            DirectoryInfo folder = Directory.GetParent(projectItemFullName);
-            while (folder != null)
-            {
-                foreach (FileInfo fileInfo in folder.EnumerateFiles())
-                {
-                    if (IsValidTsconfig(fileInfo.FullName, openSolution))
-                    {
-                        yield return new Tsconfig(fileInfo.FullName);
-                        yield break;
-                    }
-                }
-                folder = folder.Parent;
-            }
+            Tsconfig tsconfig = FindFromProjectItem(projectItemFullName, openSolution);
+            if (tsconfig != null) yield return tsconfig;
         }
 
         public static IEnumerable<Tsconfig> FindInSolution(Solution solution)
@@ -81,53 +65,24 @@ namespace WebLinterVsix.Helpers
 
         public static IEnumerable<Tsconfig> FindFromSelectedItems(Array items, Solution openSolution)
         {
-            // TODO horrible and repetitive: REFACTOR (but let's make it work first)
-            // Get an IEnumerable<Tsconfig> based on input on each loop pass, and then iterate that yield returning
-            // Have a seen(item, seenPaths) static method
-            // TODO if there are no tsconfigs we need to fall back to the original algo: how the hell do we do that with iterators?  FirstOrDefault?
-            // Handle in calling code?
             HashSet<string> seenPaths = new HashSet<string>();
             foreach (UIHierarchyItem selItem in items)
             {
+                IEnumerable<Tsconfig> currentEnumerable = null;
                 if (selItem.Object is ProjectItem item && item.Properties != null)
                 {
                     string file = item.Properties?.Item("FullPath")?.Value?.ToString();
-                    if (!string.IsNullOrEmpty(file))
-                    {
-                        foreach (Tsconfig tsconfig in FindFromProjectItemEnumerable(file, openSolution))
-                        {
-                            if (tsconfig != null && !seenPaths.Contains(tsconfig.FullName))
-                            {
-                                seenPaths.Add(tsconfig.FullName);
-                                yield return tsconfig;
-                            }
-                        }
-                    }
-                    else
-                        continue;
+                    if (!string.IsNullOrEmpty(file)) currentEnumerable = FindFromProjectItemEnumerable(file, openSolution);
                 }
-
-                if (selItem.Object is Project project)
+                if (selItem.Object is Project project) currentEnumerable = FindInProject(project, openSolution);
+                if (selItem.Object is Solution solution) currentEnumerable = FindInSolution(solution);
+                if (currentEnumerable == null) continue;
+                foreach (Tsconfig tsconfig in currentEnumerable)
                 {
-                    foreach (Tsconfig tsconfig in FindInProject(project, openSolution))
+                    if (tsconfig != null && !seenPaths.Contains(tsconfig.FullName))
                     {
-                        if (tsconfig != null && !seenPaths.Contains(tsconfig.FullName))
-                        {
-                            seenPaths.Add(tsconfig.FullName);
-                            yield return tsconfig;
-                        }
-                    }
-                }
-
-                if (selItem.Object is Solution solution)
-                {
-                    foreach (Tsconfig tsconfig in FindInSolution(solution))
-                    {
-                        if (tsconfig != null && !seenPaths.Contains(tsconfig.FullName))
-                        {
-                            seenPaths.Add(tsconfig.FullName);
-                            yield return tsconfig;
-                        }
+                        seenPaths.Add(tsconfig.FullName);
+                        yield return tsconfig;
                     }
                 }
             }
