@@ -28,7 +28,7 @@ namespace WebLinterTest
 
         public bool TSLintEnable => true;
         public bool TSLintShowErrors => false;
-        public bool TSLintUseTSConfig => true;
+        public bool TSLintUseTSConfig { get; set; } = false;
         public bool RunOnBuild => false;
         public bool CleanErrorsOnBuild => false;
         public bool IgnoreNestedFiles => true;
