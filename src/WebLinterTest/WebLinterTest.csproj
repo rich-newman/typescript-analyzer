@@ -81,9 +81,10 @@
     <Compile Include="AssemblyMethods.cs" />
     <Compile Include="CssLintTest.cs" />
     <Compile Include="CoffeelintTest.cs" />
+    <Compile Include="TslintWithTsconfigTest.cs" />
     <Compile Include="MessageFilter.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="tsconfigTest.cs" />
+    <Compile Include="TsconfigTest.cs" />
     <Compile Include="TslintTest.cs" />
     <Compile Include="EslintTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

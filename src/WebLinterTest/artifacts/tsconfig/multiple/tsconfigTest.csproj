@@ -60,7 +60,6 @@
   <ItemGroup>
     <TypeScriptCompile Include="a\c\file4.ts" />
     <TypeScriptCompile Include="a\file1.ts" />
-    <TypeScriptCompile Include="b\file2.ts" />
     <TypeScriptCompile Include="b\file3.ts" />
     <TypeScriptCompile Include="test.ts" />
   </ItemGroup>
