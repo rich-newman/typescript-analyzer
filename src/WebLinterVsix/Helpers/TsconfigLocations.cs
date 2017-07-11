@@ -29,7 +29,8 @@ namespace WebLinterVsix.Helpers
             return null;
         }
 
-        public static IEnumerable<Tsconfig> FindFromProjectItemEnumerable(string projectItemFullName, Solution openSolution)
+        // Helper method for FindFromSelectedItems
+        private static IEnumerable<Tsconfig> FindFromProjectItemEnumerable(string projectItemFullName, Solution openSolution)
         {
             Tsconfig tsconfig = FindFromProjectItem(projectItemFullName, openSolution);
             if (tsconfig != null) yield return tsconfig;
@@ -87,58 +88,6 @@ namespace WebLinterVsix.Helpers
                 }
             }
         }
-
-        //public static IEnumerable<Tsconfig> FindFromSelectedItems(Array items, Solution openSolution)
-        //{
-        //    // TODO horrible and repetitive: REFACTOR (but let's make it work first)
-        //    // Get an IEnumerable<Tsconfig> based on input on each loop pass, and then iterate that yield returning
-        //    // Have a seen(item, seenPaths) static method
-        //    // TODO if there are no tsconfigs we need to fall back to the original algo: how the hell do we do that with iterators?  FirstOrDefault?
-        //    // Handle in calling code?
-        //    HashSet<string> seenPaths = new HashSet<string>();
-        //    foreach (UIHierarchyItem selItem in items)
-        //    {
-        //        if (selItem.Object is ProjectItem item && item.Properties != null)
-        //        {
-        //            string file = item.Properties.Item("FullPath").Value.ToString();
-        //            if (!string.IsNullOrEmpty(file))
-        //            {
-        //                Tsconfig tsconfig = FindFromProjectItem(file, openSolution);
-        //                if (tsconfig != null && !seenPaths.Contains(tsconfig.FullName))
-        //                {
-        //                    seenPaths.Add(tsconfig.FullName);
-        //                    yield return tsconfig;
-        //                }
-        //            }
-        //            else
-        //                continue;
-        //        }
-
-        //        if (selItem.Object is Project project)
-        //        {
-        //            foreach (Tsconfig tsconfig in FindInProject(project, openSolution))
-        //            {
-        //                if (tsconfig != null && !seenPaths.Contains(tsconfig.FullName))
-        //                {
-        //                    seenPaths.Add(tsconfig.FullName);
-        //                    yield return tsconfig;
-        //                }
-        //            }
-        //        }
-
-        //        if (selItem.Object is Solution solution)
-        //        {
-        //            foreach (Tsconfig tsconfig in FindInSolution(solution))
-        //            {
-        //                if (tsconfig != null && !seenPaths.Contains(tsconfig.FullName))
-        //                {
-        //                    seenPaths.Add(tsconfig.FullName);
-        //                    yield return tsconfig;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
 
         public static bool IsValidTsconfig(string fileName, Solution openSolution, bool checkIfInSolution = true)
         {
