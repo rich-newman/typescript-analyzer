@@ -54,39 +54,7 @@ namespace WebLinterVsix.FileListeners
                         await LinterService.Lint(false, false, false, _document.FilePath);
                     }
                 });
-
-                Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() =>
-                {
-                    PromptToUpgrade();
-                }), DispatcherPriority.ApplicationIdle, null);
             }
-        }
-
-        private static void PromptToUpgrade()
-        {
-            //if (WebLinterPackage.Settings.ShowPromptToUpgrade)
-            //{
-            //    try
-            //    {
-            //        var hwnd = new IntPtr(WebLinterPackage.Dte.MainWindow.HWnd);
-            //        var window = (Window)HwndSource.FromHwnd(hwnd).RootVisual;
-
-            //        string msg = "The Web Analyzer extension has now been built in to Visual Studio in the .NET Core Tooling Preview 1.\r\rPlease uninstall Web Analyzer and install .NET Core Tooling Preview 1.\r\rDo you wish to go to the download page?";
-            //        var answer = MessageBox.Show(window, msg, Vsix.Name, MessageBoxButton.YesNo, MessageBoxImage.Information);
-
-            //        if (answer == MessageBoxResult.Yes)
-            //            Process.Start("https://www.microsoft.com/net/download#tools");
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Logger.Log(ex);
-            //    }
-            //    finally
-            //    {
-            //        WebLinterPackage.Settings.ShowPromptToUpgrade = false;
-            //        WebLinterPackage.Settings.SaveSettingsToStorage();
-            //    }
-            //}
         }
 
         private void TextviewClosed(object sender, EventArgs e)

@@ -82,9 +82,6 @@ namespace WebLinterVsix
         [DefaultValue(true)]
         public bool RunOnOpenOrSave { get; set; }
 
-        [Browsable(false)]
-        public bool ShowPromptToUpgrade { get; set; } = false;
-
         public IEnumerable<string> GetIgnorePatterns()
         {
             var raw = IgnoreFolderNames.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
