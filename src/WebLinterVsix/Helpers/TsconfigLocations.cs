@@ -10,13 +10,11 @@ namespace WebLinterVsix.Helpers
 {
     public static class TsconfigLocations
     {
-        public static Tsconfig FindFromProjectItem(string projectItemFullName, Solution openSolution)
+        public static Tsconfig FindFromProjectItem(string projectItemFullPath, Solution openSolution)
         {
-            ProjectItem projectItem = openSolution.FindProjectItem(projectItemFullName);
-            if (projectItem == null) return null;
-            //Project project = projectItem.ContainingProject;
-
-            DirectoryInfo folder = Directory.GetParent(projectItemFullName);
+            bool validItem = Directory.Exists(projectItemFullPath) || openSolution.FindProjectItem(projectItemFullPath) != null;
+            if (!validItem) return null;
+            DirectoryInfo folder = Directory.GetParent(projectItemFullPath);
             while (folder != null)
             {
                 foreach (FileInfo fileInfo in folder.EnumerateFiles())
@@ -30,9 +28,9 @@ namespace WebLinterVsix.Helpers
         }
 
         // Helper method for FindFromSelectedItems
-        private static IEnumerable<Tsconfig> FindFromProjectItemEnumerable(string projectItemFullName, Solution openSolution)
+        private static IEnumerable<Tsconfig> FindFromProjectItemEnumerable(string projectItemFullPath, Solution openSolution)
         {
-            Tsconfig tsconfig = FindFromProjectItem(projectItemFullName, openSolution);
+            Tsconfig tsconfig = FindFromProjectItem(projectItemFullPath, openSolution);
             if (tsconfig != null) yield return tsconfig;
         }
 
@@ -72,8 +70,9 @@ namespace WebLinterVsix.Helpers
                 IEnumerable<Tsconfig> currentEnumerable = null;
                 if (selItem.Object is ProjectItem item && item.Properties != null)
                 {
-                    string file = item.Properties?.Item("FullPath")?.Value?.ToString();
-                    if (!string.IsNullOrEmpty(file)) currentEnumerable = FindFromProjectItemEnumerable(file, openSolution);
+                    string projectItemFullPath = item.Properties?.Item("FullPath")?.Value?.ToString();
+                    if (!string.IsNullOrEmpty(projectItemFullPath))
+                        currentEnumerable = FindFromProjectItemEnumerable(projectItemFullPath, openSolution);
                 }
                 if (selItem.Object is Project project) currentEnumerable = FindInProject(project, openSolution);
                 if (selItem.Object is Solution solution) currentEnumerable = FindInSolution(solution);
