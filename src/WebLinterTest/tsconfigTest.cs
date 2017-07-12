@@ -25,7 +25,7 @@ namespace WebLinterTest
             dte.Solution.Open(Path.GetFullPath(@"../../artifacts/tsconfig/Tsconfig.sln"));
             solution = dte.Solution;
 
-            Settings settings = new Settings() { TSLintUseTSConfig = true };
+            Settings settings = new Settings() { UseTsConfig = true };
             WebLinterVsix.WebLinterPackage.Settings = settings;
 
             MessageFilter.Register();

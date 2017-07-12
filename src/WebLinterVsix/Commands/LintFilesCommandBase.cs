@@ -17,7 +17,7 @@ namespace WebLinterVsix
             var paths = ProjectHelpers.GetSelectedItemPaths();
             button.Visible = paths.Any(f => string.IsNullOrEmpty(Path.GetExtension(f)) || 
                                             LinterService.IsFileSupported(f) ||
-                                            (WebLinterPackage.Settings.TSLintUseTSConfig && 
+                                            (WebLinterPackage.Settings.UseTsConfig && 
                                                 TsconfigLocations.IsValidTsconfig(f, null, false)));
         }
 
@@ -28,7 +28,7 @@ namespace WebLinterVsix
                 WebLinterPackage.Dte.StatusBar.Text = "TSLint is not enabled in Tools/Options";
                 return false;
             }
-            List<string> files = WebLinterPackage.Settings.TSLintUseTSConfig ? GetTsconfigFilesFromSelectedItemPaths() 
+            List<string> files = WebLinterPackage.Settings.UseTsConfig ? GetTsconfigFilesFromSelectedItemPaths() 
                 : GetFilesInSelectedItemPaths();
             if (files.Any())
             {

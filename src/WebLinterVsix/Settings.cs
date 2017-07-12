@@ -23,7 +23,8 @@ namespace WebLinterVsix
             RunOnBuild = false;
             TSLintEnable = true;
             TSLintShowErrors = false;
-            TSLintUseTSConfig = false;
+            UseTsConfig = false;
+            RunOnOpenOrSave = true;
         }
 
         public override void ResetSettings()
@@ -35,7 +36,7 @@ namespace WebLinterVsix
         // Advanced
         [Category("Ignore")]
         [DisplayName("Ignore patterns")]
-        [Description("A comma-separated list of strings. Any file containing one of the strings in the path will be ignored.")]
+        [Description("A comma-separated list of strings without quotes. Any file containing one of the strings in the path will be ignored.")]
         [DefaultValue(@"\node_modules\,\bower_components\,\typings\,\lib\,\vendor\,.min.")]
         public string IgnoreFolderNames { get; set; }
 
@@ -73,7 +74,13 @@ namespace WebLinterVsix
         [DisplayName("Use tsconfig.json files")]
         [Description("Searches for tsconfig.json files included in the Visual Studio project file, and lints using the configuration in those.")]
         [DefaultValue(false)]
-        public bool TSLintUseTSConfig { get; set; }
+        public bool UseTsConfig { get; set; }
+
+        [Category("Basic")]
+        [DisplayName("Run on file open or save")]
+        [Description("Runs the analyzer for an individual file whenever it is opened or saved.")]
+        [DefaultValue(true)]
+        public bool RunOnOpenOrSave { get; set; }
 
         [Browsable(false)]
         public bool ShowPromptToUpgrade { get; set; } = false;

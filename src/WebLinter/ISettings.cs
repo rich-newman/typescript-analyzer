@@ -10,7 +10,8 @@ namespace WebLinter
         bool RunOnBuild { get; }
         bool TSLintEnable { get; }
         bool TSLintShowErrors { get; }
-        bool TSLintUseTSConfig { get; }
+        bool UseTsConfig { get; }
+        bool RunOnOpenOrSave { get; }
         IEnumerable<string> GetIgnorePatterns();
         void ResetSettings();
     }
