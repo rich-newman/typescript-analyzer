@@ -49,7 +49,8 @@ namespace WebLinterVsix.FileListeners
                     textView.Properties.AddProperty("lint_filename", _document.FilePath);
 
                     // Don't run linter again if error list already contains errors for the file.
-                    if (!TableDataSource.Instance.HasErrors(_document.FilePath))
+                    if (!TableDataSource.Instance.HasErrors(_document.FilePath) &&
+                            !WebLinterPackage.Settings.OnlyRunIfRequested)
                     {
                         await LinterService.Lint(false, false, false, _document.FilePath);
                     }
@@ -77,7 +78,8 @@ namespace WebLinterVsix.FileListeners
 
         private async void DocumentSaved(object sender, TextDocumentFileActionEventArgs e)
         {
-            if (e.FileActionType == FileActionTypes.ContentSavedToDisk)
+            if (!WebLinterPackage.Settings.OnlyRunIfRequested &&
+                e.FileActionType == FileActionTypes.ContentSavedToDisk)
             {
                 await LinterService.Lint(false, false, false, e.FilePath);
             }

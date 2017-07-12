@@ -24,7 +24,7 @@ namespace WebLinterVsix
             TSLintEnable = true;
             TSLintShowErrors = false;
             UseTsConfig = false;
-            RunOnOpenOrSave = true;
+            OnlyRunIfRequested = false;
         }
 
         public override void ResetSettings()
@@ -77,10 +77,10 @@ namespace WebLinterVsix
         public bool UseTsConfig { get; set; }
 
         [Category("Basic")]
-        [DisplayName("Run on file open or save")]
-        [Description("Runs the analyzer for an individual file whenever it is opened or saved.")]
-        [DefaultValue(true)]
-        public bool RunOnOpenOrSave { get; set; }
+        [DisplayName("Only run if requested")]
+        [Description("Only runs the analyzer if it is explicitly requested via the Solution Explorer context menu.  If false the analyzer will additionally run for a file when it is opened or saved.")]
+        [DefaultValue(false)]
+        public bool OnlyRunIfRequested { get; set; }
 
         public IEnumerable<string> GetIgnorePatterns()
         {
