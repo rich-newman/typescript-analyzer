@@ -61,6 +61,8 @@ namespace WebLinterVsix.FileListeners
         private void TextviewClosed(object sender, EventArgs e)
         {
             IWpfTextView view = (IWpfTextView)sender;
+            if (view != null) view.Closed -= TextviewClosed;
+            if (WebLinterPackage.Settings.OnlyRunIfRequested) return;
 
             System.Threading.ThreadPool.QueueUserWorkItem((o) =>
             {
@@ -72,8 +74,6 @@ namespace WebLinterVsix.FileListeners
                 }
             });
 
-            if (view != null)
-                view.Closed -= TextviewClosed;
         }
 
         private async void DocumentSaved(object sender, TextDocumentFileActionEventArgs e)
