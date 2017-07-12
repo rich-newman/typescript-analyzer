@@ -66,7 +66,7 @@ namespace WebLinterVsix
 
                 if (result != null)
                 {
-                    ErrorListService.ProcessLintingResults(result, fileNames, showErrorList);
+                    ErrorListService.ProcessLintingResults(result, fileNames, filterFileNames, showErrorList);
                     hasVSErrors = result.Any(r => r.HasVsErrors);
                 }
             }

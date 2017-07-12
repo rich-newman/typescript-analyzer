@@ -6,10 +6,16 @@ namespace WebLinterVsix
 {
     class ErrorListService
     {
-        public static void ProcessLintingResults(IEnumerable<LintingResult> results, string[] fileNames, bool showErrorList)
+        public static void ProcessLintingResults(IEnumerable<LintingResult> results, string[] fileNames,
+                                                    string[] filterFileNames, bool showErrorList)
         {
-            IEnumerable<LintingError> allErrors = results.Where(r => r.HasErrors).SelectMany(r => r.Errors);
-            IEnumerable<string> lintedFilesWithNoErrors = fileNames.Where(f => !allErrors.Select(e => e.FileName).Contains(f));
+            bool useFilter = WebLinterPackage.Settings.UseTsConfig && filterFileNames != null;
+            IEnumerable<LintingError> allErrors = useFilter ?
+                results.Where(r => r.HasErrors).SelectMany(r => r.Errors).Where(e => filterFileNames.Contains(e.FileName)) :
+                results.Where(r => r.HasErrors).SelectMany(r => r.Errors);
+            IEnumerable<string> lintedFilesWithNoErrors = useFilter ?
+                filterFileNames.Where(f => !allErrors.Select(e => e.FileName).Contains(f)) :
+                fileNames.Where(f => !allErrors.Select(e => e.FileName).Contains(f));
 
             if (allErrors.Any())
             {
