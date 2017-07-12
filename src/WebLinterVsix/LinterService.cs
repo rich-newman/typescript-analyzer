@@ -30,7 +30,10 @@ namespace WebLinterVsix
             if (patterns.Any(p => fileName.Contains(p)))
                 return false;
 
-            // Ignore nested files
+            // Ignore nested files - if we're ignoring nested files we additionally return false if 
+            // the item isn't in the solution or it has a parent project item that's a physical file (i.e. it's nested)
+            // TODO We can actually get in here if an item isn't in the solution in general so maybe that first test
+            // should be done whether we're ignoring nested files or not (else we have different behavior)
             if (WebLinterPackage.Settings.IgnoreNestedFiles && WebLinterPackage.Dte.Solution != null)
             {
                 var item = WebLinterPackage.Dte.Solution.FindProjectItem(fileName);
@@ -48,7 +51,8 @@ namespace WebLinterVsix
             return true;
         }
 
-        public static async Task<bool> Lint(bool showErrorList, bool fixErrors, bool callSync, params string[] fileNames)
+        public static async Task<bool> Lint(bool showErrorList, bool fixErrors, bool callSync, 
+                                            string[] fileNames, string[] filterFileNames = null)
         {
             bool hasVSErrors = false;
             try

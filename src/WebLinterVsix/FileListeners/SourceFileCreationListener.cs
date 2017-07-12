@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
+using WebLinterVsix.Helpers;
 
 namespace WebLinterVsix.FileListeners
 {
@@ -42,17 +43,18 @@ namespace WebLinterVsix.FileListeners
             {
                 Task.Run(async () =>
                 {
+                    _document.FileActionOccurred += DocumentSaved;
+
                     if (!LinterService.IsFileSupported(_document.FilePath))
                         return;
 
-                    _document.FileActionOccurred += DocumentSaved;
                     textView.Properties.AddProperty("lint_filename", _document.FilePath);
 
                     // Don't run linter again if error list already contains errors for the file.
                     if (!TableDataSource.Instance.HasErrors(_document.FilePath) &&
                             !WebLinterPackage.Settings.OnlyRunIfRequested)
                     {
-                        await LinterService.Lint(false, false, false, _document.FilePath);
+                        await CallLinterService(_document.FilePath);
                     }
                 });
             }
@@ -79,9 +81,25 @@ namespace WebLinterVsix.FileListeners
         private async void DocumentSaved(object sender, TextDocumentFileActionEventArgs e)
         {
             if (!WebLinterPackage.Settings.OnlyRunIfRequested &&
-                e.FileActionType == FileActionTypes.ContentSavedToDisk)
+                e.FileActionType == FileActionTypes.ContentSavedToDisk &&
+                LinterService.IsFileSupported(e.FilePath)) // We may have changed settings since the event was hooked
             {
-                await LinterService.Lint(false, false, false, e.FilePath);
+                await CallLinterService(e.FilePath);
+            }
+        }
+
+        private static async Task CallLinterService(string filePath)
+        {
+            if (WebLinterPackage.Settings.UseTsConfig)
+            {
+                Tsconfig tsconfig = TsconfigLocations.FindFromProjectItem(filePath, WebLinterPackage.Dte.Solution);
+                if (tsconfig == null) return;
+                await LinterService.Lint(false, false, false, new string[] { tsconfig.FullName },
+                                                              new string[] { filePath });
+            }
+            else
+            {
+                await LinterService.Lint(false, false, false, new string[] { filePath });
             }
         }
     }
