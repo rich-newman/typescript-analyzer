@@ -133,6 +133,7 @@
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\a\c\file6.tsx" />
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\a\file1.ts" />
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\b\file3.ts" />
+    <TypeScriptCompile Include="artifacts\tsconfig\multiple\react-dom.d.ts" />
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\react.d.ts" />
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\test.ts" />
   </ItemGroup>
