@@ -30,6 +30,9 @@ namespace WebLinterVsix.FileListeners
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
+            // If we open a folder then our package isn't initialized but this class does get created
+            // We get failures in the events because Settings is null, so don't do anything if that's the case
+            if (WebLinterPackage.Settings == null) return;
             var textView = EditorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
             textView.Closed += TextviewClosed;
 
@@ -52,7 +55,7 @@ namespace WebLinterVsix.FileListeners
 
                     // Don't run linter again if error list already contains errors for the file.
                     if (!TableDataSource.Instance.HasErrors(_document.FilePath) &&
-                            !WebLinterPackage.Settings.OnlyRunIfRequested)
+                            WebLinterPackage.Settings != null && !WebLinterPackage.Settings.OnlyRunIfRequested)
                     {
                         await CallLinterService(_document.FilePath);
                     }
@@ -64,7 +67,7 @@ namespace WebLinterVsix.FileListeners
         {
             IWpfTextView view = (IWpfTextView)sender;
             if (view != null) view.Closed -= TextviewClosed;
-            if (WebLinterPackage.Settings.OnlyRunIfRequested) return;
+            if (WebLinterPackage.Settings == null || WebLinterPackage.Settings.OnlyRunIfRequested) return;
 
             System.Threading.ThreadPool.QueueUserWorkItem((o) =>
             {
@@ -80,7 +83,7 @@ namespace WebLinterVsix.FileListeners
 
         private async void DocumentSaved(object sender, TextDocumentFileActionEventArgs e)
         {
-            if (!WebLinterPackage.Settings.OnlyRunIfRequested &&
+            if (WebLinterPackage.Settings != null && !WebLinterPackage.Settings.OnlyRunIfRequested &&
                 e.FileActionType == FileActionTypes.ContentSavedToDisk &&
                 LinterService.IsLintableTsOrTsxFile(e.FilePath)) // We may have changed settings since the event was hooked
             {

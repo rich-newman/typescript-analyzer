@@ -27,8 +27,15 @@ namespace WebLinterVsix
 
         public static bool IsLintable(UIHierarchyItem selectedItem)
         {
+            //var test = selectedItem.Object is EnvDTE80.SolutionFolder;
+            //var test2 = selectedItem.Object is ProjectItem;
+            //var testItem = selectedItem.Object as ProjectItem;
+            //var test3 = testItem.Properties;
+            //var test4 = testItem.Properties?.Item("FullPath");
+            //var test5 = testItem.Properties?.Item("FullPath")?.Value;
             return selectedItem.Object is Solution ||
                    selectedItem.Object is Project ||
+                   selectedItem.Object is EnvDTE80.SolutionFolder ||
                   (selectedItem.Object is ProjectItem item &&
                         item.Properties?.Item("FullPath")?.Value is string projectItemPath &&
                         IsLintableProjectItem(projectItemPath));
@@ -58,10 +65,13 @@ namespace WebLinterVsix
             // Check if filename is absolute because when debugging, script files are sometimes dynamically created.
             if (string.IsNullOrEmpty(fileName) || !Path.IsPathRooted(fileName)) return false;
             if (!LinterFactory.IsExtensionTsOrTsx(fileName)) return false;
-            if (WebLinterPackage.Settings.GetIgnorePatterns().Any(p => fileName.Contains(p))) return false;
+            if (WebLinterPackage.Settings == null || WebLinterPackage.Settings.GetIgnorePatterns().Any(p => fileName.Contains(p)))
+                return false;
 
             ProjectItem item = WebLinterPackage.Dte.Solution.FindProjectItem(fileName);
-            if (item == null) return false;
+            bool isInProject = item?.Properties?.Item("FullPath")?.Value is string;
+            if (!isInProject) return false;
+            //if (item == null) return false;
 
             // Ignore nested files
             if (WebLinterPackage.Settings.IgnoreNestedFiles)

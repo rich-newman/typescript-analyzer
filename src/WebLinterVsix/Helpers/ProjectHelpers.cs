@@ -60,7 +60,11 @@ namespace WebLinterVsix
                 string file = item.Properties.Item("FullPath").Value.ToString();
 
                 if (!string.IsNullOrEmpty(file))
+                {
+                    if (file.EndsWith("file8.ts"))
+                        System.Diagnostics.Debug.WriteLine("Found");
                     return file;
+                }
                 else
                     return null;
             }

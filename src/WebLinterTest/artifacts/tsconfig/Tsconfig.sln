@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tsconfigTest", "multiple\ts
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tsconfigEmptyTest", "none\tsconfigEmptyTest.csproj", "{33B15409-8CA5-445F-BFA5-F4BF87B0C419}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{E69AFA62-6B7B-4E73-AA2F-F32E25E080AC}"
+	ProjectSection(SolutionItems) = preProject
+		file8.ts = file8.ts
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
