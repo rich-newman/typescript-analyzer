@@ -27,6 +27,7 @@ namespace WebLinterTest
 
             Settings settings = new Settings() { UseTsConfig = true };
             WebLinterVsix.WebLinterPackage.Settings = settings;
+            WebLinterVsix.WebLinterPackage.Dte = dte;
 
             MessageFilter.Register();
             //System.Threading.Thread.Sleep(1000);
@@ -38,6 +39,7 @@ namespace WebLinterTest
             if (solution != null) { solution.Close(); solution = null; }
             if (dte != null) dte.Quit();
             WebLinterVsix.WebLinterPackage.Settings = null;
+            WebLinterVsix.WebLinterPackage.Dte = null;
             MessageFilter.Revoke();
         }
 
