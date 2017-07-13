@@ -64,6 +64,10 @@
     <TypeScriptCompile Include="b\file3.ts" />
     <None Include="react-dom.d.ts" />
     <None Include="react.d.ts" />
+    <TypeScriptCompile Include="file7.ts">
+      <SubType>Code</SubType>
+      <DependentUpon>HtmlPage1.html</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="test.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +77,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="HtmlPage1.html" />
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>

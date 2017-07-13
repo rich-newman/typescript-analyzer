@@ -27,7 +27,7 @@ namespace WebLinterTest
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Length);
-            Assert.AreEqual(26, result[0].Errors.Count);
+            Assert.AreEqual(30, result[0].Errors.Count);
 
             // file3.ts is excluded from this tsconfig.json, in spite of being in the VS project.
             // It has errors but they shouldn't appear here
@@ -59,7 +59,7 @@ namespace WebLinterTest
             // file2 is in both tsconfigs.  It has 4 errors.  With the old code we got 8 in the Error List, and here.
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Length);
-            Assert.AreEqual(29, result[0].Errors.Count);
+            Assert.AreEqual(33, result[0].Errors.Count);
 
             IList<LintingError> file2Errors = GetErrorsForFile("file2.ts", result[0].Errors);
             Assert.IsTrue(file2Errors.Count == 4);
@@ -87,7 +87,7 @@ namespace WebLinterTest
             // file2 is in both tsconfigs.  It has 4 errors.  With the old code we got 8 in the Error List, and here.
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Length);
-            Assert.AreEqual(33, result[0].Errors.Count);
+            Assert.AreEqual(37, result[0].Errors.Count);
 
             IList<LintingError> file1Errors = GetErrorsForFile("file1.ts", result[0].Errors);
             Assert.IsTrue(file1Errors.Count == 3);

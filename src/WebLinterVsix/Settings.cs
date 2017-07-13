@@ -42,7 +42,7 @@ namespace WebLinterVsix
 
         [Category("Ignore")]
         [DisplayName("Ignore nested files")]
-        [Description("Nested files are files that are nested under other files in Solution Explorer.")]
+        [Description("Nested files are files that are nested under other files in Solution Explorer.  Only applies if 'Use tsconfig.json files' is False.")]
         [DefaultValue(true)]
         public bool IgnoreNestedFiles { get; set; }
 

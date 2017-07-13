@@ -63,10 +63,7 @@ namespace WebLinterVsix
             ProjectItem item = WebLinterPackage.Dte.Solution.FindProjectItem(fileName);
             if (item == null) return false;
 
-            // Ignore nested files - if we're ignoring nested files we additionally return false if 
-            // the item isn't in the solution or it has a parent project item that's a physical file (i.e. it's nested)
-            // TODO We can actually get in here if an item isn't in the solution in general so maybe that first test
-            // should be done whether we're ignoring nested files or not (else we have different behavior)
+            // Ignore nested files
             if (WebLinterPackage.Settings.IgnoreNestedFiles)
             {
                 // item.Collection is not supported in Node.js projects
