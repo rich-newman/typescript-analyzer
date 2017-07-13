@@ -19,6 +19,10 @@ namespace WebLinterVsix
 
         public static IEnumerable<string> GetSelectedItemProjectPaths()
         {
+            // Note that you can build a single project from the build menu, but your options are limited
+            // to the project you have selected in Solution Explorer.  Here 'project you have selected' can
+            // mean the project a selected item is in.  If you ctrl-click items in two projects the menu option
+            // changes to 'Build Selection', meaning build both.  This logic replicates that.
             HashSet<string> seenPaths = new HashSet<string>();
             var items = (Array)_dte.ToolWindows.SolutionExplorer.SelectedItems;
 
@@ -41,10 +45,66 @@ namespace WebLinterVsix
             }
         }
 
-        public static IEnumerable<string> GetSelectedItemPaths()
+        public static IEnumerable<UIHierarchyItem> GetSelectedItemProjectUIHierarchyItems()
         {
+            // Note that you can build a single project from the build menu, but your options are limited
+            // to the project you have selected in Solution Explorer.  Here 'project you have selected' can
+            // mean the project a selected item is in.  If you ctrl-click items in two projects the menu option
+            // changes to 'Build Selection', meaning build both.  This logic replicates that.
+            HashSet<string> seenPaths = new HashSet<string>();
             var items = (Array)_dte.ToolWindows.SolutionExplorer.SelectedItems;
 
+            foreach (UIHierarchyItem selItem in items)
+            {
+                ProjectItem projectItem = selItem.Object as ProjectItem;
+                if(projectItem != null)
+                {
+                    Project containingProject = projectItem.ContainingProject;
+                    if (containingProject != null)
+                    {
+                        string projectRootFolder = containingProject.GetRootFolder();
+                        if (projectRootFolder != null && !seenPaths.Contains(projectRootFolder))
+                        {
+                            seenPaths.Add(projectRootFolder);
+                            UIHierarchyItems uiHierarchyItems = WebLinterPackage.Dte.ToolWindows.SolutionExplorer.UIHierarchyItems;
+                            UIHierarchyItem containingProjectHierarchyItem = GetHierarchyItemForProject(projectRootFolder, uiHierarchyItems);
+                            if (containingProjectHierarchyItem != null) yield return containingProjectHierarchyItem;
+                        }
+                    }
+                }
+
+                Project project = selItem.Object as Project;
+                if (project != null)
+                {
+                    string projectRootFolder = project.GetRootFolder();
+                    if (projectRootFolder != null && !seenPaths.Contains(projectRootFolder))
+                    {
+                        seenPaths.Add(projectRootFolder);
+                        yield return selItem;
+                    }
+                }
+                Solution solution = selItem.Object as Solution;
+                if (solution != null)
+                    yield return selItem;
+            }
+        }
+
+        private static UIHierarchyItem GetHierarchyItemForProject(string projectRootFolder, UIHierarchyItems uiHierarchyItems)
+        {
+            foreach (UIHierarchyItem item in uiHierarchyItems)
+            {
+                if (item.Object is Project project && projectRootFolder == project.GetRootFolder()) return item;
+                if(item.UIHierarchyItems != null)
+                {
+                    UIHierarchyItem uiHierarchyItem = GetHierarchyItemForProject(projectRootFolder, item.UIHierarchyItems);
+                    if (uiHierarchyItem != null) return uiHierarchyItem;
+                }
+            }
+            return null;
+        }
+
+        public static IEnumerable<string> GetSelectedItemPaths(UIHierarchyItem[] items)
+        {
             foreach (UIHierarchyItem selItem in items)
             {
                 string path = GetSelectedItemPath(selItem);
