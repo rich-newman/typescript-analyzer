@@ -59,8 +59,11 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="a\c\file4.ts" />
+    <TypeScriptCompile Include="a\c\file6.tsx" />
     <TypeScriptCompile Include="a\file1.ts" />
     <TypeScriptCompile Include="b\file3.ts" />
+    <None Include="react-dom.d.ts" />
+    <None Include="react.d.ts" />
     <TypeScriptCompile Include="test.ts" />
   </ItemGroup>
   <ItemGroup>

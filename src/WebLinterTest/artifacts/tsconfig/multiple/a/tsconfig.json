@@ -4,7 +4,8 @@
     "target": "es5",
     "module": "none",
     "outFile": "testie2.js",
-    "sourceMap": true
+    "sourceMap": true,
+    "jsx": "react"
   },
   "include": [
     "./**/*"

@@ -124,14 +124,17 @@
     <None Include="artifacts\tslint\aFixed.ts" />
     <None Include="artifacts\tslint\cFixed.tsx" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="artifacts\tsconfig\none\a\c\" />
+    <Folder Include="artifacts\tsconfig\none\b\" />
+  </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\a\c\file4.ts" />
+    <TypeScriptCompile Include="artifacts\tsconfig\multiple\a\c\file6.tsx" />
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\a\file1.ts" />
-    <TypeScriptCompile Include="artifacts\tsconfig\multiple\b\file2.ts" />
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\b\file3.ts" />
+    <TypeScriptCompile Include="artifacts\tsconfig\multiple\react.d.ts" />
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\test.ts" />
-    <TypeScriptCompile Include="artifacts\tsconfig\none\b\file2.ts" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
