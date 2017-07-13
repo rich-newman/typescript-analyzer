@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.Shell;
+﻿using EnvDTE;
+using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,11 +15,7 @@ namespace WebLinterVsix
         protected void BeforeQueryStatus(object sender, EventArgs e)
         {
             var button = (OleMenuCommand)sender;
-            var paths = ProjectHelpers.GetSelectedItemPaths();
-            button.Visible = paths.Any(f => string.IsNullOrEmpty(Path.GetExtension(f)) || 
-                                            LinterService.IsFileSupported(f) ||
-                                            (WebLinterPackage.Settings.UseTsConfig && 
-                                                TsconfigLocations.IsValidTsconfig(f, null, false)));
+            button.Visible = LinterService.AreAllSelectedItemsLintable();
         }
 
         protected async System.Threading.Tasks.Task<bool> LintSelectedFiles(bool fixErrors)
@@ -28,12 +25,14 @@ namespace WebLinterVsix
                 WebLinterPackage.Dte.StatusBar.Text = "TSLint is not enabled in Tools/Options";
                 return false;
             }
-            List<string> files = WebLinterPackage.Settings.UseTsConfig ? GetTsconfigFilesFromSelectedItemPaths() 
+            IEnumerable<string> files = WebLinterPackage.Settings.UseTsConfig ? GetTsconfigFilesFromSelectedItemPaths() 
                 : GetFilesInSelectedItemPaths();
+            UIHierarchyItem[] selectedItems = WebLinterPackage.Dte.ToolWindows.SolutionExplorer.SelectedItems as UIHierarchyItem[];
+            string[] filterFileNames = TsconfigLocations.FindFilterFiles(selectedItems, WebLinterPackage.Dte.Solution);
             if (files.Any())
             {
                 return await LinterService.Lint(showErrorList: true, fixErrors: fixErrors, 
-                                                        callSync: false, fileNames: files.ToArray());
+                                                callSync: false, fileNames: files.ToArray(), filterFileNames: filterFileNames);
             }
             else
             {
@@ -67,6 +66,7 @@ namespace WebLinterVsix
             return files;
         }
 
+        // TODO make an enumerable: we cast to array immediately after this is called, so we're iterating multiple times for no reason
         private static List<string> GetFilesInSelectedItemPaths()
         {
             var paths = ProjectHelpers.GetSelectedItemPaths();
@@ -76,16 +76,10 @@ namespace WebLinterVsix
             return files;
         }
 
-        private static List<string> GetTsconfigFilesFromSelectedItemPaths()
+        private static IEnumerable<string> GetTsconfigFilesFromSelectedItemPaths()
         {
-            Array items = (Array)WebLinterPackage.Dte.ToolWindows.SolutionExplorer.SelectedItems;
-            IEnumerable<Tsconfig> tsconfigs = TsconfigLocations.FindFromSelectedItems(items, WebLinterPackage.Dte.Solution);
-            // TODO there's no point in making them lazy iterators if the first thing we do is just turn them into a concrete List
-            // We may as well just construct the List<string> in the Tsconfig method
-            List<string> files = new List<string>();
-            foreach (Tsconfig tsconfig in tsconfigs)
-                files.Add(tsconfig.FullName);
-            return files;
+            UIHierarchyItem[] selectedItems = WebLinterPackage.Dte.ToolWindows.SolutionExplorer.SelectedItems as UIHierarchyItem[];
+            return TsconfigLocations.FindPathsFromSelectedItems(selectedItems, WebLinterPackage.Dte.Solution);
         }
 
         private static void AddFilesInPath(string path, List<string> files)
@@ -93,9 +87,9 @@ namespace WebLinterVsix
             if (Directory.Exists(path))
             {
                 var children = GetFiles(path, "*.*");
-                files.AddRange(children.Where(c => LinterService.IsFileSupported(c)));
+                files.AddRange(children.Where(c => LinterService.IsLintableTsOrTsxFile(c)));
             }
-            else if (File.Exists(path) && LinterService.IsFileSupported(path))
+            else if (File.Exists(path) && LinterService.IsLintableTsOrTsxFile(path))
             {
                 files.Add(path);
             }

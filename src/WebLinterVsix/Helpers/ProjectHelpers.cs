@@ -47,25 +47,32 @@ namespace WebLinterVsix
 
             foreach (UIHierarchyItem selItem in items)
             {
-                ProjectItem item = selItem.Object as ProjectItem;
-                if (item != null && item.Properties != null)
-                {
-                    string file= item.Properties.Item("FullPath").Value.ToString();
-
-                    if (!string.IsNullOrEmpty(file))
-                        yield return file;
-                    else
-                        continue;
-                }
-
-                Project project = selItem.Object as Project;
-                if (project != null)
-                    yield return project.GetRootFolder();
-
-                Solution solution = selItem.Object as Solution;
-                if (solution != null)
-                    yield return Path.GetDirectoryName(solution.FullName);
+                string path = GetSelectedItemPath(selItem);
+                if (path != null) yield return path;
             }
+        }
+
+        public static string GetSelectedItemPath(UIHierarchyItem selItem)
+        {
+            ProjectItem item = selItem.Object as ProjectItem;
+            if (item != null && item.Properties != null)
+            {
+                string file = item.Properties.Item("FullPath").Value.ToString();
+
+                if (!string.IsNullOrEmpty(file))
+                    return file;
+                else
+                    return null;
+            }
+
+            Project project = selItem.Object as Project;
+            if (project != null)
+                return project.GetRootFolder();
+
+            Solution solution = selItem.Object as Solution;
+            if (solution != null)
+                return Path.GetDirectoryName(solution.FullName);
+            return null;
         }
 
         public static string GetRootFolder(this Project project)

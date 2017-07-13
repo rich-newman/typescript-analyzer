@@ -12,8 +12,6 @@ namespace WebLinterVsix.Helpers
     {
         public static Tsconfig FindFromProjectItem(string projectItemFullPath, Solution openSolution)
         {
-            bool validItem = Directory.Exists(projectItemFullPath) || openSolution.FindProjectItem(projectItemFullPath) != null;
-            if (!validItem) return null;
             DirectoryInfo folder = Directory.GetParent(projectItemFullPath);
             while (folder != null)
             {
@@ -62,20 +60,35 @@ namespace WebLinterVsix.Helpers
             }
         }
 
-        public static IEnumerable<Tsconfig> FindFromSelectedItems(Array items, Solution openSolution)
+        public static string[] FindFilterFiles(UIHierarchyItem[] items, Solution openSolution)
+        {
+            List<string> result = new List<string>();
+            foreach (UIHierarchyItem selItem in items)
+            {
+                if (selItem.Object is ProjectItem item &&
+                    item.Properties?.Item("FullPath")?.Value is string projectItemPath &&
+                    LinterService.IsLintableTsOrTsxFile(projectItemPath))
+                {
+                    result.Add(projectItemPath);
+                }
+                else
+                    return null;
+            }
+            return result.ToArray();
+        }
+
+        public static IEnumerable<Tsconfig> FindFromSelectedItems(UIHierarchyItem[] items, Solution openSolution)
         {
             HashSet<string> seenPaths = new HashSet<string>();
             foreach (UIHierarchyItem selItem in items)
             {
-                IEnumerable<Tsconfig> currentEnumerable = null;
-                if (selItem.Object is ProjectItem item && item.Properties != null)
-                {
-                    string projectItemFullPath = item.Properties?.Item("FullPath")?.Value?.ToString();
-                    if (!string.IsNullOrEmpty(projectItemFullPath))
-                        currentEnumerable = FindFromProjectItemEnumerable(projectItemFullPath, openSolution);
-                }
-                if (selItem.Object is Project project) currentEnumerable = FindInProject(project, openSolution);
-                if (selItem.Object is Solution solution) currentEnumerable = FindInSolution(solution);
+                if (!LinterService.IsLintable(selItem)) continue;
+                IEnumerable<Tsconfig> currentEnumerable =
+                    selItem.Object is Solution solution ? FindInSolution(solution) :
+                    selItem.Object is Project project ? FindInProject(project, openSolution) :
+                        (selItem.Object is ProjectItem item && item.Properties != null &&
+                        item.Properties?.Item("FullPath")?.Value is string projectItemFullPath) ?
+                            FindFromProjectItemEnumerable(projectItemFullPath, openSolution) : null;
                 if (currentEnumerable == null) continue;
                 foreach (Tsconfig tsconfig in currentEnumerable)
                 {
@@ -86,6 +99,11 @@ namespace WebLinterVsix.Helpers
                     }
                 }
             }
+        }
+
+        public static IEnumerable<string> FindPathsFromSelectedItems(UIHierarchyItem[] items, Solution openSolution)
+        {
+            foreach (Tsconfig tsconfig in FindFromSelectedItems(items, openSolution)) yield return tsconfig.FullName;
         }
 
         public static bool IsValidTsconfig(string fileName, Solution openSolution, bool checkIfInSolution = true)

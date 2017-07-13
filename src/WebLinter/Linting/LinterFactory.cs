@@ -14,7 +14,7 @@ namespace WebLinter
         private static string[] _supported = new string[] { ".TS", ".TSX" };
         private static AsyncLock _mutex = new AsyncLock();
 
-        public static bool IsFileSupported(string fileName)
+        public static bool IsExtensionTsOrTsx(string fileName)
         {
             string extension = Path.GetExtension(fileName).ToUpperInvariant();
 
@@ -32,6 +32,8 @@ namespace WebLinter
 
             await EnsureNodeFolderCreated(callSync);
 
+            // TODO - do we even need the grouping???  Don't think so
+            // Also the logic for selecting a linter is in here even though we now only have one
             var groupedFiles = fileNames.GroupBy(f => Path.GetExtension(f).ToUpperInvariant());
             Dictionary<LinterBase, IEnumerable<string>> dic = new Dictionary<LinterBase, IEnumerable<string>>();
 
