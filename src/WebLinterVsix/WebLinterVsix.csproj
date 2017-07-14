@@ -74,6 +74,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Commands\BuildEventsBase.cs" />
+    <Compile Include="Helpers\BuildFileLocations.cs" />
     <Compile Include="Commands\FixLintErrorsCommand.cs" />
     <Compile Include="Commands\LintFilesCommandBase.cs" />
     <Compile Include="Commands\ResetConfigFilesCommand.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="ErrorList\TableEntriesSnapshot.cs" />
     <Compile Include="ErrorList\SinkManager.cs" />
     <Compile Include="FileListeners\SourceFileCreationListener.cs" />
+    <Compile Include="Helpers\LintFileLocations.cs" />
     <Compile Include="Helpers\ProjectHelpers.cs" />
     <Compile Include="Helpers\Tsconfig.cs" />
     <Compile Include="Helpers\TsconfigLocations.cs" />

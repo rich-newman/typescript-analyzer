@@ -1,10 +1,7 @@
 ﻿using EnvDTE;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
+using System.Linq;
 
 namespace WebLinterVsix.Helpers
 {
@@ -117,7 +114,6 @@ namespace WebLinterVsix.Helpers
                 ProjectItem projectItem = openSolution.FindProjectItem(fileName);
                 if (projectItem == null) return false;
             }
-            // Do we want to ignore nested tsconfig.jsons if we're ignoring nested files?  Don't think so
             return true;
         }
 
