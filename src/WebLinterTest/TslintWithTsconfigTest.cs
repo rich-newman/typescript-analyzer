@@ -108,9 +108,20 @@ namespace WebLinterTest
             IList<LintingError> file5Errors = GetErrorsForFile("file5.ts", result[0].Errors);
             Assert.IsTrue(file5Errors.Count == 4);
 
+            IList<LintingError> file6TsxErrors = GetErrorsForFile("file6.tsx", result[0].Errors);
+            Assert.IsTrue(file6TsxErrors.Count == 11);
+            LintingError memberAccessError = file6TsxErrors.First(le => le.ErrorCode == "member-access");
+            Assert.IsNotNull(memberAccessError);
+            Assert.AreEqual(11, memberAccessError.LineNumber);
+            Assert.AreEqual(4, memberAccessError.ColumnNumber);
+            Assert.IsTrue(memberAccessError.Message.Contains("sayHello"));
+
+            // IgnoreNested has no effect when we're using tsconfig.jsons (although it's false here)
+            IList<LintingError> file7NestedErrors = GetErrorsForFile("file7.ts", result[0].Errors);
+            Assert.IsTrue(file7NestedErrors.Count == 4);
+
             IList<LintingError> testErrors = GetErrorsForFile("test.ts", result[0].Errors);
             Assert.IsTrue(testErrors.Count == 5);
-
         }
 
         private IList<LintingError> GetErrorsForFile(string fileName, IEnumerable<LintingError> allErrors)
