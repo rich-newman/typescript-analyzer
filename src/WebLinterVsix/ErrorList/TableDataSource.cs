@@ -10,11 +10,23 @@ using WebLinter;
 
 namespace WebLinterVsix
 {
-    class TableDataSource : ITableDataSource
+    internal interface IErrorsTableDataSource
     {
-        private static TableDataSource _instance;
+        void AddErrors(IEnumerable<LintingError> errors);
+        void CleanErrors(IEnumerable<string> files);
+        void BringToFront();
+        void CleanAllErrors();
+        bool HasErrors();
+        bool HasErrors(string fileName);
+    }
+
+    internal class TableDataSource : ITableDataSource, IErrorsTableDataSource
+    {
+        private static IErrorsTableDataSource _instance;
         private readonly List<SinkManager> _managers = new List<SinkManager>();
         private static Dictionary<string, TableEntriesSnapshot> _snapshots = new Dictionary<string, TableEntriesSnapshot>();
+
+        internal static Dictionary<string, TableEntriesSnapshot> Snapshots => _snapshots;  // For unit testing only
 
         [Import]
         private ITableManagerProvider TableManagerProvider { get; set; } = null;
@@ -32,7 +44,10 @@ namespace WebLinterVsix
                                                    StandardTableColumnDefinitions.Text, StandardTableColumnDefinitions.DocumentName, StandardTableColumnDefinitions.Line, StandardTableColumnDefinitions.Column);
         }
 
-        public static TableDataSource Instance
+        // Don't try this at home
+        internal static void InjectMockErrorsTableDataSource(IErrorsTableDataSource instance) => _instance = instance;
+
+        public static IErrorsTableDataSource Instance
         {
             get
             {

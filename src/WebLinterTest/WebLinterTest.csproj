@@ -80,15 +80,13 @@
   <ItemGroup>
     <Compile Include="AssemblyMethods.cs" />
     <Compile Include="BuildFileLocationsTest.cs" />
-    <Compile Include="CssLintTest.cs" />
-    <Compile Include="CoffeelintTest.cs" />
+    <Compile Include="LintEndToEndTest.cs" />
     <Compile Include="LintFileLocationsTest.cs" />
     <Compile Include="TslintWithTsconfigTest.cs" />
     <Compile Include="MessageFilter.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="MockSettings.cs" />
     <Compile Include="TsconfigLocationsTest.cs" />
     <Compile Include="TslintTest.cs" />
-    <Compile Include="EslintTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -102,12 +100,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="artifacts\csslint\b.css" />
-    <Content Include="artifacts\csslint\a.css" />
-    <None Include="artifacts\coffeelint\b.coffee" />
-    <None Include="artifacts\coffeelint\a.coffee" />
-    <None Include="artifacts\eslint\a.jsx" />
-    <Content Include="artifacts\eslint\b.js" />
     <Content Include="artifacts\tsconfig\multiple\tsconfigTest.csproj" />
     <Content Include="artifacts\tsconfig\none\tsconfigEmptyTest.csproj" />
     <Content Include="artifacts\tsconfig\Tsconfig.sln" />
@@ -117,7 +109,6 @@
     <None Include="artifacts\tsconfig\multiple\tsconfig.json" />
     <None Include="artifacts\tslint\b.ts" />
     <None Include="artifacts\tslint\a.ts" />
-    <Content Include="artifacts\eslint\a.js" />
     <None Include="artifacts\tslint\c.tsx" />
     <None Include="artifacts\tslint\d.tsx" />
     <None Include="artifacts\tslint\e.ts" />

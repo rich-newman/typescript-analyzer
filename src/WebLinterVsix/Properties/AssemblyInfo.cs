@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("WebLinterVsix")]
@@ -14,3 +15,5 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion(WebLinter.Constants.VERSION)]
 [assembly: AssemblyFileVersion(WebLinter.Constants.VERSION)]
+
+[assembly: InternalsVisibleTo("WebLinterTest")]

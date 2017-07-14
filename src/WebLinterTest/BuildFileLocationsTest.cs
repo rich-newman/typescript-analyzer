@@ -3,8 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using WebLinterVsix.Helpers;
 using System.Linq;
+using WebLinterVsix.Helpers;
 
 namespace WebLinterTest
 {
