@@ -9,7 +9,7 @@ using WebLinterVsix.Helpers;
 namespace WebLinterTest
 {
     [TestClass]
-    public class TsconfigTest
+    public class TsconfigLocationsTest
     {
         private static EnvDTE80.DTE2 dte = null;
         private static EnvDTE.Solution solution = null;
@@ -25,7 +25,7 @@ namespace WebLinterTest
             dte.Solution.Open(Path.GetFullPath(@"../../artifacts/tsconfig/Tsconfig.sln"));
             solution = dte.Solution;
 
-            Settings settings = new Settings() { UseTsConfig = true };
+            MockSettings settings = new MockSettings() { UseTsConfig = true };
             WebLinterVsix.WebLinterPackage.Settings = settings;
             WebLinterVsix.WebLinterPackage.Dte = dte;
 
@@ -42,13 +42,13 @@ namespace WebLinterTest
             MessageFilter.Revoke();
         }
 
-        [TestMethod, TestCategory("tsconfig")]
+        [TestMethod, TestCategory("tsconfig Locations")]
         public void BasicEnvironmentTest()
         {
 
         }
 
-        [TestMethod, TestCategory("tsconfig")]
+        [TestMethod, TestCategory("tsconfig Locations")]
         public void FindForSingleItem()
         {
             string projectItemFullName = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/file1.ts");
@@ -57,7 +57,7 @@ namespace WebLinterTest
             Assert.AreEqual(expected, result.FullName);
         }
 
-        [TestMethod, TestCategory("tsconfig")]
+        [TestMethod, TestCategory("tsconfig Locations")]
         public void FindForSingleItemSubfolder()
         {
             string projectItemFullName = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/test.ts");
@@ -66,7 +66,7 @@ namespace WebLinterTest
             Assert.AreEqual(expected, result.FullName);
         }
 
-        [TestMethod, TestCategory("tsconfig")]
+        [TestMethod, TestCategory("tsconfig Locations")]
         public void FindForSingleItemRoot()
         {
             string projectItemFullName = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/c/file4.ts");
@@ -75,7 +75,7 @@ namespace WebLinterTest
             Assert.AreEqual(expected, result.FullName);
         }
 
-        [TestMethod, TestCategory("tsconfig")]
+        [TestMethod, TestCategory("tsconfig Locations")]
         public void FindForSingleItemNotsconfig()
         {
             // Note there's a tsconfig.json in the folder, but it's not in the project: it shouldn't be picked up
@@ -84,7 +84,7 @@ namespace WebLinterTest
             Assert.IsNull(result);
         }
 
-        [TestMethod, TestCategory("tsconfig")]
+        [TestMethod, TestCategory("tsconfig Locations")]
         public void FindInProject()
         {
             string projectFullName = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfigTest.csproj");
@@ -99,7 +99,7 @@ namespace WebLinterTest
             Assert.IsTrue(Contains(results, expected3));
         }
 
-        [TestMethod, TestCategory("tsconfig")]
+        [TestMethod, TestCategory("tsconfig Locations")]
         public void FindInProjectNotsconfig()
         {
             string projectFullName = Path.GetFullPath(@"../../artifacts/tsconfig/none/tsconfigEmptyTest.csproj");
@@ -109,7 +109,7 @@ namespace WebLinterTest
             Assert.AreEqual(0, results.Length);
         }
 
-        [TestMethod, TestCategory("tsconfig")]
+        [TestMethod, TestCategory("tsconfig Locations")]
         public void FindInSelectedItemsSingleFile()
         {
             // Arrange
@@ -129,7 +129,7 @@ namespace WebLinterTest
             Assert.IsTrue(Contains(results, expected));
         }
 
-        [TestMethod, TestCategory("tsconfig")]
+        [TestMethod, TestCategory("tsconfig Locations")]
         public void FindInSelectedItemsTsconfig()
         {
             string mainProjectFullName = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfigTest.csproj");
@@ -146,7 +146,7 @@ namespace WebLinterTest
             Assert.IsTrue(Contains(results, expected));
         }
 
-        [TestMethod, TestCategory("tsconfig")]
+        [TestMethod, TestCategory("tsconfig Locations")]
         public void FindInSelectedItemsNoTsconfig()
         {
             string emptyProjectFullName = Path.GetFullPath(@"../../artifacts/tsconfig/none/tsconfigEmptyTest.csproj");
@@ -161,7 +161,7 @@ namespace WebLinterTest
             Assert.AreEqual(0, results.Length);
         }
 
-        [TestMethod, TestCategory("tsconfig")]
+        [TestMethod, TestCategory("tsconfig Locations")]
         public void FindInSelectedItemsSolution()
         {
             MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = solution };
@@ -179,7 +179,7 @@ namespace WebLinterTest
 
         }
 
-        [TestMethod, TestCategory("tsconfig")]
+        [TestMethod, TestCategory("tsconfig Locations")]
         public void FindInSelectedItemsProject()
         {
             string mainProjectFullName = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfigTest.csproj");
@@ -200,7 +200,7 @@ namespace WebLinterTest
 
         }
 
-        [TestMethod, TestCategory("tsconfig")]
+        [TestMethod, TestCategory("tsconfig Locations")]
         public void FindInSelectedItemsMultipleFiles()
         {
             // Includes two files with the same tsconfig.json and one with none
@@ -222,7 +222,7 @@ namespace WebLinterTest
             MockUIHierarchyItem mockFile1HierarchyItem = new MockUIHierarchyItem() { Object = file1 };
 
 
-            UIHierarchyItem[] selectedItems = new UIHierarchyItem[] 
+            UIHierarchyItem[] selectedItems = new UIHierarchyItem[]
                                               {
                                                   mockFile1HierarchyItem, mockFile2HierarchyItem, mockFile4HierarchyItem
                                               };
@@ -234,7 +234,7 @@ namespace WebLinterTest
             Assert.IsTrue(Contains(results, expected));
         }
 
-        [TestMethod, TestCategory("tsconfig")]
+        [TestMethod, TestCategory("tsconfig Locations")]
         public void FindInSolution()
         {
             Tsconfig[] results = TsconfigLocations.FindInSolution(solution).ToArray();
@@ -247,7 +247,7 @@ namespace WebLinterTest
             Assert.IsTrue(Contains(results, expected3));
         }
 
-        private static Project FindProject(string projectFullName, Solution solution)
+        public static Project FindProject(string projectFullName, Solution solution)
         {
             var test = solution.Projects.GetEnumerator();
             foreach (Project project in solution.Projects)
@@ -255,7 +255,7 @@ namespace WebLinterTest
             return null;
         }
 
-        private static ProjectItem FindProjectItemInProject(string projectItemName, Project project)
+        public static ProjectItem FindProjectItemInProject(string projectItemName, Project project)
         {
             foreach (ProjectItem projectItem in project.ProjectItems)
             {
@@ -288,7 +288,7 @@ namespace WebLinterTest
         }
     }
 
-    public class MockUIHierarchyItem: UIHierarchyItem
+    public class MockUIHierarchyItem : UIHierarchyItem
     {
         public void Select(vsUISelectionType How)
         {

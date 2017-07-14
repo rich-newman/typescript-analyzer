@@ -13,13 +13,13 @@ namespace WebLinterTest
         [TestMethod, TestCategory("CoffeeLint")]
         public async Task Standard()
         {
-            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/coffeelint/a.coffee");
+            var result = await LinterFactory.Lint(MockSettings.Instance, "../../artifacts/coffeelint/a.coffee");
             Assert.IsTrue(result.Length == 0);
         }
         [TestMethod, TestCategory("CoffeeLint")]
         public async Task Multiple()
         {
-            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/coffeelint/a.coffee", "../../artifacts/coffeelint/b.coffee");
+            var result = await LinterFactory.Lint(MockSettings.Instance, "../../artifacts/coffeelint/a.coffee", "../../artifacts/coffeelint/b.coffee");
             Assert.IsTrue(result.Length == 0);
         }
 
@@ -27,7 +27,7 @@ namespace WebLinterTest
         [TestMethod, TestCategory("CoffeeLint")]
         public async Task FileDontExist()
         {
-            var result = await LinterFactory.Lint(Settings.Instance, "../../artifacts/coffeelint/doesntexist.coffee");
+            var result = await LinterFactory.Lint(MockSettings.Instance, "../../artifacts/coffeelint/doesntexist.coffee");
             Assert.IsTrue(result.Length == 0);
         }
     }

@@ -6,16 +6,16 @@ using WebLinter;
 
 namespace WebLinterTest
 {
-    class Settings : ISettings
+    class MockSettings : ISettings
     {
-        private static Settings _settings;
+        private static MockSettings _settings;
 
-        public static Settings Instance
+        public static MockSettings Instance
         {
             get
             {
                 if (_settings == null)
-                    _settings = new Settings();
+                    _settings = new MockSettings();
 
                 return _settings;
             }
@@ -32,8 +32,9 @@ namespace WebLinterTest
         public bool OnlyRunIfRequested => true;
         public bool RunOnBuild => false;
         public bool CleanErrorsOnBuild => false;
-        public bool IgnoreNestedFiles => true;
-        public IEnumerable<string> GetIgnorePatterns() { return new string[0]; }
+        public bool IgnoreNestedFiles { get; set; } = true;
+        public string[] IgnorePatterns { get; set; } = new string[0];
+        public IEnumerable<string> GetIgnorePatterns() { return IgnorePatterns; }
         public void ResetSettings() { }
     }
 }
