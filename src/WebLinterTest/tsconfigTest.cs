@@ -19,6 +19,7 @@ namespace WebLinterTest
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
+            MessageFilter.Register();
             Type type = System.Type.GetTypeFromProgID("VisualStudio.DTE.15.0");
             object inst = System.Activator.CreateInstance(type, true);
             dte = (EnvDTE80.DTE2)inst;
@@ -29,7 +30,6 @@ namespace WebLinterTest
             WebLinterVsix.WebLinterPackage.Settings = settings;
             WebLinterVsix.WebLinterPackage.Dte = dte;
 
-            MessageFilter.Register();
             //System.Threading.Thread.Sleep(1000);
         }
 
