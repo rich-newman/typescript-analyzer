@@ -63,7 +63,7 @@ namespace WebLinterVsix
                 return false;
 
             ProjectItem item = WebLinterPackage.Dte.Solution.FindProjectItem(fileName);
-            bool isInProject = item.GetFullPath() is string;
+            bool isInProject = item?.GetFullPath() is string;
             if (!isInProject) return false;
 
             // Ignore nested files
