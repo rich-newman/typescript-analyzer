@@ -71,8 +71,8 @@ var linters = {
             }
         }
         catch (err) {
-            if (debug) console.log(err.message + "::" + message);
-            return err.message + "::" + message;
+            if (debug) console.log(err.message);
+            return err.message;
         }
     }
 
