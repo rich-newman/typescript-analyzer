@@ -60,9 +60,10 @@ namespace WebLinterVsix
             try
             {
                 if (!LinterService.IsLinterEnabled) return false;
+                UIHierarchyItem[] selectedItems = WebLinterPackage.Dte.ToolWindows.SolutionExplorer.SelectedItems as UIHierarchyItem[];
                 IEnumerable<string> files = WebLinterPackage.Settings.UseTsConfig ?
-                                                BuildFileLocations.GetTsconfigBuildFilesToLint(isBuildingSolution) :
-                                                BuildFileLocations.GetBuildFilesToLint(isBuildingSolution);
+                                                BuildFileLocations.GetTsconfigBuildFilesToLint(isBuildingSolution, selectedItems) :
+                                                BuildFileLocations.GetBuildFilesToLint(isBuildingSolution, selectedItems);
                 if (!files.Any()) return false;
                 return await LinterService.Lint(showErrorList: true, fixErrors: false, callSync: true, fileNames: files.ToArray());
             }

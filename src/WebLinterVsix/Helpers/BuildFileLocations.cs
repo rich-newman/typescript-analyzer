@@ -10,7 +10,7 @@ namespace WebLinterVsix.Helpers
     /// </summary>
     public static class BuildFileLocations
     {
-        public static List<string> GetBuildFilesToLint(bool isBuildingSolution)
+        public static List<string> GetBuildFilesToLint(bool isBuildingSolution, UIHierarchyItem[] selectedItems)
         {
             List<string> files = new List<string>();
             if (isBuildingSolution)
@@ -20,7 +20,7 @@ namespace WebLinterVsix.Helpers
             }
             else
             {
-                var paths = GetSelectedItemProjectPaths();
+                var paths = GetSelectedItemProjectPaths(selectedItems);
                 foreach (string path in paths)
                     LintFileLocations.AddFilesInPath(path, files);
             }
@@ -34,14 +34,13 @@ namespace WebLinterVsix.Helpers
             return Path.GetDirectoryName(solution.FullName);
         }
 
-        private static IEnumerable<string> GetSelectedItemProjectPaths()
+        private static IEnumerable<string> GetSelectedItemProjectPaths(UIHierarchyItem[] selectedItems)
         {
             // Note that you can build a single project from the build menu, but your options are limited
             // to the project you have selected in Solution Explorer.  Here 'project you have selected' can
             // mean the project a selected item is in.  If you ctrl-click items in two projects the menu option
             // changes to 'Build Selection', meaning build both.  This logic replicates that.
             HashSet<string> seenPaths = new HashSet<string>();
-            UIHierarchyItem[] selectedItems = WebLinterPackage.Dte.ToolWindows.SolutionExplorer.SelectedItems as UIHierarchyItem[];
             foreach (UIHierarchyItem selectedItem in selectedItems)
             {
                 Project project = selectedItem.Object is ProjectItem item ? item.ContainingProject
@@ -56,11 +55,11 @@ namespace WebLinterVsix.Helpers
             }
         }
 
-        public static IEnumerable<string> GetTsconfigBuildFilesToLint(bool isBuildingSolution)
+        public static IEnumerable<string> GetTsconfigBuildFilesToLint(bool isBuildingSolution, UIHierarchyItem[] selectedItems)
         {
             IEnumerable<UIHierarchyItem> uiHierarchyItems = isBuildingSolution ? 
                                                             new UIHierarchyItem[] { GetUIHierarchySolutionItem() } :
-                                                            GetSelectedItemProjectUIHierarchyItems();
+                                                            GetSelectedItemProjectUIHierarchyItems(selectedItems);
             return TsconfigLocations.FindPathsFromSelectedItems(uiHierarchyItems.ToArray(), WebLinterPackage.Dte.Solution);
         }
 
@@ -75,14 +74,13 @@ namespace WebLinterVsix.Helpers
             return null;
         }
 
-        private static IEnumerable<UIHierarchyItem> GetSelectedItemProjectUIHierarchyItems()
+        private static IEnumerable<UIHierarchyItem> GetSelectedItemProjectUIHierarchyItems(UIHierarchyItem[] selectedItems)
         {
             // Note that you can build a single project from the build menu, but your options are limited
             // to the project you have selected in Solution Explorer.  Here 'project you have selected' can
             // mean the project a selected item is in.  If you ctrl-click items in two projects the menu option
             // changes to 'Build Selection', meaning build both.  This logic replicates that.
             HashSet<string> seenPaths = new HashSet<string>();
-            UIHierarchyItem[] selectedItems = WebLinterPackage.Dte.ToolWindows.SolutionExplorer.SelectedItems as UIHierarchyItem[];
 
             foreach (UIHierarchyItem selectedItem in selectedItems)
             {

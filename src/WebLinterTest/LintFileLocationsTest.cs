@@ -3,8 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using WebLinterVsix;
 using WebLinterVsix.Helpers;
 
 namespace WebLinterTest
@@ -30,8 +28,6 @@ namespace WebLinterTest
             settings = new MockSettings() { UseTsConfig = true };
             WebLinterVsix.WebLinterPackage.Settings = settings;
             WebLinterVsix.WebLinterPackage.Dte = dte;
-
-            //System.Threading.Thread.Sleep(1000);
         }
 
         [ClassCleanup]
