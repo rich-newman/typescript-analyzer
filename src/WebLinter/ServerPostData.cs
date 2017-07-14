@@ -17,5 +17,7 @@ namespace WebLinter
         [JsonProperty("usetsconfig")]
         public bool UseTSConfig { get; set; }
 
+        [JsonProperty("debug")]
+        public bool Debug { get; set; }
     }
 }

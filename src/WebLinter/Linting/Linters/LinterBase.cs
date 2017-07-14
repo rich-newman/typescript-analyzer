@@ -74,6 +74,9 @@ namespace WebLinter
                 FixErrors = FixErrors,
                 UseTSConfig = Settings.UseTsConfig
             };
+#if DEBUG
+            postMessage.Debug = true;
+#endif
 
             return await Server.CallServer(Name, postMessage, callSync);
         }

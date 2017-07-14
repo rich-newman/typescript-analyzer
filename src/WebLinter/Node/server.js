@@ -33,7 +33,7 @@ var start = function (port) {
 
                 if (linter) {
                     var data = JSON.parse(body);
-                    var result = linter(data.config, data.fixerrors, data.files, data.usetsconfig);
+                    var result = linter(data.config, data.fixerrors, data.files, data.usetsconfig, data.debug);
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
                     res.write(result);
@@ -52,10 +52,12 @@ var start = function (port) {
 };
 
 var linters = {
-    tslint: function (configFile, fixErrors, files, usetsconfig) {
-        console.log(configFile);
-        files.forEach(f => console.log(f));
-        console.log(usetsconfig);
+    tslint: function (configFile, fixErrors, files, usetsconfig, debug) {
+        if (debug) {
+            console.log(configFile);
+            files.forEach(f => console.log(f));
+            console.log(usetsconfig);
+        }
         try {
             var options = {
                 fix: fixErrors,
@@ -63,20 +65,20 @@ var linters = {
             };
 
             if (usetsconfig) {
-                return linttsconfigs(configFile, files, options);
+                return linttsconfigs(configFile, files, options, debug);
             } else {
-                return lintFiles(configFile, files, options);
+                return lintFiles(configFile, files, options, debug);
             }
         }
         catch (err) {
-            console.log(err.message + "::" + message);
+            if (debug) console.log(err.message + "::" + message);
             return err.message + "::" + message;
         }
     }
 
 };
 
-function lintFiles(configFile, files, options) {
+function lintFiles(configFile, files, options, debug) {
     var tslint = require("tslint");
     var linter = new tslint.Linter(options);
     for (var i = 0; i < files.length; i++) {
@@ -85,11 +87,12 @@ function lintFiles(configFile, files, options) {
         var configuration = tslint.Configuration.findConfiguration(configFile, fileName).results;
         linter.lint(fileName, fileContents, configuration);
     }
+    if (debug) console.log(linter.getResult().failures.length + " errors found");
     return linter.getResult().output;
 
 }
 
-function linttsconfigs(tslintConfigFile, tsconfigFiles, options) {
+function linttsconfigs(tslintConfigFile, tsconfigFiles, options, debug) {
     var tslint = require("tslint");
     var failures = [];
     for (var tsconfigCtr = 0; tsconfigCtr < tsconfigFiles.length; tsconfigCtr++) {
@@ -104,6 +107,7 @@ function linttsconfigs(tslintConfigFile, tsconfigFiles, options) {
         }
         failures = failures.concat(linter.getResult().failures);
     }
+    if (debug) console.log(failures.length + " errors found");
     var failuresJson = failures.map(function (failure) { return failure.toJson(); });
     return JSON.stringify(failuresJson);
 }
