@@ -27,12 +27,6 @@ namespace WebLinterVsix
 
         public static bool IsLintable(UIHierarchyItem selectedItem)
         {
-            //var test = selectedItem.Object is EnvDTE80.SolutionFolder;
-            //var test2 = selectedItem.Object is ProjectItem;
-            //var testItem = selectedItem.Object as ProjectItem;
-            //var test3 = testItem.Properties;
-            //var test4 = testItem.Properties?.Item("FullPath");
-            //var test5 = testItem.Properties?.Item("FullPath")?.Value;
             return selectedItem.Object is Solution ||
                    selectedItem.Object is Project ||
                    selectedItem.Object is EnvDTE80.SolutionFolder ||

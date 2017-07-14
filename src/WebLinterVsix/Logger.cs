@@ -1,8 +1,7 @@
 ﻿// Modifications Copyright Rich Newman 2017
+using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualStudio.Shell.Interop;
-using WebLinter;
 
 namespace WebLinterVsix
 {
@@ -40,10 +39,28 @@ namespace WebLinterVsix
 
         public static void Log(Exception ex)
         {
-            if (ex != null)
+            try
             {
-                Log(ex.ToString());
+                if (ex != null)
+                {
+                    Log(ex.ToString());
+                }
             }
+            catch (Exception) { }
+        }
+
+        public static void LogAndWarn(Exception ex)
+        {
+            try
+            {
+                if (ex != null)
+                {
+                    Log(ex.ToString());
+                    string warning = "A TypeScript Analyzer error occurred. See Output window for more details.";
+                    WebLinterPackage.Dte.StatusBar.Text = warning;
+                }
+            }
+            catch (Exception) { }
         }
 
         private static bool EnsurePane()

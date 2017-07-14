@@ -44,16 +44,20 @@ namespace WebLinterVsix
 
         private void EditConfig(object sender, EventArgs e)
         {
-            var button = (MenuCommand)sender;
-
-            string folder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string fileName = GetFileName(button.CommandID.ID);
-            string configFile = Path.Combine(folder, fileName);
-
-            if (!string.IsNullOrEmpty(configFile))
+            try
             {
-                WebLinterPackage.Dte.ExecuteCommand("File.OpenFile", "\"" + configFile + "\"");
+                var button = (MenuCommand)sender;
+
+                string folder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                string fileName = GetFileName(button.CommandID.ID);
+                string configFile = Path.Combine(folder, fileName);
+
+                if (!string.IsNullOrEmpty(configFile))
+                {
+                    WebLinterPackage.Dte.ExecuteCommand("File.OpenFile", "\"" + configFile + "\"");
+                }
             }
+            catch (Exception ex) { Logger.LogAndWarn(ex); }
         }
 
         private string GetFileName(int commandId)

@@ -36,15 +36,23 @@ namespace WebLinterVsix
 
         private async void ResetConfigurationFiles(object sender, EventArgs e)
         {
-            string msg = "This will reset the configuration for the TypeScript Analyzer to its defaults.\n\nDo you wish to continue?";
-            var result = MessageBox.Show(msg, Vsix.Name, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes)
+            try
             {
-                await LinterService.CopyResourceFilesToUserProfile(true);
-                WebLinterPackage.Settings.ResetSettings();
-                WebLinterPackage.Dte.StatusBar.Text = "TypeScript Analyzer (tslint) configuration files have been reset";
+                string msg = "This will reset the configuration for the TypeScript Analyzer to its defaults.\n\nDo you wish to continue?";
+                var result = MessageBox.Show(msg, Vsix.Name, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    await LinterService.CopyResourceFilesToUserProfile(true);
+                    WebLinterPackage.Settings.ResetSettings();
+                    WebLinterPackage.Dte.StatusBar.Text = "TypeScript Analyzer (tslint) configuration files have been reset";
+                }
             }
+            catch (Exception ex)
+            {
+                Logger.LogAndWarn(ex);
+            }
+
         }
     }
 }
