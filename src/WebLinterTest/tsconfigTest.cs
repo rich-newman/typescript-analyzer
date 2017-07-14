@@ -1,11 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using EnvDTE;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 using System.Linq;
-using WebLinter;
+using WebLinterVsix;
 using WebLinterVsix.Helpers;
-using System.Collections.Generic;
-using EnvDTE;
 
 namespace WebLinterTest
 {
@@ -268,7 +267,7 @@ namespace WebLinterTest
 
         private static ProjectItem FindProjectItemInProjectItem(string projectItemName, ProjectItem rootProjectItem)
         {
-            string fileName = rootProjectItem.Properties.Item("FullPath")?.Value?.ToString();
+            string fileName = rootProjectItem.GetFullPath();
             if (fileName == projectItemName) return rootProjectItem;
             if (rootProjectItem == null || rootProjectItem.ProjectItems == null) return null;
             foreach (ProjectItem subProjectItem in rootProjectItem.ProjectItems)

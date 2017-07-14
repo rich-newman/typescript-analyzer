@@ -32,7 +32,7 @@ namespace WebLinterVsix.Helpers
 
         private static string GetSelectedItemPath(UIHierarchyItem selItem)
         {
-            if (selItem.Object is ProjectItem item && item.Properties?.Item("FullPath")?.Value is string file)
+            if (selItem.Object is ProjectItem item && item.GetFullPath() is string file)
                 return string.IsNullOrEmpty(file) ? null : file;  // I'm unconvinced it's possible for the string to be empty
 
             if (selItem.Object is Project project)

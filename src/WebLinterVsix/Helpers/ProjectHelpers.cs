@@ -42,5 +42,21 @@ namespace WebLinterVsix
 
             return null;
         }
+
+        public static string GetFullPath(this ProjectItem projectItem)
+        {
+            string objectTypeName = projectItem.Object?.GetType().FullName;
+            if (objectTypeName == "Microsoft.NodejsTools.Project.NodeModulesNode") return null;
+            try
+            {
+                return projectItem.Properties?.Item("FullPath")?.Value?.ToString();
+            }
+            // If FullPath doesn't exist then .Item throws.  Which is a damn shame because we wouldn't need this method.
+            catch (ArgumentException) 
+            {
+                Logger.Log("GetFullPath throws for " + objectTypeName);
+                return null;
+            }
+        }
     }
 }

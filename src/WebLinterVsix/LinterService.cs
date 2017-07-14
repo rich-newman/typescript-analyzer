@@ -31,7 +31,7 @@ namespace WebLinterVsix
                    selectedItem.Object is Project ||
                    selectedItem.Object is EnvDTE80.SolutionFolder ||
                   (selectedItem.Object is ProjectItem item &&
-                        item.Properties?.Item("FullPath")?.Value is string projectItemPath &&
+                        item.GetFullPath() is string projectItemPath &&
                         IsLintableProjectItem(projectItemPath));
         }
 
@@ -63,9 +63,8 @@ namespace WebLinterVsix
                 return false;
 
             ProjectItem item = WebLinterPackage.Dte.Solution.FindProjectItem(fileName);
-            bool isInProject = item?.Properties?.Item("FullPath")?.Value is string;
+            bool isInProject = item.GetFullPath() is string;
             if (!isInProject) return false;
-            //if (item == null) return false;
 
             // Ignore nested files
             if (WebLinterPackage.Settings.IgnoreNestedFiles)
