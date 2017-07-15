@@ -47,12 +47,12 @@ namespace WebLinterVsix
         internal static async System.Threading.Tasks.Task<bool> LintLintLint(bool fixErrors, UIHierarchyItem[] selectedItems)
         {
             IEnumerable<string> files = WebLinterPackage.Settings.UseTsConfig ?
-                                        TsconfigLocations.FindPathsFromSelectedItems(selectedItems, WebLinterPackage.Dte.Solution) :
+                                        TsconfigLocations.FindPathsFromSelectedItems(selectedItems) :
                                         LintFileLocations.GetFilePathsFromSelectedItemPaths(selectedItems);
             if (files.Any())
             {
                 string[] filterFileNames = WebLinterPackage.Settings.UseTsConfig ?
-                                           TsconfigLocations.FindFilterFiles(selectedItems, WebLinterPackage.Dte.Solution) : null;
+                                           TsconfigLocations.FindFilterFiles(selectedItems) : null;
                 return await LinterService.Lint(showErrorList: true, fixErrors: fixErrors, callSync: false,
                                                 fileNames: files.ToArray(), filterFileNames: filterFileNames);
             }

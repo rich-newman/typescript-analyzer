@@ -40,8 +40,7 @@ namespace WebLinterVsix
         {
             return IsLintableDirectory(projectItemPath) || 
                    IsLintableTsOrTsxFile(projectItemPath) ||
-                   (WebLinterPackage.Settings.UseTsConfig &&
-                        Helpers.TsconfigLocations.IsValidTsconfig(projectItemPath, WebLinterPackage.Dte.Solution, true));
+                   (WebLinterPackage.Settings.UseTsConfig && IsLintableTsconfig(projectItemPath));
         }
 
         public static bool IsLintableDirectory(string path)
@@ -59,6 +58,18 @@ namespace WebLinterVsix
             // Check if filename is absolute because when debugging, script files are sometimes dynamically created.
             if (string.IsNullOrEmpty(fileName) || !Path.IsPathRooted(fileName)) return false;
             if (!LinterFactory.IsExtensionTsOrTsx(fileName)) return false;
+            return IsLintableFile(fileName);
+        }
+
+        public static bool IsLintableTsconfig(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName) || !Path.IsPathRooted(fileName)) return false;
+            if (!fileName.EndsWith("tsconfig.json", ignoreCase: true, culture: null)) return false;
+            return IsLintableFile(fileName);
+        }
+
+        private static bool IsLintableFile(string fileName)
+        {
             if (WebLinterPackage.Settings == null || WebLinterPackage.Settings.GetIgnorePatterns().Any(p => fileName.Contains(p)))
                 return false;
 
@@ -73,7 +84,7 @@ namespace WebLinterVsix
                 if (item.ContainingProject.Kind.Equals("{9092aa53-fb77-4645-b42d-1ccca6bd08bd}", StringComparison.OrdinalIgnoreCase))
                     return true;
 
-                if (item.Collection?.Parent is ProjectItem parent && 
+                if (item.Collection?.Parent is ProjectItem parent &&
                     parent.Kind == EnvDTE.Constants.vsProjectItemKindPhysicalFile)
                     return false;
             }

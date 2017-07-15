@@ -17,6 +17,7 @@ namespace WebLinterTest
     {
         private static EnvDTE80.DTE2 dte = null;
         private static EnvDTE.Solution solution = null;
+        private static MockSettings settings = null;
 
         // Clunky, but better than nothing
         [ClassInitialize]
@@ -29,7 +30,7 @@ namespace WebLinterTest
             dte.Solution.Open(Path.GetFullPath(@"../../artifacts/tsconfig/Tsconfig.sln"));
             solution = dte.Solution;
 
-            MockSettings settings = new MockSettings() { UseTsConfig = true };
+            settings = new MockSettings() { UseTsConfig = true };
             WebLinterVsix.WebLinterPackage.Settings = settings;
             WebLinterVsix.WebLinterPackage.Dte = dte;
         }
@@ -54,7 +55,7 @@ namespace WebLinterTest
         public void FindForSingleItem()
         {
             string projectItemFullName = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/file1.ts");
-            Tsconfig result = TsconfigLocations.FindFromProjectItem(projectItemFullName, solution);
+            Tsconfig result = TsconfigLocations.FindFromProjectItem(projectItemFullName);
             string expected = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
             Assert.AreEqual(expected, result.FullName);
         }
@@ -63,7 +64,7 @@ namespace WebLinterTest
         public void FindForSingleItemSubfolder()
         {
             string projectItemFullName = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/test.ts");
-            Tsconfig result = TsconfigLocations.FindFromProjectItem(projectItemFullName, solution);
+            Tsconfig result = TsconfigLocations.FindFromProjectItem(projectItemFullName);
             string expected = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
             Assert.AreEqual(expected, result.FullName);
         }
@@ -72,7 +73,7 @@ namespace WebLinterTest
         public void FindForSingleItemRoot()
         {
             string projectItemFullName = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/c/file4.ts");
-            Tsconfig result = TsconfigLocations.FindFromProjectItem(projectItemFullName, solution);
+            Tsconfig result = TsconfigLocations.FindFromProjectItem(projectItemFullName);
             string expected = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
             Assert.AreEqual(expected, result.FullName);
         }
@@ -82,7 +83,7 @@ namespace WebLinterTest
         {
             // Note there's a tsconfig.json in the folder, but it's not in the project: it shouldn't be picked up
             string projectItemFullName = Path.GetFullPath(@"../../artifacts/tsconfig/none/b/file2.ts");
-            Tsconfig result = TsconfigLocations.FindFromProjectItem(projectItemFullName, solution);
+            Tsconfig result = TsconfigLocations.FindFromProjectItem(projectItemFullName);
             Assert.IsNull(result);
         }
 
@@ -91,7 +92,7 @@ namespace WebLinterTest
         {
             string projectFullName = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfigTest.csproj");
             Project project = FindProject(projectFullName, solution);
-            Tsconfig[] results = TsconfigLocations.FindInProject(project, solution).ToArray();
+            Tsconfig[] results = TsconfigLocations.FindInProject(project).ToArray();
             string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
             string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
             string expected3 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/tsconfig.json");
@@ -106,7 +107,7 @@ namespace WebLinterTest
         {
             string projectFullName = Path.GetFullPath(@"../../artifacts/tsconfig/none/tsconfigEmptyTest.csproj");
             Project project = FindProject(projectFullName, solution);
-            Tsconfig[] results = TsconfigLocations.FindInProject(project, solution).ToArray();
+            Tsconfig[] results = TsconfigLocations.FindInProject(project).ToArray();
             Assert.IsNotNull(results);
             Assert.AreEqual(0, results.Length);
         }
@@ -123,7 +124,7 @@ namespace WebLinterTest
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockFile4HierarchyItem };
 
             // Act
-            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems, solution).ToArray();
+            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems).ToArray();
 
             // Assert
             string expected = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
@@ -141,7 +142,7 @@ namespace WebLinterTest
             MockUIHierarchyItem mockTsconfigHierarchyItem = new MockUIHierarchyItem() { Object = tsconfig };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockTsconfigHierarchyItem };
 
-            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems, solution).ToArray();
+            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems).ToArray();
 
             string expected = mainProjectTsconfigFullName;
             Assert.AreEqual(1, results.Length);
@@ -158,7 +159,7 @@ namespace WebLinterTest
             MockUIHierarchyItem mockFile2HierarchyItem = new MockUIHierarchyItem() { Object = file2 };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockFile2HierarchyItem };
 
-            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems, solution).ToArray();
+            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems).ToArray();
 
             Assert.AreEqual(0, results.Length);
         }
@@ -169,7 +170,7 @@ namespace WebLinterTest
             MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = solution };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockSolutionHierarchyItem };
 
-            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems, solution).ToArray();
+            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems).ToArray();
 
             string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
             string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
@@ -190,7 +191,7 @@ namespace WebLinterTest
             MockUIHierarchyItem mockProjectHierarchyItem = new MockUIHierarchyItem() { Object = mainProject };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockProjectHierarchyItem };
 
-            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems, solution).ToArray();
+            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems).ToArray();
 
             string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
             string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
@@ -229,7 +230,7 @@ namespace WebLinterTest
                                                   mockFile1HierarchyItem, mockFile2HierarchyItem, mockFile4HierarchyItem
                                               };
 
-            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems, solution).ToArray();
+            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems).ToArray();
 
             string expected = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
             Assert.AreEqual(1, results.Length);
@@ -247,6 +248,27 @@ namespace WebLinterTest
             Assert.IsTrue(Contains(results, expected1));
             Assert.IsTrue(Contains(results, expected2));
             Assert.IsTrue(Contains(results, expected3));
+        }
+
+        [TestMethod, TestCategory("tsconfig Locations")]
+        public void FindInSolutionIgnorePath()
+        {
+            settings.IgnorePatterns = new string[] { @"\multiple\a\" };
+            try
+            {
+                Tsconfig[] results = TsconfigLocations.FindInSolution(solution).ToArray();
+                string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
+                string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
+                string expected3 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/tsconfig.json");
+                Assert.AreEqual(2, results.Length);
+                Assert.IsTrue(Contains(results, expected1));
+                Assert.IsFalse(Contains(results, expected2));  // IsFalse test: the file has been excluded
+                Assert.IsTrue(Contains(results, expected3));
+            }
+            finally
+            {
+                settings.IgnorePatterns = new string[0];
+            }
         }
 
         public static Project FindProject(string projectFullName, Solution solution)

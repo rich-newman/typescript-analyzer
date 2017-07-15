@@ -60,7 +60,7 @@ namespace WebLinterVsix.Helpers
             IEnumerable<UIHierarchyItem> uiHierarchyItems = isBuildingSolution ? 
                                                             new UIHierarchyItem[] { GetUIHierarchySolutionItem() } :
                                                             GetSelectedItemProjectUIHierarchyItems(selectedItems);
-            return TsconfigLocations.FindPathsFromSelectedItems(uiHierarchyItems.ToArray(), WebLinterPackage.Dte.Solution);
+            return TsconfigLocations.FindPathsFromSelectedItems(uiHierarchyItems.ToArray());
         }
 
         private static UIHierarchyItem GetUIHierarchySolutionItem()

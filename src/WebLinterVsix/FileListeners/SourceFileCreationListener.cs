@@ -106,7 +106,7 @@ namespace WebLinterVsix.FileListeners
         {
             if (WebLinterPackage.Settings.UseTsConfig)
             {
-                Tsconfig tsconfig = TsconfigLocations.FindFromProjectItem(filePath, WebLinterPackage.Dte.Solution);
+                Tsconfig tsconfig = TsconfigLocations.FindFromProjectItem(filePath);
                 if (tsconfig == null) return;
                 await LinterService.Lint(false, false, false, new string[] { tsconfig.FullName },
                                                               new string[] { filePath });
