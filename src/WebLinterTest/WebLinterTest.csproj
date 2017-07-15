@@ -108,6 +108,7 @@
     <None Include="artifacts\tsconfig\multiple\a\tsconfig.json" />
     <None Include="artifacts\tsconfig\multiple\b\tsconfig.json" />
     <None Include="artifacts\tsconfig\multiple\tsconfig.json" />
+    <Content Include="artifacts\tsconfig\tslint.json" />
     <None Include="artifacts\tslint\b.ts" />
     <None Include="artifacts\tslint\a.ts" />
     <None Include="artifacts\tslint\c.tsx" />
