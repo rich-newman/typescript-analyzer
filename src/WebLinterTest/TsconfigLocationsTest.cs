@@ -271,6 +271,32 @@ namespace WebLinterTest
             }
         }
 
+        [TestMethod, TestCategory("tsconfig Locations")]
+        public void FindInSolutionIncludeNested()
+        {
+            settings.IgnoreNestedFiles = false;
+            try
+            {
+                Tsconfig[] results = TsconfigLocations.FindInSolution(solution).ToArray();
+                string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
+                string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
+                string expected3 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/tsconfig.json");
+                // Nested tsconfig in tsconfigEmptyTest
+                string expected4 = Path.GetFullPath(@"../../artifacts/tsconfig/none/tsconfig.json");
+                // C:\Source\typescript-analyzer2\src\WebLinterTest\artifacts\tsconfig\none\tsconfig.json
+                Assert.AreEqual(4, results.Length);
+                Assert.IsTrue(Contains(results, expected1));
+                Assert.IsTrue(Contains(results, expected2));
+                Assert.IsTrue(Contains(results, expected3));
+                Assert.IsTrue(Contains(results, expected4));
+            }
+            finally
+            {
+                settings.IgnoreNestedFiles = true;
+            }
+
+        }
+
         public static Project FindProject(string projectFullName, Solution solution)
         {
             var test = solution.Projects.GetEnumerator();
