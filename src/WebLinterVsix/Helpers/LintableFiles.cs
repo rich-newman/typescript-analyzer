@@ -53,7 +53,8 @@ namespace WebLinterVsix.Helpers
         public static bool IsLintableDirectory(string path)
         {
             if (!Directory.Exists(path)) return false;
-            if (WebLinterPackage.Settings.GetIgnorePatterns().Any(p => path.Contains(p))) return false;
+            if (!WebLinterPackage.Settings.UseTsConfig && 
+                WebLinterPackage.Settings.GetIgnorePatterns().Any(p => path.Contains(p))) return false;
             // TODO Folder is not in project??  Below always returns null, so how do we check?
             //ProjectItem item = WebLinterPackage.Dte.Solution.FindProjectItem(path);
             return true;

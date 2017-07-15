@@ -11,7 +11,6 @@ namespace WebLinterVsix.Helpers
     /// </summary>
     public static class LintFileLocations
     {
-        // TODO make an enumerable: we cast to array immediately after this is called, so we're iterating multiple times for no reason
         public static List<string> GetFilePathsFromSelectedItemPaths(UIHierarchyItem[] selectedItems)
         {
             var paths = GetSelectedItemPaths(selectedItems);
