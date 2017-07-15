@@ -42,7 +42,7 @@ namespace WebLinterVsix
 
         [Category("Ignore")]
         [DisplayName("Ignore nested files")]
-        [Description("Nested files are files that are nested under other files in Solution Explorer.  Only applies if 'Use tsconfig.json files' is False.")]
+        [Description("Nested files are files that are nested under other files in Solution Explorer.")]
         [DefaultValue(true)]
         public bool IgnoreNestedFiles { get; set; }
 
@@ -54,13 +54,13 @@ namespace WebLinterVsix
 
         [Category("Build")]
         [DisplayName("Run on build")]
-        [Description("Runs the analyzer before a build.  Will cause build to fail if there are any TSLint errors in the Visual Studio Error List.  This can only happen if 'Show errors' (below) is true.")]
+        [Description("Runs the analyzer before a build.  Will cause build to fail if there are any TSLint errors in the Visual Studio Error List.  This can only happen if 'Show errors' (above) is true.")]
         [DefaultValue(false)]
         public bool RunOnBuild { get; set; }
 
         [Category("Basic")]
-        [DisplayName("Enable TSLint")]
-        [Description("TSLint is a linter for TypeScript files.")]
+        [DisplayName("Enable TypeScript Analyzer")]
+        [Description("TypeScript Analyzer uses tslint to analyze TypeScript files (.ts or .tsx)")]
         [DefaultValue(true)]
         public bool TSLintEnable { get; set; }
 
