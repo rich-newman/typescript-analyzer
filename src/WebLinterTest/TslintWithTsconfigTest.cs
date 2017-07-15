@@ -9,6 +9,9 @@ using WebLinter;
 
 namespace WebLinterTest
 {
+    /// <summary>
+    /// Tests linting of individual tsconfig.json files when use tsconfig.json is true
+    /// </summary>
     [TestClass]
     public class TslintWithTsconfigTest
     {

@@ -8,6 +8,14 @@ using WebLinterVsix.Helpers;
 
 namespace WebLinterTest
 {
+    /// <summary>
+    /// Tests file discovery for linting from selected items in Solution Explorer when we are building
+    /// Separate tests test the cases when use tsconfig.json is true and when it is false
+    /// </summary>
+    /// <remarks>
+    /// The rules are slightly different from regular file discovery: if a single item or items is
+    /// selected in Solution Explorer we need to figure out which VS projects are being built
+    /// </remarks>
     [TestClass]
     public class BuildFileLocationsTest
     {

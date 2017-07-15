@@ -7,6 +7,10 @@ using WebLinterVsix.Helpers;
 
 namespace WebLinterTest
 {
+    /// <summary>
+    /// Tests how files are found for linting from various selected items in Solution Explorer
+    /// This is the normal case of linting all files in a VS project: use tsconfig.json option is set to false
+    /// </summary>
     [TestClass]
     public class LintFileLocationsTest
     {
@@ -25,7 +29,7 @@ namespace WebLinterTest
             dte.Solution.Open(Path.GetFullPath(@"../../artifacts/tsconfig/Tsconfig.sln"));
             solution = dte.Solution;
 
-            settings = new MockSettings() { UseTsConfig = true };
+            settings = new MockSettings() { UseTsConfig = false };
             WebLinterVsix.WebLinterPackage.Settings = settings;
             WebLinterVsix.WebLinterPackage.Dte = dte;
         }

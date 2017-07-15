@@ -7,6 +7,9 @@ using System.IO;
 
 namespace WebLinterTest
 {
+    /// <summary>
+    /// Tests linting of individual .ts and .tsx files when use tsconfig.json is false
+    /// </summary>
     [TestClass]
     public class TsLintTest
     {

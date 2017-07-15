@@ -42,7 +42,8 @@ namespace WebLinterTest
     }
 
     /// <summary>
-    /// Attempt to actually test the whole process
+    /// Tests the whole process of linting end-to-end from selected items in Solution Explorer
+    /// to the snapshots parsed into the error list, both with and without use tsconfig.json set
     /// </summary>
     [TestClass]
     public class LintEndToEndTest

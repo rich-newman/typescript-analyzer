@@ -8,6 +8,10 @@ using WebLinterVsix.Helpers;
 
 namespace WebLinterTest
 {
+    /// <summary>
+    /// Tests how files are found for linting when the use tsconfig.json option is set to true
+    /// Tests file discovery both from file paths and from selected items in Solution Explorer
+    /// </summary>
     [TestClass]
     public class TsconfigLocationsTest
     {
@@ -28,8 +32,6 @@ namespace WebLinterTest
             MockSettings settings = new MockSettings() { UseTsConfig = true };
             WebLinterVsix.WebLinterPackage.Settings = settings;
             WebLinterVsix.WebLinterPackage.Dte = dte;
-
-            //System.Threading.Thread.Sleep(1000);
         }
 
         [ClassCleanup]
