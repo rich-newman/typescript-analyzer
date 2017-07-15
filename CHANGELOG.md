@@ -5,10 +5,16 @@ on the official Visual Studio extension gallery.
 
 ## 1.6
 
-**2017-07-10**
+**2017-07-15**
 
 - Underlying TSLint upgraded to 5.5.0, TypeScript 2.4.1.
-- (Allow for simpler debugging of node calls)
+- Option to use tsconfig.json files for linting added to Tools/Options ([#11](https://github.com/rich-newman/typescript-analyzer/issues/11)).  If this is true the analyzer passes tsconfig.json files to tslint, rather than individual TypeScript files, which allows the [tslint 'semantic' rules](https://palantir.github.io/tslint/usage/type-checking/) to be used.  More details and the exact rules for how the analyzer finds tsconfig.json files are in the [readme](https://github.com/rich-newman/typescript-analyzer).
+- Option to run the analyzer only if explicitly requested from the Solution Explorer added to Tools/Options ([#12](https://github.com/rich-newman/typescript-analyzer/issues/12)).  If true the default behavior of running the analyzer whenever a file is opened or saved is disabled.
+- Files now only ever get analyzed if they are in a Visual Studio project in a loaded Visual Studio solution.  Previously a file might or might not get analyzed depending on how it was accessed if it was in the folder tree but not in a project.
+- Introduced more robust error handling.
+- Fixed bug with resetting options to default values ([#9](https://github.com/rich-newman/typescript-analyzer/issues/9)).
+- The options on Tools/Options/TypeScript Analyzer screen are grouped more logically.
+- Debug: Changes made to allow for simpler debugging of node calls.
 
 ## 1.5
 
@@ -30,9 +36,9 @@ on the official Visual Studio extension gallery.
 
 **2017-05-20**
 
-- Add menu option to allow TSLint to try to fix errors using its fixers
-- Allow linting on entire projects and solutions in Solution Explorer
-- Give message in status bar if try to run linting and it's disabled in Tools/Options
+- Added menu option to allow TSLint to try to fix errors using its fixers
+- Allowed linting on entire projects and solutions in Solution Explorer
+- Message shown in status bar if try to run linting and it's disabled in Tools/Options
 
 
 ## 1.2

@@ -16,7 +16,30 @@ The menu options for the TypeScript Analyzer are separate from the menu options 
 
 ### TSLint Version
 
-The TypeScript Analyzer is using TSLint version 5.4.3.
+The TypeScript Analyzer is using TSLint version 5.5.0.
+
+### Analyze Using tsconfig.json
+
+By default the TypeScript Analyzer hands individual .ts and .tsx files to tslint for linting.  However, there is an option to use tsconfig.json files instead, Tools/Options/TypeScript Analyzer/Use tsconfig.json files.
+
+If this option is set to true then the TypeScript Analyzer only ever passes tsconfig.json files found in the Visual Studio solution to tslint.  tslint will lint the files found in those tsconfig.jsons.
+
+Also if this option is set then tslint can use the additional [tslint 'semantic' rules](https://palantir.github.io/tslint/usage/type-checking/).  These require a program object to be created, which can only be done from a tsconfig.json file.  These semantic rules are tagged with 'Requires Type Info' on the [tslint rules page](https://palantir.github.io/tslint/rules/).
+
+##### Rules For Finding tsconfig.json Files
+
+The rules around how the TypeScript Analyzer finds tsconfig.json files to be passed to tslint are a little complicated.  For completeness full details are below. 
+
+- The TypeScript Analyzer can be run for one tsconfig.json by right-clicking it in Solution Explorer and selecting 'Run TypeScript Analyzer'.  In this case just the one tsconfig.json file is passed to tslint.
+- If the TypeScript Analyzer is run for the entire solution then the analyzer finds all tsconfig.json files in any project in the solution and hands them all to tslint.  Note that the tsconfig.json files have to be included in the Visual Studio project, not just in the same folder.
+- If the TypeScript Analyzer is run for an individual Visual Studio project then the analyzer finds all tsconfig.json files in that project.
+- The TypeScript Analyzer can be run for an individual .ts or .tsx file, either from Solution Explorer or by opening or saving a file.  In this case the analyzer tries to find the nearest associated tsconfig.json file.  If there is one in the same folder it will use that, otherwise it will search up the folder tree looking in each parent folder until it finds one.  If no tsconfig.json file is found no linting takes place.  Linting results are then filtered so that only errors for the original file are displayed, rather than all errors from files in the tsconfig.json.
+- The TypeScript Analyzer can also be run for a folder in a project.  In this case the same rules as for an individual .ts or .tsx file are applied: the analyzer looks in the folder for a tsconfig.json and hands that to the linter if it finds it.  Otherwise it searches up the folder tree.  No filtering is applied to the results.
+- If more than one item is selected then the rules above are applied and a union of all tsconfig.jsons found is passed to tslint.  Results are only filtered to the individual files if **all** files are individual .ts or .tsx files.
+
+It's clearly possible in some of the scenarios above that one TypeScript file might be included in more than one tsconfig.json passed to tslint.  If there are any exact duplicate errors in the results then only one copy of the error is shown in the error list.
+
+Note that if 'Use tsconfig.json files' is true then the options 'Ignore nested files' and 'Ignore patterns' apply to the discovery of tsconfig.json files, not the files that are linted.
 
 ### Fix TypeScript Analyzer Errors
 
@@ -45,3 +68,7 @@ As a result all TSLint errors and warnings are by default displayed as warnings 
 However, it is possible to show TSLint errors as errors in the Error List, and TSLint warnings as warnings.  To do this go to the TypeScript Analyzer section in Tools/Options and set 'Show errors' to true.
 
 If 'Show errors' is enabled you can configure individual rules to be errors or warnings using tslint.json.  You can change the default severity level for all rules from 'error' with "defaultSeverity": "warn" at the top level.  You can change the level of individual rules by adding "severity": "warn" to the rule at the same level as "options".  This is [documented on the tslint website](https://palantir.github.io/tslint/usage/configuration/).
+
+### Only Run if Requested
+
+There is an 'Only run if requested' option on Tools/Options/TypeScript Analyzer.  If this is set to true then the analyzer will only run if explicitly requested with 'Run TypeScript Analyzer' from the Solution Explorer context menu, or on a build if 'Run on Build' is also true.  This means we disable the default behavior of running the analyzer whenever an individual .ts or .tsx file is opened or saved.
