@@ -85,6 +85,7 @@
     <Compile Include="ErrorList\TableEntriesSnapshot.cs" />
     <Compile Include="ErrorList\SinkManager.cs" />
     <Compile Include="FileListeners\SourceFileCreationListener.cs" />
+    <Compile Include="Helpers\LintableFiles.cs" />
     <Compile Include="Helpers\LintFileLocations.cs" />
     <Compile Include="Helpers\ProjectHelpers.cs" />
     <Compile Include="Helpers\Tsconfig.cs" />

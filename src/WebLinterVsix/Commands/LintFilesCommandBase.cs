@@ -16,7 +16,7 @@ namespace WebLinterVsix
         {
             try
             {
-                ((OleMenuCommand)sender).Visible = LinterService.AreAllSelectedItemsLintable();
+                ((OleMenuCommand)sender).Visible = LintableFiles.AreAllSelectedItemsLintable();
             }
             catch (Exception ex)
             {

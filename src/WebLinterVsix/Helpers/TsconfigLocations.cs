@@ -14,7 +14,7 @@ namespace WebLinterVsix.Helpers
             {
                 foreach (FileInfo fileInfo in folder.EnumerateFiles())
                 {
-                    if (LinterService.IsLintableTsconfig(fileInfo.FullName))
+                    if (LintableFiles.IsLintableTsconfig(fileInfo.FullName))
                         return new Tsconfig(fileInfo.FullName);
                 }
                 folder = folder.Parent;
@@ -48,7 +48,7 @@ namespace WebLinterVsix.Helpers
         public static IEnumerable<Tsconfig> FindInProjectItem(ProjectItem projectItem)
         {
             string fileName = projectItem.GetFullPath();
-            if (LinterService.IsLintableTsconfig(fileName))
+            if (LintableFiles.IsLintableTsconfig(fileName))
                 yield return new Tsconfig(fileName);
             if (projectItem.ProjectItems == null) yield break;
             foreach (ProjectItem subProjectItem in projectItem.ProjectItems)
@@ -64,7 +64,7 @@ namespace WebLinterVsix.Helpers
             {
                 if (selItem.Object is ProjectItem item &&
                     item.GetFullPath() is string projectItemPath &&
-                    LinterService.IsLintableTsOrTsxFile(projectItemPath))
+                    LintableFiles.IsLintableTsOrTsxFile(projectItemPath))
                 {
                     result.Add(projectItemPath);
                 }
@@ -79,7 +79,7 @@ namespace WebLinterVsix.Helpers
             HashSet<string> seenPaths = new HashSet<string>();
             foreach (UIHierarchyItem selItem in items)
             {
-                if (!LinterService.IsLintable(selItem)) continue;
+                if (!LintableFiles.IsLintable(selItem)) continue;
                 IEnumerable<Tsconfig> currentEnumerable =
                     selItem.Object is Solution solution ? FindInSolution(solution) :
                     selItem.Object is Project project ? FindInProject(project) :

@@ -50,7 +50,7 @@ namespace WebLinterVsix.FileListeners
                     {
                         _document.FileActionOccurred += DocumentSaved;
 
-                        if (!LinterService.IsLintableTsOrTsxFile(_document.FilePath))
+                        if (!LintableFiles.IsLintableTsOrTsxFile(_document.FilePath))
                             return;
 
                         textView.Properties.AddProperty("lint_filename", _document.FilePath);
@@ -94,7 +94,7 @@ namespace WebLinterVsix.FileListeners
             {
                 if (WebLinterPackage.Settings != null && !WebLinterPackage.Settings.OnlyRunIfRequested &&
                     e.FileActionType == FileActionTypes.ContentSavedToDisk &&
-                    LinterService.IsLintableTsOrTsxFile(e.FilePath)) // We may have changed settings since the event was hooked
+                    LintableFiles.IsLintableTsOrTsxFile(e.FilePath)) // We may have changed settings since the event was hooked
                 {
                     await CallLinterService(e.FilePath);
                 }

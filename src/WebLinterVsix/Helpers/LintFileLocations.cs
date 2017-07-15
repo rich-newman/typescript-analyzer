@@ -48,9 +48,9 @@ namespace WebLinterVsix.Helpers
             if (Directory.Exists(path))
             {
                 var children = GetFiles(path, "*.*");
-                files.AddRange(children.Where(c => LinterService.IsLintableTsOrTsxFile(c)));
+                files.AddRange(children.Where(c => LintableFiles.IsLintableTsOrTsxFile(c)));
             }
-            else if (File.Exists(path) && LinterService.IsLintableTsOrTsxFile(path))
+            else if (File.Exists(path) && LintableFiles.IsLintableTsOrTsxFile(path))
             {
                 files.Add(path);
             }
