@@ -53,8 +53,14 @@ namespace WebLinterVsix.Helpers
         public static bool IsLintableDirectory(string path)
         {
             if (!Directory.Exists(path)) return false;
-            if (!WebLinterPackage.Settings.UseTsConfig && 
-                WebLinterPackage.Settings.GetIgnorePatterns().Any(p => path.Contains(p))) return false;
+            if (!WebLinterPackage.Settings.UseTsConfig)
+            {
+                // Optimization (I think): We only use this to check if contained files are lintable and we use ignore strings 
+                // like '\node_modules\'. That won't match the folder without the line below, but will match every file and folder in it.
+                if (!path.EndsWith("\\")) path += "\\";
+                if(WebLinterPackage.Settings.GetIgnorePatterns().Any(p => path.Contains(p))) return false;
+            }   
+                
             // TODO Folder is not in project??  Below always returns null, so how do we check?
             //ProjectItem item = WebLinterPackage.Dte.Solution.FindProjectItem(path);
             return true;
@@ -63,7 +69,7 @@ namespace WebLinterVsix.Helpers
         public static bool IsLintableTsOrTsxFile(string fileName, bool checkIgnoreOptions = true)
         {
             // Check if filename is absolute because when debugging, script files are sometimes dynamically created.
-            if (string.IsNullOrEmpty(fileName) || !Path.IsPathRooted(fileName)) return false;
+            if (string.IsNullOrEmpty(fileName) || !Path.IsPathRooted(fileName) || !File.Exists(fileName)) return false;
             if (!LinterFactory.IsExtensionTsOrTsx(fileName)) return false;
             return IsLintableFile(fileName, checkIgnoreOptions);
         }

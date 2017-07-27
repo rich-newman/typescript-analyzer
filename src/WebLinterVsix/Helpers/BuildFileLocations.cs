@@ -16,13 +16,13 @@ namespace WebLinterVsix.Helpers
             if (isBuildingSolution)
             {
                 string path = GetSolutionPath();
-                LintFileLocations.AddFilesInPath(path, files);
+                LintFileLocations.AddLintableFilesInPath(path, files);
             }
             else
             {
                 var paths = GetSelectedItemProjectPaths(selectedItems);
                 foreach (string path in paths)
-                    LintFileLocations.AddFilesInPath(path, files);
+                    LintFileLocations.AddLintableFilesInPath(path, files);
             }
             return files;
         }

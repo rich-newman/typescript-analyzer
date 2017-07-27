@@ -16,7 +16,7 @@ namespace WebLinterVsix.Helpers
             var paths = GetSelectedItemPaths(selectedItems);
             List<string> files = new List<string>();
             foreach (string path in paths)
-                AddFilesInPath(path, files);
+                AddLintableFilesInPath(path, files);
             return files;
         }
 
@@ -42,32 +42,55 @@ namespace WebLinterVsix.Helpers
             return null;
         }
 
-        public static void AddFilesInPath(string path, List<string> files)
+        public static void AddLintableFilesInPath(string path, List<string> files)
         {
-            if (Directory.Exists(path))
+            System.Diagnostics.Debug.WriteLine("AddLintableFilesInPath: " + path);
+            if (LintableFiles.IsLintableDirectory(path))
             {
-                var children = GetFiles(path, "*.*");
-                files.AddRange(children.Where(c => LintableFiles.IsLintableTsOrTsxFile(c)));
+                foreach (string filePath in Directory.GetFiles(path, "*.ts?", SearchOption.TopDirectoryOnly))
+                    AddLintableFilesInPath(filePath, files);
+                foreach (string directoryPath in Directory.GetDirectories(path))
+                    AddLintableFilesInPath(directoryPath, files);
             }
-            else if (File.Exists(path) && LintableFiles.IsLintableTsOrTsxFile(path))
+            else if (LintableFiles.IsLintableTsOrTsxFile(path))
             {
                 files.Add(path);
             }
         }
 
-        private static List<string> GetFiles(string path, string pattern)
-        {
-            var files = new List<string>();
+        //// Replaced two methods below with one above, which is cleaner and ignores anything in a 
+        //// directory which isn't lintable: previously we'd iterate over all folders and files in node_modules
+        //// even if it was ignored, checking if 'node_modules' was in the path (Which it always was of course)
+        //public static void AddLintableFilesInPath(string path, List<string> files)
+        //{
+        //    System.Diagnostics.Debug.WriteLine("AddLintableFilesInPath: " + path);
+        //    //if (path.Contains("node_modules")) return;
+        //    if (Directory.Exists(path))
+        //    {
+        //        var children = GetFiles(path, "*.ts?");
+        //        files.AddRange(children.Where(c => LintableFiles.IsLintableTsOrTsxFile(c)));
+        //    }
+        //    else if (File.Exists(path) && LintableFiles.IsLintableTsOrTsxFile(path))
+        //    {
+        //        files.Add(path);
+        //    }
+        //}
 
-            try
-            {
-                files.AddRange(Directory.GetFiles(path, pattern, SearchOption.TopDirectoryOnly));
-                foreach (var directory in Directory.GetDirectories(path))
-                    files.AddRange(GetFiles(directory, pattern));
-            }
-            catch (UnauthorizedAccessException) { }
+        //private static List<string> GetFiles(string path, string pattern)
+        //{
+        //    System.Diagnostics.Debug.WriteLine("GetFiles: " + path);
+        //    var files = new List<string>();
+        //    //if (path.Contains("node_modules")) return files;
 
-            return files;
-        }
+        //    try
+        //    {
+        //        files.AddRange(Directory.GetFiles(path, pattern, SearchOption.TopDirectoryOnly));
+        //        foreach (var directory in Directory.GetDirectories(path))
+        //            files.AddRange(GetFiles(directory, pattern));
+        //    }
+        //    catch (UnauthorizedAccessException) { }
+
+        //    return files;
+        //}
     }
 }
