@@ -89,8 +89,7 @@ namespace WebLinterVsix.Helpers
 
             if (checkIgnoreOptions)
             {
-                if (WebLinterPackage.Settings == null || WebLinterPackage.Settings.GetIgnorePatterns().Any(p => fileName.Contains(p)))
-                    return false;
+                if (ContainsIgnorePattern(fileName)) return false;
 
                 // Ignore nested files
                 if (WebLinterPackage.Settings.IgnoreNestedFiles)
@@ -106,6 +105,11 @@ namespace WebLinterVsix.Helpers
             }
 
             return true;
+        }
+
+        public static bool ContainsIgnorePattern(string path)
+        {
+            return WebLinterPackage.Settings == null || WebLinterPackage.Settings.GetIgnorePatterns().Any(p => path.Contains(p));
         }
     }
 }
