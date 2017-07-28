@@ -3,6 +3,15 @@
 These are the changes to each version that have been released
 on the official Visual Studio extension gallery.
 
+## 1.7
+
+**2017-07-29**
+
+- Optimization release only.  No new functionality.
+- Fixed: analysis was slow when analyzing a solution with a very large number of files (tens of thousands) in a complex folder structure (thousands of folders).  This was the case even if the files were not in the solution, and even if the folder was being ignored in Tools/Options.  The most common scenario where this could occur was with a complex node_modules folder and **not** using tsconfig.json files.
+- Fixed: the analyzer could hang up Visual Studio trying to update the Error List with a large number of errors (thousands) if these were not in a project. It was repeatedly scanning the entire solution hierarchy to try to find the project name for each file.  The most common scenario where this could happen was including a complex node_modules folder in a tsconfig.json file in error, even if it was not in the solution. Note that if there are thousands of errors the analyzer is still not what you would call speedy: with 3000 errors in a node_modules folder with 20,000 files it is taking about 8 seconds to lint, parse and display the results on my not-very-fast machine.
+- Improved general speed for ignored items in Tools/Options/TypeScript Analyzer/Ignore patterns.
+
 ## 1.6
 
 **2017-07-15**
