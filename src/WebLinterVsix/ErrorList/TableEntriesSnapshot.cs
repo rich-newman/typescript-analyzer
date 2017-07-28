@@ -10,12 +10,12 @@ namespace WebLinterVsix
 {
     class TableEntriesSnapshot : TableEntriesSnapshotBase
     {
-        private string _projectName;
         private readonly List<LintingError> _errors = new List<LintingError>();
 
-        internal TableEntriesSnapshot(string filePath, IEnumerable<LintingError> errors)
+        internal TableEntriesSnapshot(string filePath, string projectName, IEnumerable<LintingError> errors)
         {
             FilePath = filePath;
+            ProjectName = projectName;
             _errors.AddRange(errors);
         }
 
@@ -25,6 +25,7 @@ namespace WebLinterVsix
         }
 
         public string FilePath { get; }
+        public string ProjectName { get; }
 
         public override int VersionNumber { get; } = 1;
 
@@ -80,15 +81,7 @@ namespace WebLinterVsix
                 }
                 else if (columnName == StandardTableKeyNames.ProjectName)
                 {
-                    if (string.IsNullOrEmpty(_projectName))
-                    {
-                        var _item = WebLinterPackage.Dte.Solution.FindProjectItem(_errors[index].FileName);
-
-                        if (_item != null && _item.Properties != null && _item.ContainingProject != null)
-                            _projectName = _item.ContainingProject.Name;
-                    }
-
-                    content = _projectName;
+                    content = ProjectName;
                 }
                 else if ((columnName == StandardTableKeyNames.ErrorCodeToolTip) || (columnName == StandardTableKeyNames.HelpLink))
                 {

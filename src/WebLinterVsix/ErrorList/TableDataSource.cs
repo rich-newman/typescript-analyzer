@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Shell.TableManager;
 using WebLinter;
+using EnvDTE;
+using System.Diagnostics;
 
 namespace WebLinterVsix
 {
@@ -117,14 +119,50 @@ namespace WebLinterVsix
                 return;
 
             var cleanErrors = errors.Where(e => e != null && !string.IsNullOrEmpty(e.FileName));
-
+            Dictionary<string, string> fileNameToProjectNameMap = CreateFileNameToProjectNameMap();
+            //DebugDumpMap(fileNameToProjectNameMap);
             foreach (var error in cleanErrors.GroupBy(t => t.FileName))
             {
-                var snapshot = new TableEntriesSnapshot(error.Key, error);
+                fileNameToProjectNameMap.TryGetValue(error.Key, out string projectName);
+                TableEntriesSnapshot snapshot = new TableEntriesSnapshot(error.Key, projectName ?? "", error);
                 _snapshots[error.Key] = snapshot;
             }
 
             UpdateAllSinks();
+        }
+
+        // We are on the UI thread
+        private Dictionary<string, string> CreateFileNameToProjectNameMap()
+        {
+            Dictionary<string, string> fileNameToProjectNameMap = new Dictionary<string, string>();
+            Solution solution = WebLinterPackage.Dte.Solution;
+            foreach (Project project in solution.Projects)
+            {
+                string projectName = project.Name;
+                foreach (ProjectItem projectItem in project.ProjectItems)
+                    FindProjectItems(projectItem, projectName, fileNameToProjectNameMap);
+            }
+
+            return fileNameToProjectNameMap;
+        }
+
+        private void FindProjectItems(ProjectItem projectItem, string projectName, Dictionary<string, string> fileNameToProjectNameMap)
+        {
+            // We can't use ignore paths here as they don't apply for tsconfig results
+            if (projectItem.GetFullPath() is string fileName)
+            {
+                if (fileName.EndsWith(".ts") || fileName.EndsWith(".tsx")) fileNameToProjectNameMap.Add(fileName, projectName);
+                if (projectItem.ProjectItems == null) return;
+                foreach (ProjectItem subProjectItem in projectItem.ProjectItems)
+                    FindProjectItems(subProjectItem, projectName, fileNameToProjectNameMap);
+            }
+        }
+
+        [Conditional("DEBUG")]
+        private void DebugDumpMap(Dictionary<string, string> map)
+        {
+            foreach (var item in map)
+                Debug.WriteLine(item.Key + ":" + item.Value);
         }
 
         public void CleanErrors(IEnumerable<string> files)
