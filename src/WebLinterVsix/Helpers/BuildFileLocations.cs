@@ -11,20 +11,13 @@ namespace WebLinterVsix.Helpers
     public static class BuildFileLocations
     {
 
-        public static IEnumerable<string> GetBuildFilesToLint(bool isBuildingSolution, UIHierarchyItem[] selectedItems)
+        public static IEnumerable<string> GetBuildFilesToLint(bool isBuildingSolution, UIHierarchyItem[] selectedItems, bool useTsConfig)
         {
             IEnumerable<UIHierarchyItem> uiHierarchyItems = isBuildingSolution ?
                                                 new UIHierarchyItem[] { GetUIHierarchySolutionItem() } :
                                                 GetSelectedItemProjectUIHierarchyItems(selectedItems);
-            return LintFileLocations.FindPathsFromSelectedItems(uiHierarchyItems.ToArray());
-        }
-
-        public static IEnumerable<string> GetTsconfigBuildFilesToLint(bool isBuildingSolution, UIHierarchyItem[] selectedItems)
-        {
-            IEnumerable<UIHierarchyItem> uiHierarchyItems = isBuildingSolution ?
-                                                            new UIHierarchyItem[] { GetUIHierarchySolutionItem() } :
-                                                            GetSelectedItemProjectUIHierarchyItems(selectedItems);
-            return TsconfigLocations.FindPathsFromSelectedItems(uiHierarchyItems.ToArray());
+            return useTsConfig ? TsconfigLocations.FindPathsFromSelectedItems(uiHierarchyItems.ToArray()) : 
+                                 LintFileLocations.FindPathsFromSelectedItems(uiHierarchyItems.ToArray());
         }
 
         private static UIHierarchyItem GetUIHierarchySolutionItem()

@@ -4,7 +4,6 @@ using System.IO;
 
 namespace WebLinterVsix.Helpers
 {
-    // Methods needed: equivalent of FindPathsFromSelectedItems for BuildFileLocations
     public static class LintFileLocations
     {
         public static IEnumerable<string> FindInSolution(Solution solution)
