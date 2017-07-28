@@ -40,8 +40,7 @@ namespace WebLinterVsix.FileListeners
 
                 // Both "Web Compiler" and "Bundler & Minifier" extensions add this property on their
                 // generated output files. Generated output should be ignored from linting
-                bool generated;
-                if (textView.Properties.TryGetProperty("generated", out generated) && generated)
+                if (textView.Properties.TryGetProperty("generated", out bool generated) && generated)
                     return;
 
                 if (TextDocumentFactoryService.TryGetTextDocument(textView.TextDataModel.DocumentBuffer, out _document))
@@ -77,9 +76,7 @@ namespace WebLinterVsix.FileListeners
 
                 System.Threading.ThreadPool.QueueUserWorkItem((o) =>
                 {
-                    string fileName;
-
-                    if (view != null && view.Properties.TryGetProperty("lint_filename", out fileName))
+                    if (view != null && view.Properties.TryGetProperty("lint_filename", out string fileName))
                     {
                         TableDataSource.Instance.CleanErrors(new[] { fileName });
                     }
