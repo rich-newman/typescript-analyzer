@@ -22,14 +22,15 @@ namespace WebLinterVsix.Helpers
             return null;
         }
 
-        // Helper method for FindFromSelectedItems
+        // Helper method for FindFromSelectedItems.  If we click a single item (folder or file) we need
+        // to search up the folder tree for an associated tsconfig.json
         private static IEnumerable<Tsconfig> FindFromProjectItemEnumerable(string projectItemFullPath)
         {
             Tsconfig tsconfig = FindFromProjectItem(projectItemFullPath);
             if (tsconfig != null) yield return tsconfig;
         }
 
-        public static IEnumerable<Tsconfig> FindInSolution(Solution solution)
+        internal static IEnumerable<Tsconfig> FindInSolution(Solution solution)
         {
             foreach (Project project in solution.Projects)
             {
@@ -37,7 +38,7 @@ namespace WebLinterVsix.Helpers
             }
         }
 
-        public static IEnumerable<Tsconfig> FindInProject(Project project)
+        internal static IEnumerable<Tsconfig> FindInProject(Project project)
         {
             foreach (ProjectItem projectItem in project.ProjectItems)
             {
@@ -45,12 +46,16 @@ namespace WebLinterVsix.Helpers
             }
         }
 
-        public static IEnumerable<Tsconfig> FindInProjectItem(ProjectItem projectItem)
+        // Different from FindFromProjectItem: here we are searching a project or solution
+        // for any tsconfig that's included: we don't mess around looking up the folder structure
+        // to see if any are at a higher level that we can use to lint this item
+        private static IEnumerable<Tsconfig> FindInProjectItem(ProjectItem projectItem)
         {
-            string fileName = projectItem.GetFullPath();
-            if (LintableFiles.IsLintableTsconfig(fileName))
-                yield return new Tsconfig(fileName);
-            if (projectItem.ProjectItems == null) yield break;
+            string itemPath = projectItem.GetFullPath();
+            if (LintableFiles.IsLintableTsconfig(itemPath))
+                yield return new Tsconfig(itemPath);
+            // Checking the ignore pattern here is an optimization that prevents us iterating ignored folders
+            if (projectItem.ProjectItems == null || LintableFiles.ContainsIgnorePattern(itemPath)) yield break;
             foreach (ProjectItem subProjectItem in projectItem.ProjectItems)
             {
                 foreach (var item in FindInProjectItem(subProjectItem)) yield return item;
