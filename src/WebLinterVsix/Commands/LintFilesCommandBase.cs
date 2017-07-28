@@ -48,7 +48,7 @@ namespace WebLinterVsix
         {
             IEnumerable<string> files = WebLinterPackage.Settings.UseTsConfig ?
                                         TsconfigLocations.FindPathsFromSelectedItems(selectedItems) :
-                                        LintFileLocations.GetFilePathsFromSelectedItemPaths(selectedItems);
+                                        LintFileLocations.FindPathsFromSelectedItems(selectedItems);
             if (files.Any())
             {
                 string[] filterFileNames = WebLinterPackage.Settings.UseTsConfig ?

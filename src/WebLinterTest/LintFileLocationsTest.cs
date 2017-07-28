@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using WebLinterVsix.Helpers;
 
 namespace WebLinterTest
@@ -49,7 +50,7 @@ namespace WebLinterTest
         {
             MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = solution };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockSolutionHierarchyItem };
-            List<string> results = LintFileLocations.GetFilePathsFromSelectedItemPaths(selectedItems);
+            List<string> results = LintFileLocations.FindPathsFromSelectedItems(selectedItems).ToList();
 
             Assert.AreEqual(8, results.Count);
 
@@ -80,7 +81,7 @@ namespace WebLinterTest
             MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = project };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockSolutionHierarchyItem };
 
-            List<string> results = LintFileLocations.GetFilePathsFromSelectedItemPaths(selectedItems);
+            List<string> results = LintFileLocations.FindPathsFromSelectedItems(selectedItems).ToList();
 
             Assert.AreEqual(1, results.Count);
             string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/none/b/file5.ts");
@@ -98,7 +99,7 @@ namespace WebLinterTest
             MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = projectItem };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockSolutionHierarchyItem };
 
-            List<string> results = LintFileLocations.GetFilePathsFromSelectedItemPaths(selectedItems);
+            List<string> results = LintFileLocations.FindPathsFromSelectedItems(selectedItems).ToList();
 
             Assert.AreEqual(1, results.Count);
             Assert.AreEqual(projectItemFullName, results[0]);
@@ -116,7 +117,7 @@ namespace WebLinterTest
 
             try
             {
-                List<string> results = LintFileLocations.GetFilePathsFromSelectedItemPaths(selectedItems);
+                List<string> results = LintFileLocations.FindPathsFromSelectedItems(selectedItems).ToList();
 
                 Assert.AreEqual(9, results.Count);
 
@@ -156,7 +157,7 @@ namespace WebLinterTest
 
             try
             {
-                List<string> results = LintFileLocations.GetFilePathsFromSelectedItemPaths(selectedItems);
+                List<string> results = LintFileLocations.FindPathsFromSelectedItems(selectedItems).ToList();
 
                 Assert.AreEqual(5, results.Count);
 

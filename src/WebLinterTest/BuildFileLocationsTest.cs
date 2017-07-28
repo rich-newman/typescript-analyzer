@@ -54,7 +54,7 @@ namespace WebLinterTest
         {
             //MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = solution };
             //UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockSolutionHierarchyItem };
-            List<string> results = BuildFileLocations.GetBuildFilesToLint(true, null);
+            List<string> results = BuildFileLocations.GetBuildFilesToLint(true, null).ToList();
 
             // Should be the same as if we are linting the solution
             Assert.AreEqual(8, results.Count);
@@ -86,7 +86,7 @@ namespace WebLinterTest
             MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = project };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockSolutionHierarchyItem };
 
-            List<string> results = BuildFileLocations.GetBuildFilesToLint(false, selectedItems);
+            List<string> results = BuildFileLocations.GetBuildFilesToLint(false, selectedItems).ToList();
 
             Assert.AreEqual(1, results.Count);
             string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/none/b/file5.ts");
@@ -104,7 +104,7 @@ namespace WebLinterTest
             MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = projectItem };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockSolutionHierarchyItem };
 
-            List<string> results = BuildFileLocations.GetBuildFilesToLint(false, selectedItems);
+            List<string> results = BuildFileLocations.GetBuildFilesToLint(false, selectedItems).ToList();
 
             // We're going to build the project that the individual file is in (tsconfigTest) and so need to lint
             // all the files in said project before the build

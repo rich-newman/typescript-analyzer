@@ -1,96 +1,62 @@
 ﻿using EnvDTE;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace WebLinterVsix.Helpers
 {
-    /// <summary>
-    /// Methods to find the locations of files to lint based on selections in Solution Explorer
-    /// </summary>
+    // Methods needed: equivalent of FindPathsFromSelectedItems for BuildFileLocations
     public static class LintFileLocations
     {
-        public static List<string> GetFilePathsFromSelectedItemPaths(UIHierarchyItem[] selectedItems)
+        public static IEnumerable<string> FindInSolution(Solution solution)
         {
-            var paths = GetSelectedItemPaths(selectedItems);
-            List<string> files = new List<string>();
-            foreach (string path in paths)
-                AddLintableFilesInPath(path, files);
-            return files;
+            foreach (Project project in solution.Projects)
+            {
+                foreach (string path in FindInProject(project)) yield return path;
+            }
         }
 
-        private static IEnumerable<string> GetSelectedItemPaths(UIHierarchyItem[] items)
+        public static IEnumerable<string> FindInProject(Project project)
         {
+            foreach (ProjectItem projectItem in project.ProjectItems)
+            {
+                foreach (string path in FindInProjectItem(projectItem)) yield return path;
+            }
+        }
+
+        public static IEnumerable<string> FindInProjectItem(ProjectItem projectItem)
+        {
+            string itemPath = projectItem.GetFullPath();
+            if (LintableFiles.IsLintableTsOrTsxFile(itemPath))
+                yield return itemPath;
+            // Checking the ignore pattern here is an optimization that prevents us iterating ignored folders
+            if (projectItem.ProjectItems == null || LintableFiles.ContainsIgnorePattern(itemPath)) yield break;
+            foreach (ProjectItem subProjectItem in projectItem.ProjectItems)
+            {
+                foreach (var item in FindInProjectItem(subProjectItem)) yield return item;
+            }
+        }
+
+        public static IEnumerable<string> FindPathsFromSelectedItems(UIHierarchyItem[] items)
+        {
+            HashSet<string> seenPaths = new HashSet<string>();
             foreach (UIHierarchyItem selItem in items)
             {
-                string path = GetSelectedItemPath(selItem);
-                if (path != null) yield return path;
+                if (!LintableFiles.IsLintable(selItem)) continue;
+                IEnumerable<string> currentEnumerable =
+                    selItem.Object is Solution solution ? FindInSolution(solution) :
+                    selItem.Object is Project project ? FindInProject(project) :
+                        (selItem.Object is ProjectItem projectItem) ?
+                            FindInProjectItem(projectItem) : null;
+                if (currentEnumerable == null) continue;
+                foreach (string path in currentEnumerable)
+                {
+                    if (!seenPaths.Contains(path))
+                    {
+                        seenPaths.Add(path);
+                        yield return path;
+                    }
+                }
             }
         }
-
-        private static string GetSelectedItemPath(UIHierarchyItem selItem)
-        {
-            if (selItem.Object is ProjectItem item && item.GetFullPath() is string file)
-                return string.IsNullOrEmpty(file) ? null : file;  // I'm unconvinced it's possible for the string to be empty
-
-            if (selItem.Object is Project project)
-                return project.GetRootFolder();
-
-            if (selItem.Object is Solution solution)
-                return Path.GetDirectoryName(solution.FullName);
-            return null;
-        }
-
-        public static void AddLintableFilesInPath(string path, List<string> files)
-        {
-            System.Diagnostics.Debug.WriteLine("AddLintableFilesInPath: " + path);
-            if (LintableFiles.IsLintableDirectory(path))
-            {
-                foreach (string filePath in Directory.GetFiles(path, "*.ts?", SearchOption.TopDirectoryOnly))
-                    AddLintableFilesInPath(filePath, files);
-                foreach (string directoryPath in Directory.GetDirectories(path))
-                    AddLintableFilesInPath(directoryPath, files);
-            }
-            else if (LintableFiles.IsLintableTsOrTsxFile(path))
-            {
-                files.Add(path);
-            }
-        }
-
-        //// Replaced two methods below with one above, which is cleaner and ignores anything in a 
-        //// directory which isn't lintable: previously we'd iterate over all folders and files in node_modules
-        //// even if it was ignored, checking if 'node_modules' was in the path (Which it always was of course)
-        //public static void AddLintableFilesInPath(string path, List<string> files)
-        //{
-        //    System.Diagnostics.Debug.WriteLine("AddLintableFilesInPath: " + path);
-        //    //if (path.Contains("node_modules")) return;
-        //    if (Directory.Exists(path))
-        //    {
-        //        var children = GetFiles(path, "*.ts?");
-        //        files.AddRange(children.Where(c => LintableFiles.IsLintableTsOrTsxFile(c)));
-        //    }
-        //    else if (File.Exists(path) && LintableFiles.IsLintableTsOrTsxFile(path))
-        //    {
-        //        files.Add(path);
-        //    }
-        //}
-
-        //private static List<string> GetFiles(string path, string pattern)
-        //{
-        //    System.Diagnostics.Debug.WriteLine("GetFiles: " + path);
-        //    var files = new List<string>();
-        //    //if (path.Contains("node_modules")) return files;
-
-        //    try
-        //    {
-        //        files.AddRange(Directory.GetFiles(path, pattern, SearchOption.TopDirectoryOnly));
-        //        foreach (var directory in Directory.GetDirectories(path))
-        //            files.AddRange(GetFiles(directory, pattern));
-        //    }
-        //    catch (UnauthorizedAccessException) { }
-
-        //    return files;
-        //}
     }
 }
