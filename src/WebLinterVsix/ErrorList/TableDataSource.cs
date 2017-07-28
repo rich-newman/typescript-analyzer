@@ -131,6 +131,9 @@ namespace WebLinterVsix
             UpdateAllSinks();
         }
 
+        // This is an optimization for the case where we lint a very large structure: we have a very large number of files
+        // and errors, inside or outside of projects.  Looking up the project for each file individually involves scanning
+        // the project hierarchy, so it's better I think to scan the hierarchy first and create an efficient lookup data structure.
         // We are on the UI thread
         private Dictionary<string, string> CreateFileNameToProjectNameMap()
         {
@@ -151,7 +154,7 @@ namespace WebLinterVsix
             // We can't use ignore paths here as they don't apply for tsconfig results
             if (projectItem.GetFullPath() is string fileName)
             {
-                if (fileName.EndsWith(".ts") || fileName.EndsWith(".tsx")) fileNameToProjectNameMap.Add(fileName, projectName);
+                if (LinterFactory.IsExtensionTsOrTsx(fileName)) fileNameToProjectNameMap.Add(fileName, projectName);
                 if (projectItem.ProjectItems == null) return;
                 foreach (ProjectItem subProjectItem in projectItem.ProjectItems)
                     FindProjectItems(subProjectItem, projectName, fileNameToProjectNameMap);
