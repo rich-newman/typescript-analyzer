@@ -52,7 +52,7 @@ namespace WebLinterTest
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockSolutionHierarchyItem };
             List<string> results = LintFileLocations.FindPathsFromSelectedItems(selectedItems).ToList();
 
-            Assert.AreEqual(8, results.Count);
+            Assert.AreEqual(9, results.Count);
 
             string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react-dom.d.ts");
             string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react.d.ts");
@@ -62,6 +62,7 @@ namespace WebLinterTest
             string expected6 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/file3.ts");
             string expected7 = Path.GetFullPath(@"../../artifacts/tsconfig/none/b/file5.ts");
             string expected8 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/c/file6.tsx");
+            string expected9 = Path.GetFullPath(@"../../artifacts/tsconfig/file9.ts"); // Linked file
 
             Assert.IsTrue(results.Contains(expected1));
             Assert.IsTrue(results.Contains(expected2));
@@ -71,6 +72,7 @@ namespace WebLinterTest
             Assert.IsTrue(results.Contains(expected6));
             Assert.IsTrue(results.Contains(expected7));
             Assert.IsTrue(results.Contains(expected8));
+            Assert.IsTrue(results.Contains(expected9));
         }
 
         [TestMethod, TestCategory("Lint File Locations")]
@@ -119,7 +121,7 @@ namespace WebLinterTest
             {
                 List<string> results = LintFileLocations.FindPathsFromSelectedItems(selectedItems).ToList();
 
-                Assert.AreEqual(9, results.Count);
+                Assert.AreEqual(10, results.Count);
 
                 string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react-dom.d.ts");
                 string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react.d.ts");
@@ -130,6 +132,7 @@ namespace WebLinterTest
                 string expected7 = Path.GetFullPath(@"../../artifacts/tsconfig/none/b/file5.ts");
                 string expected8 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/c/file6.tsx");
                 string expected9 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/file7.ts");
+                string expected10 = Path.GetFullPath(@"../../artifacts/tsconfig/file9.ts"); // Linked file
 
                 Assert.IsTrue(results.Contains(expected1));
                 Assert.IsTrue(results.Contains(expected2));
@@ -140,6 +143,7 @@ namespace WebLinterTest
                 Assert.IsTrue(results.Contains(expected7));
                 Assert.IsTrue(results.Contains(expected8));
                 Assert.IsTrue(results.Contains(expected9));
+                Assert.IsTrue(results.Contains(expected10));
             }
             finally
             {
@@ -159,7 +163,7 @@ namespace WebLinterTest
             {
                 List<string> results = LintFileLocations.FindPathsFromSelectedItems(selectedItems).ToList();
 
-                Assert.AreEqual(5, results.Count);
+                Assert.AreEqual(6, results.Count);
 
                 string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react-dom.d.ts");
                 string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react.d.ts");
@@ -169,6 +173,7 @@ namespace WebLinterTest
                 string expected6 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/file3.ts");
                 string expected7 = Path.GetFullPath(@"../../artifacts/tsconfig/none/b/file5.ts");
                 //string expected8 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/c/file6.tsx");
+                string expected9 = Path.GetFullPath(@"../../artifacts/tsconfig/file9.ts"); // Linked file
 
                 Assert.IsTrue(results.Contains(expected1));
                 Assert.IsTrue(results.Contains(expected2));
@@ -178,6 +183,7 @@ namespace WebLinterTest
                 Assert.IsTrue(results.Contains(expected6));
                 Assert.IsTrue(results.Contains(expected7));
                 //Assert.IsTrue(results.Contains(expected8));
+                Assert.IsTrue(results.Contains(expected9));
             }
             finally
             {

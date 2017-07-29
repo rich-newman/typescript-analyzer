@@ -56,7 +56,7 @@ namespace WebLinterTest
                                                                           selectedItems: null, useTsConfig: false).ToList();
 
             // Should be the same as if we are linting the solution
-            Assert.AreEqual(8, results.Count);
+            Assert.AreEqual(9, results.Count);
 
             string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react-dom.d.ts");
             string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react.d.ts");
@@ -66,6 +66,7 @@ namespace WebLinterTest
             string expected6 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/file3.ts");
             string expected7 = Path.GetFullPath(@"../../artifacts/tsconfig/none/b/file5.ts");
             string expected8 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/c/file6.tsx");
+            string expected9 = Path.GetFullPath(@"../../artifacts/tsconfig/file9.ts"); // Linked file
 
             Assert.IsTrue(results.Contains(expected1));
             Assert.IsTrue(results.Contains(expected2));
@@ -75,6 +76,7 @@ namespace WebLinterTest
             Assert.IsTrue(results.Contains(expected6));
             Assert.IsTrue(results.Contains(expected7));
             Assert.IsTrue(results.Contains(expected8));
+            Assert.IsTrue(results.Contains(expected9));
         }
 
         [TestMethod, TestCategory("Build File Locations")]
@@ -108,8 +110,8 @@ namespace WebLinterTest
                                                                           selectedItems: selectedItems, useTsConfig: false).ToList();
 
             // We're going to build the project that the individual file is in (tsconfigTest) and so need to lint
-            // all the files in said project before the build
-            Assert.AreEqual(7, results.Count);
+            // all the files in said project before the build.  Note NOT using tsconfig.json (useTsConfig: false above).
+            Assert.AreEqual(8, results.Count);
 
             string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react-dom.d.ts");
             string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react.d.ts");
@@ -118,6 +120,7 @@ namespace WebLinterTest
             string expected5 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/c/file4.ts");
             string expected6 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/file3.ts");
             string expected7 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/c/file6.tsx");
+            string expected8 = Path.GetFullPath(@"../../artifacts/tsconfig/file9.ts"); // Linked file
 
             Assert.IsTrue(results.Contains(expected1));
             Assert.IsTrue(results.Contains(expected2));
@@ -126,6 +129,7 @@ namespace WebLinterTest
             Assert.IsTrue(results.Contains(expected5));
             Assert.IsTrue(results.Contains(expected6));
             Assert.IsTrue(results.Contains(expected7));
+            Assert.IsTrue(results.Contains(expected8));
         }
 
         [TestMethod, TestCategory("Build File Locations")]

@@ -97,7 +97,7 @@ namespace WebLinterTest
 
                 Assert.IsFalse(hasVSErrors);
                 Assert.IsTrue(mockErrorsTableDataSource.HasErrors());
-                Assert.AreEqual(9, mockErrorsTableDataSource.Snapshots.Count);
+                Assert.AreEqual(10, mockErrorsTableDataSource.Snapshots.Count);
 
                 // See LintFileLocationsTest.GetLintFilesForSolutionIncludeNested
                 string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react-dom.d.ts");
@@ -109,6 +109,7 @@ namespace WebLinterTest
                 string expected7 = Path.GetFullPath(@"../../artifacts/tsconfig/none/b/file5.ts");
                 string expected8 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/c/file6.tsx");
                 string expected9 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/file7.ts");
+                string expected10 = Path.GetFullPath(@"../../artifacts/tsconfig/file9.ts"); // Linked file
 
                 Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected1));
                 Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected2));
@@ -119,6 +120,7 @@ namespace WebLinterTest
                 Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected7));
                 Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected8));
                 Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected9));
+                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected10));
 
                 // May be too painful when we upgrade tslint: I think since the tslint.json is fixed it should be OK though
                 Assert.AreEqual(8, mockErrorsTableDataSource.Snapshots[expected1].Count());
@@ -130,6 +132,7 @@ namespace WebLinterTest
                 Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected7].Count());
                 Assert.AreEqual(9, mockErrorsTableDataSource.Snapshots[expected8].Count());
                 Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected9].Count());
+                Assert.AreEqual(2, mockErrorsTableDataSource.Snapshots[expected10].Count());
 
                 // Pick an error and check we are generating all details - expected4 is file1.ts
                 LintingError lintingError = mockErrorsTableDataSource.Snapshots[expected4].First(le => le.ErrorCode == "no-empty");

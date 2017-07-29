@@ -58,6 +58,9 @@
     <Content Include="a\tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="..\file9.ts">
+      <Link>file9.ts</Link>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="a\c\file4.ts" />
     <TypeScriptCompile Include="a\c\file6.tsx" />
     <TypeScriptCompile Include="a\file1.ts" />
