@@ -6,7 +6,7 @@ using WebLinter;
 
 namespace WebLinterTest
 {
-    class MockSettings : ISettings
+    public class MockSettings : ISettings
     {
         private static MockSettings _settings;
 

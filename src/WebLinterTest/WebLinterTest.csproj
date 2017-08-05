@@ -60,6 +60,37 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Microsoft.VisualStudio.Shell.15.0.15.0.26201\lib\Microsoft.VisualStudio.Shell.15.0.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Framework, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.VisualStudio.Shell.Framework.15.0.26201\lib\net45\Microsoft.VisualStudio.Shell.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.VisualStudio.Shell.Interop.7.10.6071\lib\Microsoft.VisualStudio.Shell.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\packages\Microsoft.VisualStudio.Shell.Interop.10.0.10.0.30319\lib\Microsoft.VisualStudio.Shell.Interop.10.0.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\packages\Microsoft.VisualStudio.Shell.Interop.11.0.11.0.61030\lib\Microsoft.VisualStudio.Shell.Interop.11.0.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\packages\Microsoft.VisualStudio.Shell.Interop.12.0.12.0.30110\lib\Microsoft.VisualStudio.Shell.Interop.12.0.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.VisualStudio.Shell.Interop.8.0.8.0.50727\lib\Microsoft.VisualStudio.Shell.Interop.8.0.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop.9.0, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.VisualStudio.Shell.Interop.9.0.9.0.30729\lib\Microsoft.VisualStudio.Shell.Interop.9.0.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -80,6 +111,7 @@
   <ItemGroup>
     <Compile Include="AssemblyMethods.cs" />
     <Compile Include="BuildFileLocationsTest.cs" />
+    <Compile Include="EmptyUnloadedProjectsTest.cs" />
     <Compile Include="LintEndToEndTest.cs" />
     <Compile Include="LintFileLocationsTest.cs" />
     <Compile Include="TslintWithTsconfigTest.cs" />
@@ -100,12 +132,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="artifacts\empty\ClassLibrary1\ClassLibrary1.csproj" />
+    <Content Include="artifacts\empty\noprojects.sln" />
+    <Content Include="artifacts\empty\allprojects.sln" />
     <Content Include="artifacts\tsconfig\multiple\tsconfigTest.csproj" />
     <Content Include="artifacts\tsconfig\none\HtmlPage1.html" />
     <Content Include="artifacts\tsconfig\none\tsconfigEmptyTest.csproj" />
     <Content Include="artifacts\tsconfig\Tsconfig.sln" />
     <Content Include="artifacts\tslint.json" />
     <None Include="app.config" />
+    <None Include="artifacts\empty\NodejsConsoleApp1\NodejsConsoleApp1.njsproj" />
+    <None Include="artifacts\empty\NodejsConsoleApp2\NodejsConsoleApp2.njsproj" />
     <None Include="artifacts\tsconfig\multiple\a\tsconfig.json" />
     <None Include="artifacts\tsconfig\multiple\b\tsconfig.json" />
     <None Include="artifacts\tsconfig\multiple\tsconfig.json" />
@@ -129,6 +166,8 @@
     <Folder Include="artifacts\tsconfig\none\b\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="artifacts\empty\NodejsConsoleApp1\app.ts" />
+    <TypeScriptCompile Include="artifacts\empty\NodejsConsoleApp2\app2.ts" />
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\a\c\file4.ts" />
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\a\c\file6.tsx" />
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\a\file1.ts" />
