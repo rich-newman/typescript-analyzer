@@ -132,17 +132,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="artifacts\empty\ClassLibrary1\ClassLibrary1.csproj" />
     <Content Include="artifacts\empty\noprojects.sln" />
-    <Content Include="artifacts\empty\allprojects.sln" />
     <Content Include="artifacts\tsconfig\multiple\tsconfigTest.csproj" />
     <Content Include="artifacts\tsconfig\none\HtmlPage1.html" />
     <Content Include="artifacts\tsconfig\none\tsconfigEmptyTest.csproj" />
     <Content Include="artifacts\tsconfig\Tsconfig.sln" />
     <Content Include="artifacts\tslint.json" />
     <None Include="app.config" />
-    <None Include="artifacts\empty\NodejsConsoleApp1\NodejsConsoleApp1.njsproj" />
-    <None Include="artifacts\empty\NodejsConsoleApp2\NodejsConsoleApp2.njsproj" />
     <None Include="artifacts\tsconfig\multiple\a\tsconfig.json" />
     <None Include="artifacts\tsconfig\multiple\b\tsconfig.json" />
     <None Include="artifacts\tsconfig\multiple\tsconfig.json" />
@@ -166,8 +162,6 @@
     <Folder Include="artifacts\tsconfig\none\b\" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="artifacts\empty\NodejsConsoleApp1\app.ts" />
-    <TypeScriptCompile Include="artifacts\empty\NodejsConsoleApp2\app2.ts" />
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\a\c\file4.ts" />
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\a\c\file6.tsx" />
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\a\file1.ts" />

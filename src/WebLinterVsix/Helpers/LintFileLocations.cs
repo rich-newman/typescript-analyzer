@@ -8,6 +8,7 @@ namespace WebLinterVsix.Helpers
     {
         public static IEnumerable<string> FindInSolution(Solution solution)
         {
+            if (solution.Projects == null) yield break;
             foreach (Project project in solution.Projects)
             {
                 foreach (string path in FindInProject(project)) yield return path;
@@ -16,6 +17,7 @@ namespace WebLinterVsix.Helpers
 
         public static IEnumerable<string> FindInProject(Project project)
         {
+            if (project.ProjectItems == null) yield break;
             foreach (ProjectItem projectItem in project.ProjectItems)
             {
                 foreach (string path in FindInProjectItem(projectItem)) yield return path;

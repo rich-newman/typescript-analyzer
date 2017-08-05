@@ -32,6 +32,7 @@ namespace WebLinterVsix.Helpers
 
         internal static IEnumerable<Tsconfig> FindInSolution(Solution solution)
         {
+            if (solution.Projects == null) yield break;
             foreach (Project project in solution.Projects)
             {
                 foreach (Tsconfig tsconfig in FindInProject(project)) yield return tsconfig;
@@ -40,6 +41,7 @@ namespace WebLinterVsix.Helpers
 
         internal static IEnumerable<Tsconfig> FindInProject(Project project)
         {
+            if (project.ProjectItems == null) yield break;
             foreach (ProjectItem projectItem in project.ProjectItems)
             {
                 foreach (Tsconfig tsconfig in FindInProjectItem(projectItem)) yield return tsconfig;

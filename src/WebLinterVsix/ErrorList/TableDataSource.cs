@@ -139,13 +139,14 @@ namespace WebLinterVsix
         {
             Dictionary<string, string> fileNameToProjectNameMap = new Dictionary<string, string>();
             Solution solution = WebLinterPackage.Dte.Solution;
+            if (solution?.Projects == null) return fileNameToProjectNameMap;
             foreach (Project project in solution.Projects)
             {
+                if (project.ProjectItems == null) continue;
                 string projectName = project.Name;
                 foreach (ProjectItem projectItem in project.ProjectItems)
                     FindProjectItems(projectItem, projectName, fileNameToProjectNameMap);
             }
-
             return fileNameToProjectNameMap;
         }
 
