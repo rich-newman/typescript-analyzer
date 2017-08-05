@@ -77,7 +77,7 @@ namespace WebLinterTest
             MessageFilter.Revoke();
         }
 
-        [TestMethod, TestCategory("Lint End to End Test")]
+        [TestMethod, TestCategory("Lint End to End")]
         public async Task LintSolution()
         {
             MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = solution };
@@ -152,7 +152,7 @@ namespace WebLinterTest
 
         }
 
-        [TestMethod, TestCategory("Lint End to End Test")]
+        [TestMethod, TestCategory("Lint End to End")]
         public async Task LintSolutionUseTsconfigs()
         {
             MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = solution };
