@@ -3,6 +3,12 @@
 These are the changes to each version that have been released
 on the official Visual Studio extension gallery.
 
+## 1.8
+
+**2017-08-07**
+
+- Bugfix release: fix bug when linting unloaded projects, defend better against exceptions when iterating projects and project items.  No new functionality.
+
 ## 1.7
 
 **2017-07-29**
