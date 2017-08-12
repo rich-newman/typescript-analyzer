@@ -25,7 +25,6 @@ namespace WebLinterVsix
             TSLintShowErrors = false;
             UseTsConfig = false;
             OnlyRunIfRequested = false;
-            UseProjectNGLint = false;
         }
 
         public override void ResetSettings()
@@ -83,12 +82,6 @@ namespace WebLinterVsix
         [DefaultValue(false)]
         public bool OnlyRunIfRequested { get; set; }
 
-        [Category("Basic")]
-        [DisplayName("Use local ng lint")]
-        [Description("If True, will attempt to use the projects own ng lint and tslint configuration.  Useful if your project uses older versions for example codelyzer < 3.0.  Falls back to the plugin built-in ts lint")]
-        [DefaultValue(false)]
-        public bool UseProjectNGLint { get; set; }
-        
         public IEnumerable<string> GetIgnorePatterns()
         {
             var raw = IgnoreFolderNames.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
