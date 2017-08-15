@@ -1,6 +1,7 @@
 ﻿// Modifications Copyright Rich Newman 2017
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -55,14 +56,71 @@ namespace WebLinter
 
         protected virtual async Task<LintingResult> Lint(bool callSync, params FileInfo[] files)
         {
-            string output = await RunProcess(callSync, files);
+            string output = null;
 
+            if(Settings.UseProjectNGLint)
+            {
+                try
+                {
+                    output = await RunLocalProcess(callSync, files);
+                }
+                catch (Exception)
+                {
+                    output = await RunProcess(callSync, files);
+                }
+            }
+            else
+            {
+                output = await RunProcess(callSync, files);
+            }
+            
+            
             if (!string.IsNullOrEmpty(output))
             {
                 ParseErrors(output);
             }
 
             return Result;
+        }
+
+
+        protected async Task<string> RunLocalProcess(bool callSync, params FileInfo[] files)
+        {
+            var ConfigFile = new FileInfo(Path.Combine(FindWorkingDirectory(files[0]), ConfigFileName).Replace("\\", "/"));
+            var Files = files.Select(f => f.FullName.Replace("\\", "/"));
+            var Fix = FixErrors;
+
+            var StartInfo = new ProcessStartInfo()
+            {
+                FileName = "cmd.exe",
+                Arguments = $"/c \"ng lint --type-check {(Fix ? "--fix " : "")} --format JSON \"",
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                WindowStyle = ProcessWindowStyle.Hidden,
+                CreateNoWindow = true,
+                WorkingDirectory = ConfigFile.DirectoryName,
+                UseShellExecute = false
+            };
+
+            var localLintProcess = new Process();
+            localLintProcess.StartInfo = StartInfo;
+            localLintProcess.EnableRaisingEvents = true;
+
+            localLintProcess.Start();
+
+            string stdOut = await Task.Run(() => { return localLintProcess.StandardOutput.ReadToEnd(); });
+            string stdErr = await Task.Run(() => { return localLintProcess.StandardError.ReadToEnd(); });
+
+            localLintProcess.WaitForExit();
+
+            if (!string.IsNullOrWhiteSpace(stdErr))
+            {
+                string message = $@"Unable to LOCAL ng lint. : config: { ConfigFile }, dir: { ConfigFile.DirectoryName }
+tslint Output: {stdErr} ";
+                throw new System.FormatException(message, new InvalidOperationException(stdErr));
+            }
+
+            return stdOut;
         }
 
         protected async Task<string> RunProcess(bool callSync, params FileInfo[] files)
