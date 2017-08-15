@@ -73,10 +73,8 @@ namespace WebLinterTest
             {
                 File.Copy("../../artifacts/tslint/c.tsx", "../../artifacts/tslint/cTest.tsx", true);
                 var result = await LinterFactory.Lint(MockSettings.Instance, true, false, "../../artifacts/tslint/cTest.tsx");
-                Assert.IsTrue(result.First().HasErrors);
-                Assert.IsFalse(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
-                Assert.AreEqual(1, result.First().Errors.Count);
-                Assert.AreEqual("The class method 'sayHello' must be marked either 'private', 'public', or 'protected'", result.First().Errors.First().Message);
+                Assert.IsFalse(result.First().HasErrors);
+                Assert.AreEqual(0, result.First().Errors.Count);
                 string actual = File.ReadAllText("../../artifacts/tslint/cTest.tsx");
                 string expected = File.ReadAllText("../../artifacts/tslint/cFixed.tsx");
                 Assert.AreEqual(expected, actual);
