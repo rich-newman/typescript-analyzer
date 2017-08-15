@@ -16,7 +16,7 @@ The menu options for the TypeScript Analyzer are separate from the menu options 
 
 ### TSLint Version
 
-The TypeScript Analyzer is using TSLint version 5.5.0.
+The TypeScript Analyzer is using TSLint version 5.6.0.
 
 ### Analyze Using tsconfig.json
 
