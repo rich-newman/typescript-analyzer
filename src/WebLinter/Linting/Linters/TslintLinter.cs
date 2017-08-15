@@ -48,17 +48,24 @@ Parsing Exception: {ex.Message}";
                 if (!Result.Errors.Contains(le))
                 {
                     le.Message = obj["failure"]?.Value<string>();
-                    le.HelpLink = ( (!string.IsNullOrWhiteSpace(le.Message)) && le.Message.Contains("(https://goo.gl/") ) ?
-                        le.Message.Substring(
-                            le.Message.LastIndexOf("(https://goo.gl/")+1, 
-                            le.Message.LastIndexOf(")") - le.Message.LastIndexOf("(https://goo.gl/") - 1 )  :
-                        $"https://palantir.github.io/tslint/rules/{le.ErrorCode}" ;
+                    le.HelpLink = ParseHttpReference(le.Message, "https://goo.gl/") ?? 
+                                  ParseHttpReference(le.Message, "https://angular.io/") ?? 
+                                  $"https://palantir.github.io/tslint/rules/{le.ErrorCode}";
                     le.Provider = this;
                     Result.Errors.Add(le);
                     seen.Add(le);
                 }
             }
             Result.HasVsErrors = hasVSErrors;
+        }
+
+        private string ParseHttpReference(string message, string root)
+        {
+            int rootPosition = message == null ? -1 : message.LastIndexOf("(" + root);
+            if(rootPosition == -1) return null;
+            int bracePosition = message.LastIndexOf(")");
+            if (bracePosition == -1 || bracePosition < rootPosition) return null;
+            return message.Substring(rootPosition + 1, bracePosition - rootPosition - 1);
         }
     }
 }
