@@ -8,6 +8,10 @@ on the official Visual Studio extension gallery.
 **2017-08-15**
 
 - Underlying TSLint upgraded to 5.6.0, TypeScript 2.4.2.
+- Fixed the web links for codelyzer/angular errors in the Error List so you can click in the 'Code' column and go to the appropriate web page.
+- Added a 'Use local ng lint' option in Tools/Options/TypeScript Analyzer.  This allows codelyzer linting for Angular CLI projects with older versions of codelyzer.
+
+Many thanks to Chris Plewright (@zewpo) for these enhancements.
 
 ## 1.8
 

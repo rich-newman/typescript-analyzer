@@ -72,3 +72,15 @@ If 'Show errors' is enabled you can configure individual rules to be errors or w
 ### Only Run if Requested
 
 There is an 'Only run if requested' option on Tools/Options/TypeScript Analyzer.  If this is set to true then the analyzer will only run if explicitly requested with 'Run TypeScript Analyzer' from the Solution Explorer context menu, or on a build if 'Run on Build' is also true.  This means we disable the default behavior of running the analyzer whenever an individual .ts or .tsx file is opened or saved.
+
+### codelyzer
+
+A locally installed instance of [codelyzer](http://codelyzer.com/) will work with the TypeScript Analyzer.  However, the analyzer ships with its own versions of tslint and typescript. It runs these from a temporary folder.  Hence for codelyzer to work it's best to install it locally along with the same versions, currently tslint 5.6.0 and typescript 2.4.2.  It will usually also work with other compatible versions.  However, we know that versions of codelyzer before 3.0 are not compatible with these versions of tslint and typescript.  See below for an alternative.
+
+### 'Use local ng lint' Option
+
+This option on Tools/Options/TypeScript Analyzer runs tslint locally for an [Angular CLI](https://cli.angular.io/) installation by issuing an 'ng lint' command from a hidden cmd.exe window in the project folder.  This is useful if your Angular project uses older versions of codelyzer (before 3.0).
+
+This approach bypasses some of our existing infrastructure.  In particular it uses the local versions of tslint and typescript in the node_modules subfolder rather than the versions shipped with the analyzer.  It needs an [Angular CLI](https://cli.angular.io/) install to work.  It's also a little slower than our usual linting.  For the results to show up in the Error List the files to lint still have to be included in the Visual Studio project, or included in a regular tsconfig.json that is in the Visual Studio project with 'Use tsconfig.json files' set in the options.
+
+If the call to 'ng lint' fails for any reason the analyzer falls back to using the prepackaged tslint.  At present we don't have good reporting if that happens.
