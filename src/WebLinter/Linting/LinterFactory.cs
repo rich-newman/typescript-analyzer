@@ -21,12 +21,13 @@ namespace WebLinter
             return _supported.Contains(extension);
         }
 
-        public static async Task<LintingResult[]> Lint(ISettings settings, params string[] fileNames)
-        {
-            return await Lint(settings, false, false, fileNames);
-        }
+        public static async Task<LintingResult[]> Lint(ISettings settings, params string[] fileNames) 
+            => await Lint(settings, false, false, null, fileNames);
 
-        public static async Task<LintingResult[]> Lint(ISettings settings, bool fixErrors, bool callSync, params string[] fileNames)
+        public static async Task<LintingResult[]> Lint(ISettings settings, bool fixErrors, bool callSync, params string[] fileNames) 
+            => await Lint(settings, fixErrors, callSync, null, fileNames);
+
+        public static async Task<LintingResult[]> Lint(ISettings settings, bool fixErrors, bool callSync, Action<string> log, params string[] fileNames)
         {
             if (fileNames.Length == 0)  return new LintingResult[0];
 
@@ -44,7 +45,7 @@ namespace WebLinter
                     case ".TS":
                     case ".TSX":
                     case ".JSON":
-                        AddLinter(dic, new TsLintLinter(settings, fixErrors), group);
+                        AddLinter(dic, new TsLintLinter(settings, fixErrors, log), group);
                         break;
                 }
             }

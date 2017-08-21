@@ -21,32 +21,22 @@ namespace WebLinterVsix
         [SuppressMessage("Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "Microsoft.VisualStudio.Shell.Interop.IVsOutputWindowPane.OutputString(System.String)")]
         public static void Log(string message)
         {
-            if (string.IsNullOrEmpty(message))
-                return;
-
+            if (string.IsNullOrEmpty(message)) return;
             try
             {
                 if (EnsurePane())
-                {
                     pane.OutputString(DateTime.Now.ToString() + ": " + message + Environment.NewLine);
-                }
             }
-            catch
-            {
-                // Do nothing
-            }
+            catch { }
         }
 
         public static void Log(Exception ex)
         {
             try
             {
-                if (ex != null)
-                {
-                    Log(ex.ToString());
-                }
+                if (ex != null) Log(ex.ToString());
             }
-            catch (Exception) { }
+            catch { }
         }
 
         public static void LogAndWarn(Exception ex)
@@ -60,7 +50,18 @@ namespace WebLinterVsix
                     WebLinterPackage.Dte.StatusBar.Text = warning;
                 }
             }
-            catch (Exception) { }
+            catch { }
+        }
+
+        public static void LogAndWarn(string message)
+        {
+            try
+            {
+                Log(message);
+                string warning = "A TypeScript Analyzer issue occurred. See Output window for more details.";
+                WebLinterPackage.Dte.StatusBar.Text = warning;
+            }
+            catch { }
         }
 
         private static bool EnsurePane()

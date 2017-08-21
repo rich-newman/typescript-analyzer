@@ -24,8 +24,8 @@ namespace WebLinterVsix
                 WebLinterPackage.Dte.StatusBar.Animate(true, vsStatusAnimation.vsStatusAnimationGeneral);
 
                 await CopyResourceFilesToUserProfile(false, callSync);
-
-                var result = await LinterFactory.Lint(WebLinterPackage.Settings, fixErrors, callSync, fileNames);
+                Action<string> log = s => Logger.LogAndWarn(s);
+                LintingResult[] result = await LinterFactory.Lint(WebLinterPackage.Settings, fixErrors, callSync, log, fileNames);
 
                 if (result != null)
                 {

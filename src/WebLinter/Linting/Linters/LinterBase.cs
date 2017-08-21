@@ -12,10 +12,12 @@ namespace WebLinter
 {
     public abstract class LinterBase
     {
-        public LinterBase(ISettings settings, bool fixErrors)
+
+        public LinterBase(ISettings settings, bool fixErrors, Action<string> log)
         {
             Settings = settings;
             FixErrors = fixErrors;
+            this.log = log;
         }
 
         public static NodeServer Server { get; } = new NodeServer();
@@ -30,6 +32,17 @@ namespace WebLinter
         protected bool FixErrors { get; }
 
         protected LintingResult Result { get; private set; }
+
+        private Action<string> log;
+
+        protected void CallLog(string message)
+        {
+            try
+            {
+                log?.Invoke(message);
+            }
+            catch (Exception) { }
+        }
 
         public async Task<LintingResult> Run(bool callSync, params string[] files)
         {
@@ -66,8 +79,11 @@ namespace WebLinter
                 {
                     output = await RunLocalProcess(callSync, files);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    string message = "Attempted to lint with local 'ng lint' and failed.  Falling back to regular lint call.  ";
+                    message += $"Error message:\n{ex.Message}";
+                    CallLog(message);
                     output = await RunProcess(callSync, files);
                 }
             }
@@ -162,12 +178,8 @@ tslint Output: {stdErr} ";
                     process.BeginOutputReadLine();
                     process.BeginErrorReadLine();
 
-                    if (process.WaitForExit(timeout) &&
-                        outputWaitHandle.WaitOne(timeout) &&
-                        errorWaitHandle.WaitOne(timeout))
+                    if (process.WaitForExit(timeout) && outputWaitHandle.WaitOne(timeout) && errorWaitHandle.WaitOne(timeout))
                     {
-                        // Process completed. Check process.ExitCode here.
-                        int test = process.ExitCode;
                         stdErr = error.ToString();
                         stdOut = output.ToString();
                     }
