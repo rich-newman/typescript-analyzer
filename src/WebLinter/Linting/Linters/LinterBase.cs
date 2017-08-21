@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WebLinter
@@ -101,17 +103,23 @@ namespace WebLinter
                 WorkingDirectory = ConfigFile.DirectoryName,
                 UseShellExecute = false
             };
-
-            var localLintProcess = new Process();
-            localLintProcess.StartInfo = StartInfo;
-            localLintProcess.EnableRaisingEvents = true;
-
-            localLintProcess.Start();
-
-            string stdOut = await Task.Run(() => { return localLintProcess.StandardOutput.ReadToEnd(); });
-            string stdErr = await Task.Run(() => { return localLintProcess.StandardError.ReadToEnd(); });
-
-            localLintProcess.WaitForExit();
+            string stdOut = "";
+            string stdErr = "";
+            callSync = true;
+            if (callSync)
+            {
+                // Actually I think the old process blocks the UI thread anyway
+                // so we can use RunLocalProcessSync in the async case as well
+                stdOut = RunLocalProcessSync(StartInfo, out stdErr);
+            }
+            else
+            {
+                Process localLintProcess = new Process { StartInfo = StartInfo, EnableRaisingEvents = true };
+                localLintProcess.Start();
+                stdOut = await Task.Run(() => { return localLintProcess.StandardOutput.ReadToEnd(); });
+                stdErr = await Task.Run(() => { return localLintProcess.StandardError.ReadToEnd(); });
+                localLintProcess.WaitForExit();
+            }
 
             if (!string.IsNullOrWhiteSpace(stdErr))
             {
@@ -120,6 +128,53 @@ tslint Output: {stdErr} ";
                 throw new System.FormatException(message, new InvalidOperationException(stdErr));
             }
 
+            return stdOut;
+        }
+
+        // https://stackoverflow.com/questions/139593/processstartinfo-hanging-on-waitforexit-why
+        private string RunLocalProcessSync(ProcessStartInfo startInfo, out string stdErr)
+        {
+            string stdOut = stdErr = "";
+            int timeout = 10000;
+            using (Process process = new Process())
+            {
+                process.StartInfo = startInfo;
+                StringBuilder output = new StringBuilder();
+                StringBuilder error = new StringBuilder();
+
+                using (AutoResetEvent outputWaitHandle = new AutoResetEvent(false))
+                using (AutoResetEvent errorWaitHandle = new AutoResetEvent(false))
+                {
+                    process.OutputDataReceived += (sender, e) => {
+                        if (e.Data == null)
+                            outputWaitHandle.Set();
+                        else
+                            output.AppendLine(e.Data);
+                    };
+                    process.ErrorDataReceived += (sender, e) =>
+                    {
+                        if (e.Data == null)
+                            errorWaitHandle.Set();
+                        else
+                            error.AppendLine(e.Data);
+                    };
+                    process.Start();
+                    process.BeginOutputReadLine();
+                    process.BeginErrorReadLine();
+
+                    if (process.WaitForExit(timeout) &&
+                        outputWaitHandle.WaitOne(timeout) &&
+                        errorWaitHandle.WaitOne(timeout))
+                    {
+                        // Process completed. Check process.ExitCode here.
+                        int test = process.ExitCode;
+                        stdErr = error.ToString();
+                        stdOut = output.ToString();
+                    }
+                    else
+                        throw new Exception("ng lint call on build timed out.  Timeout is 10 seconds.");
+                }
+            }
             return stdOut;
         }
 
