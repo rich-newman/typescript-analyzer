@@ -3,6 +3,13 @@
 These are the changes to each version that have been released
 on the official Visual Studio extension gallery.
 
+## 1.10
+
+**2017-08-22**
+
+- Fixed bug in 'Use local ng lint' option when combined with the 'Run on build' and 'Show errors': previously it was not halting the build if there were errors.
+- Provided feedback in the Output window under TypeScript Analyzer dropdown when an attempt to use local ng lint is made.  You get a message saying whether it succeeded or failed and why.
+
 ## 1.9
 
 **2017-08-15**
