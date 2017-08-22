@@ -45,7 +45,7 @@ namespace WebLinterVsix
         {
             if (disposing)
             {
-                LinterBase.Server.Down();
+                Linter.Server.Down();
             }
 
             base.Dispose(true);

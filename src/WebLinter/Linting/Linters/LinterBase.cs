@@ -1,4 +1,5 @@
 ﻿// Modifications Copyright Rich Newman 2017
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace WebLinter
 {
-    public abstract class LinterBase
+    public class Linter
     {
 
-        public LinterBase(ISettings settings, bool fixErrors, Action<string> log)
+        public Linter(ISettings settings, bool fixErrors, Action<string> log)
         {
             Settings = settings;
             FixErrors = fixErrors;
@@ -22,20 +23,15 @@ namespace WebLinter
 
         public static NodeServer Server { get; } = new NodeServer();
 
-        public string Name { get; set; }
-
-        protected virtual string ConfigFileName { get; set; }
-
-        protected virtual bool IsEnabled { get; set; }
-
-        protected ISettings Settings { get; }
-        protected bool FixErrors { get; }
-
-        protected LintingResult Result { get; private set; }
-
+        public string Name { get; } = "TSLint";
+        private string ConfigFileName { get; } = "tslint.json";
+        private ISettings Settings { get; }
+        private bool FixErrors { get; }
         private Action<string> log;
 
-        protected void CallLog(string message)
+        private LintingResult Result { get; set; }
+
+        private void CallLog(string message)
         {
             try
             {
@@ -44,12 +40,11 @@ namespace WebLinter
             catch (Exception) { }
         }
 
-        public async Task<LintingResult> Run(bool callSync, params string[] files)
+        public async Task<LintingResult> Lint(bool callSync, params string[] files)
         {
             Result = new LintingResult(files);
 
-            if (!IsEnabled || !files.Any())
-                return Result;
+            if (!Settings.TSLintEnable || !files.Any()) return Result;
 
             List<FileInfo> fileInfos = new List<FileInfo>();
 
@@ -69,7 +64,7 @@ namespace WebLinter
             return await Lint(callSync, fileInfos.ToArray());
         }
 
-        protected virtual async Task<LintingResult> Lint(bool callSync, params FileInfo[] files)
+        private async Task<LintingResult> Lint(bool callSync, params FileInfo[] files)
         {
             string output = null;
 
@@ -102,7 +97,7 @@ namespace WebLinter
         }
 
 
-        protected async Task<string> RunLocalProcess(bool callSync, params FileInfo[] files)
+        private async Task<string> RunLocalProcess(bool callSync, params FileInfo[] files)
         {
             var ConfigFile = new FileInfo(Path.Combine(FindWorkingDirectory(files[0]), ConfigFileName).Replace("\\", "/"));
             var Files = files.Select(f => f.FullName.Replace("\\", "/"));
@@ -121,7 +116,6 @@ namespace WebLinter
             };
             string stdOut = "";
             string stdErr = "";
-            callSync = true;
             if (callSync)
             {
                 // Actually I think the old process blocks the UI thread anyway
@@ -190,7 +184,7 @@ tslint Output: {stdErr} ";
             return stdOut;
         }
 
-        protected async Task<string> RunProcess(bool callSync, params FileInfo[] files)
+        private async Task<string> RunProcess(bool callSync, params FileInfo[] files)
         {
             var postMessage = new ServerPostData
             {
@@ -202,11 +196,10 @@ tslint Output: {stdErr} ";
 #if DEBUG
             postMessage.Debug = true;
 #endif
-
             return await Server.CallServer(Name, postMessage, callSync);
         }
 
-        protected virtual string FindWorkingDirectory(FileInfo file)
+        private string FindWorkingDirectory(FileInfo file)
         {
             var dir = file.Directory;
 
@@ -222,11 +215,61 @@ tslint Output: {stdErr} ";
             return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         }
 
-        protected abstract void ParseErrors(string output);
-
-        public override bool Equals(Object obj)
+        private void ParseErrors(string output)
         {
-            LinterBase lb = obj as LinterBase;
+            JArray array;
+            try
+            {
+                array = JArray.Parse(output);
+            }
+            catch (Exception ex)
+            {
+                string message = $@"Unable to parse output from tslint. List of linting errors is expected.
+tslint Output: {output}
+Parsing Exception: {ex.Message}";
+                throw new System.FormatException(message, ex);
+            }
+            HashSet<LintingError> seen = new HashSet<LintingError>();
+            bool hasVSErrors = false;
+            foreach (JObject obj in array)
+            {
+                string fileName = obj["name"]?.Value<string>().Replace("/", "\\");
+                if (string.IsNullOrEmpty(fileName)) continue;
+
+                int lineNumber = obj["startPosition"]?["line"]?.Value<int>() ?? 0;
+                int columnNumber = obj["startPosition"]?["character"]?.Value<int>() ?? 0;
+                bool isError = Settings.TSLintShowErrors ?
+                    obj["ruleSeverity"]?.Value<string>() == "ERROR" : false;
+                hasVSErrors = hasVSErrors || isError;
+                string errorCode = obj["ruleName"]?.Value<string>();
+
+                LintingError le = new LintingError(fileName, lineNumber, columnNumber, isError, errorCode);
+                if (!Result.Errors.Contains(le))
+                {
+                    le.Message = obj["failure"]?.Value<string>();
+                    le.HelpLink = ParseHttpReference(le.Message, "https://goo.gl/") ??
+                                  ParseHttpReference(le.Message, "https://angular.io/") ??
+                                  $"https://palantir.github.io/tslint/rules/{le.ErrorCode}";
+                    le.Provider = this;
+                    Result.Errors.Add(le);
+                    seen.Add(le);
+                }
+            }
+            Result.HasVsErrors = hasVSErrors;
+        }
+
+        private string ParseHttpReference(string message, string root)
+        {
+            int rootPosition = message == null ? -1 : message.LastIndexOf("(" + root);
+            if (rootPosition == -1) return null;
+            int bracePosition = message.LastIndexOf(")");
+            if (bracePosition == -1 || bracePosition < rootPosition) return null;
+            return message.Substring(rootPosition + 1, bracePosition - rootPosition - 1);
+        }
+
+        public override bool Equals(object obj)
+        {
+            Linter lb = obj as Linter;
             if (lb == null)
                 return false;
             else

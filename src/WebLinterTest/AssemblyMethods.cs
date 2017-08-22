@@ -9,7 +9,7 @@ namespace WebLinterTest
         [AssemblyCleanup]
         public static void Cleanup()
         {
-            LinterBase.Server.Down();
+            Linter.Server.Down();
         }
     }
 }

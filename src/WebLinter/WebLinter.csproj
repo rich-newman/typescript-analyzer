@@ -50,7 +50,6 @@
     <Compile Include="ISettings.cs" />
     <Compile Include="Linting\LinterFactory.cs" />
     <Compile Include="Linting\Linters\LinterBase.cs" />
-    <Compile Include="Linting\Linters\TslintLinter.cs" />
     <Compile Include="Linting\LintingError.cs" />
     <Compile Include="Linting\LintingResult.cs" />
     <Compile Include="NodeServer.cs" />

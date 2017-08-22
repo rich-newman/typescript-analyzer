@@ -36,27 +36,27 @@ namespace WebLinter
             // TODO - do we even need the grouping???  Don't think so
             // Also the logic for selecting a linter is in here even though we now only have one
             var groupedFiles = fileNames.GroupBy(f => Path.GetExtension(f).ToUpperInvariant());
-            Dictionary<LinterBase, IEnumerable<string>> dic = new Dictionary<LinterBase, IEnumerable<string>>();
+            Dictionary<Linter, IEnumerable<string>> dic = new Dictionary<Linter, IEnumerable<string>>();
 
-            foreach (var group in groupedFiles)
+            foreach (IGrouping<string, string> group in groupedFiles)
             {
                 switch (group.Key)
                 {
                     case ".TS":
                     case ".TSX":
                     case ".JSON":
-                        AddLinter(dic, new TsLintLinter(settings, fixErrors, log), group);
+                        AddLinter(dic, new Linter(settings, fixErrors, log), group);
                         break;
                 }
             }
 
             if (dic.Count != 0)
-                return await Task.WhenAll(dic.Select(group => group.Key.Run(callSync, group.Value.ToArray())));
+                return await Task.WhenAll(dic.Select(group => group.Key.Lint(callSync, group.Value.ToArray())));
 
             return new LintingResult[0];
         }
 
-        private static void AddLinter(Dictionary<LinterBase, IEnumerable<string>> dic, LinterBase linter, IEnumerable<string> files)
+        private static void AddLinter(Dictionary<Linter, IEnumerable<string>> dic, Linter linter, IEnumerable<string> files)
         {
             if (dic.ContainsKey(linter))
             {

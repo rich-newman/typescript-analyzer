@@ -17,7 +17,7 @@ namespace WebLinter
             ErrorCode = errorCode;
         }
 
-        public LinterBase Provider { get; set; }
+        public Linter Provider { get; set; }
         public string FileName { get; }
         public string Message { get; set; }
         public int LineNumber { get; }

@@ -12,6 +12,8 @@ namespace WebLinter
     public class NodeServer
     {
         private const string BASE_URL = "http://localhost";
+        // _process is static, so even though we new the Linter and the NodeServer on every lint call
+        // we reuse the same process if it's alive and kicking
         private static Process _process;
         private static object _syncRoot = new object();
         private static AsyncLock _mutex = new AsyncLock();

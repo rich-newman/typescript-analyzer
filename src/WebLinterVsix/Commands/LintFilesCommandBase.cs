@@ -39,7 +39,7 @@ namespace WebLinterVsix
             catch (Exception ex)
             {
                 Logger.LogAndWarn(ex);
-                LinterBase.Server.Down();
+                Linter.Server.Down();
                 return false;
             }
         }
@@ -77,7 +77,7 @@ namespace WebLinterVsix
             catch (Exception ex)
             {
                 Logger.LogAndWarn(ex);
-                LinterBase.Server.Down();
+                Linter.Server.Down();
                 return false;
             }
         }
