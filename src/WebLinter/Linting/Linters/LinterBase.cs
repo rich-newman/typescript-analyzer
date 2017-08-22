@@ -78,6 +78,7 @@ namespace WebLinter
                 try
                 {
                     output = await RunLocalProcess(callSync, files);
+                    CallLog("Lint with local 'ng lint' succeeded");
                 }
                 catch (Exception ex)
                 {
@@ -101,7 +102,7 @@ namespace WebLinter
             return Result;
         }
 
-
+        // TODO Refactor into its own class (and get rid of TslintLinter AND LinterBase)
         protected async Task<string> RunLocalProcess(bool callSync, params FileInfo[] files)
         {
             var ConfigFile = new FileInfo(Path.Combine(FindWorkingDirectory(files[0]), ConfigFileName).Replace("\\", "/"));
@@ -121,11 +122,8 @@ namespace WebLinter
             };
             string stdOut = "";
             string stdErr = "";
-            callSync = true;
             if (callSync)
             {
-                // Actually I think the old process blocks the UI thread anyway
-                // so we can use RunLocalProcessSync in the async case as well
                 stdOut = RunLocalProcessSync(StartInfo, out stdErr);
             }
             else
