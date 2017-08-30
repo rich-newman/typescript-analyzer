@@ -123,8 +123,9 @@ namespace WebLinterTest
                 Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected10));
 
                 // May be too painful when we upgrade tslint: I think since the tslint.json is fixed it should be OK though
+                // 2017-08-30: tslint 5.7.0 changed no-namespace rule to 'ignore global augmentation', reduced 293->292 below
                 Assert.AreEqual(8, mockErrorsTableDataSource.Snapshots[expected1].Count());
-                Assert.AreEqual(293, mockErrorsTableDataSource.Snapshots[expected2].Count());
+                Assert.AreEqual(292, mockErrorsTableDataSource.Snapshots[expected2].Count());
                 Assert.AreEqual(2, mockErrorsTableDataSource.Snapshots[expected3].Count());
                 Assert.AreEqual(2, mockErrorsTableDataSource.Snapshots[expected4].Count());
                 Assert.AreEqual(2, mockErrorsTableDataSource.Snapshots[expected5].Count());
