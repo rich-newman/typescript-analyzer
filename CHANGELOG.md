@@ -3,6 +3,14 @@
 These are the changes to each version that have been released
 on the official Visual Studio extension gallery.
 
+## 1.12
+
+**2017-09-23**
+
+- Bugfix release only.  No new functionality.
+- Fixed bug causing error when the same file is linked into two Visual Studio projects and has errors ([#20](https://github.com/rich-newman/typescript-analyzer/issues/20)).
+- Upgraded all Nuget Visual Studio and Newtonsoft NuGet dependencies to latest, some refactoring.
+
 ## 1.11
 
 **2017-09-03**
