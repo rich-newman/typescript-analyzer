@@ -49,20 +49,20 @@ namespace WebLinter
 
         private async Task<LintingResult> Lint(bool callSync, params FileInfo[] files)
         {
-            // TODO this is still wrong: the ng lint runner doesn't need the files list, does need tslint.json
-            ServerPostData postData = CreatePostData(files);
+            // The ng lint runner doesn't need the files list, does need tslint.json
+            ServerPostData postData = CreatePostData(files, _settings.UseProjectNGLint);
             string output = _settings.UseProjectNGLint ? await _localNgLintRunner.Run(Name, postData, callSync) :
-                                                        await Server.CallServer(Name, postData, callSync);
+                                                         await Server.CallServer(Name, postData, callSync);
             if (!string.IsNullOrEmpty(output)) ParseErrors(output);
             return _result;
         }
 
-        private ServerPostData CreatePostData(FileInfo[] files)
+        private ServerPostData CreatePostData(FileInfo[] files, bool useProjectNGLint)
         {
             ServerPostData postData = new ServerPostData
             {
                 Config = Path.Combine(FindWorkingDirectory(files[0]), ConfigFileName).Replace("\\", "/"),
-                Files = files.Select(f => f.FullName.Replace("\\", "/")),
+                Files = useProjectNGLint ? null : files.Select(f => f.FullName.Replace("\\", "/")),
                 FixErrors = _fixErrors,
                 UseTSConfig = _settings.UseTsConfig
             };

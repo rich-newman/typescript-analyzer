@@ -18,6 +18,7 @@ namespace WebLinter
             try
             {
                 output = await RunLocalProcess(callSync, postData);
+                CallLog("Lint with local 'ng lint' succeeded");
             }
             catch (Exception ex)
             {
