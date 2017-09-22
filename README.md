@@ -16,7 +16,7 @@ The menu options for the TypeScript Analyzer are separate from the menu options 
 
 ### TSLint Version
 
-The TypeScript Analyzer is using TSLint version 5.6.0.
+The TypeScript Analyzer is using TSLint version 5.7.0.
 
 ### Analyze Using tsconfig.json
 
@@ -75,7 +75,7 @@ There is an 'Only run if requested' option on Tools/Options/TypeScript Analyzer.
 
 ### codelyzer
 
-A locally installed instance of [codelyzer](http://codelyzer.com/) will work with the TypeScript Analyzer.  However, the analyzer ships with its own versions of tslint and typescript. It runs these from a temporary folder.  Hence for codelyzer to work it's best to install it locally along with the same versions, currently tslint 5.6.0 and typescript 2.4.2.  It will usually also work with other compatible versions.  However, we know that versions of codelyzer before 3.0 are not compatible with these versions of tslint and typescript.  See below for an alternative.
+A locally installed instance of [codelyzer](http://codelyzer.com/) will work with the TypeScript Analyzer.  However, the analyzer ships with its own versions of tslint and typescript. It runs these from a temporary folder.  Hence for codelyzer to work it's best to install it locally along with the same versions, currently tslint 5.7.0 and typescript 2.5.2.  It will usually also work with other compatible versions.  However, we know that versions of codelyzer before 3.0 are not compatible with these versions of tslint and typescript.  See below for an alternative.
 
 ### 'Use local ng lint' Option
 
