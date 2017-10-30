@@ -27,36 +27,45 @@ namespace WebLinterVsix
 
         internal void UpdateSink(IEnumerable<TableEntriesSnapshot> snapshots)
         {
-            foreach (var snapshot in snapshots)
+            try
             {
-                var existing = _snapshots.FirstOrDefault(s => s.FilePath == snapshot.FilePath);
-
-                if (existing != null)
+                foreach (var snapshot in snapshots)
                 {
-                    _snapshots.Remove(existing);
-                    _sink.ReplaceSnapshot(existing, snapshot);
-                }
-                else
-                {
-                    _sink.AddSnapshot(snapshot);
+                    var existing = _snapshots.FirstOrDefault(s => s.FilePath == snapshot.FilePath);
+
+                    if (existing != null)
+                    {
+                        _snapshots.Remove(existing);
+                        _sink.ReplaceSnapshot(existing, snapshot);
+                    }
+                    else
+                    {
+                        _sink.AddSnapshot(snapshot);
+                    }
+
+                    _snapshots.Add(snapshot);
                 }
 
-                _snapshots.Add(snapshot);
             }
+            catch (Exception ex) { Logger.Log(ex); }
         }
 
         internal void RemoveSnapshots(IEnumerable<string> files)
         {
-            foreach (string file in files)
+            try
             {
-                var existing = _snapshots.FirstOrDefault(s => s.FilePath == file);
-
-                if (existing != null)
+                foreach (string file in files)
                 {
-                    _snapshots.Remove(existing);
-                    _sink.RemoveSnapshot(existing);
+                    var existing = _snapshots.FirstOrDefault(s => s.FilePath == file);
+
+                    if (existing != null)
+                    {
+                        _snapshots.Remove(existing);
+                        _sink.RemoveSnapshot(existing);
+                    }
                 }
             }
+            catch (Exception ex) { Logger.Log(ex); }
         }
 
         public void Dispose()
