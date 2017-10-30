@@ -10,6 +10,8 @@ This is a version of Mads Kristensen's [Web Analyzer for Visual Studio 2015](htt
 
 **Please refer to Mads Kristensen's [documentation for the Web Analyzer](https://github.com/madskristensen/WebAnalyzer) for a full list of the original features.**
 
+**Please also be aware that, as with the Web Analyzer for Visual Studio 2015, at present this extension needs a Visual Studio solution file to work.  If you open a folder in Visual Studio without a solution the menu options will not appear and the TypeScript Analyzer will not run.**
+
 ### Menu Options: TypeScript Analyzer vs Web Code Analysis
 
 The menu options for the TypeScript Analyzer are separate from the menu options for the ESLint, CSSLint and CoffeeLint in Visual Studio 2017 ('Web Code Analysis').  In particular the TypeScript Analyzer can be run for a specific file or files by right-clicking in Solution Explorer and selecting 'Run TypeScript Analyzer'.  Settings can be edited using 'Tools/TypeScript Analyzer/Edit TSLint settings'.  TypeScript Analyzer also has its own entry in the menu in Tools/Options.
