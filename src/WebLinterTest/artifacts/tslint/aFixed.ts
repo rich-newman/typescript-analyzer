@@ -2,10 +2,11 @@
     const i = "test";
     const b = "hat";
 
-    if (i == b)
+    if (i == b) {
         return false;
-    else
+    } else {
         return "Hello from foo";
+    }
 }
 
 console.log(foo());

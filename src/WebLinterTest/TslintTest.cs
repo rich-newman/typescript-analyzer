@@ -35,8 +35,9 @@ namespace WebLinterTest
                 result = await LinterFactory.Lint(MockSettings.Instance, true, false, "../../artifacts/tslint/aTest.ts");
                 Assert.IsTrue(result.First().HasErrors);
                 Assert.IsFalse(string.IsNullOrEmpty(result.First().Errors.First().FileName), "File name is empty");
-                Assert.AreEqual(4, result.First().Errors.Count);
-                Assert.AreEqual("if statements must be braced", result.First().Errors.First().Message);
+                // 2017-10-30: tslint 5.8.0 curly has a fixer #3262, reduces 4 -> 2 below
+                Assert.AreEqual(2, result.First().Errors.Count);
+                Assert.AreEqual("Calls to 'console.log' are not allowed.", result.First().Errors.First().Message);
                 string actual = File.ReadAllText("../../artifacts/tslint/aTest.ts");
                 string expected = File.ReadAllText("../../artifacts/tslint/aFixed.ts");
                 Assert.AreEqual(expected, actual);

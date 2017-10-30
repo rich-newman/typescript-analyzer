@@ -5,6 +5,14 @@ on the official Visual Studio extension gallery.
 
 ## 1.12
 
+**2017-10-30**
+
+- Underlying TSLint upgraded to 5.8.0, TypeScript 2.5.3.
+- Better exception handling for errors when cleaning the Error List ([#23](https://github.com/rich-newman/typescript-analyzer/issues/23)).
+- Tried to make it clearer that this extension needs a Visual Studio Solution: it will not work in a folder view.
+
+## 1.12
+
 **2017-09-23**
 
 - Bugfix release only.  No new functionality.

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="A95BEECA-9D08-48C5-882B-BAB22D5723BC" Version="1.12" Language="en-US" Publisher="Rich Newman" />
+        <Identity Id="A95BEECA-9D08-48C5-882B-BAB22D5723BC" Version="1.13" Language="en-US" Publisher="Rich Newman" />
         <DisplayName>TypeScript Analyzer</DisplayName>
         <Description xml:space="preserve">Provides static analysis directly in Visual Studio for TypeScript files (.ts and .tsx) using TSLint</Description>
         <MoreInfo>https://github.com/rich-newman/typescript-analyzer</MoreInfo>

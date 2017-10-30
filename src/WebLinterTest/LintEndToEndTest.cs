@@ -124,8 +124,9 @@ namespace WebLinterTest
 
                 // May be too painful when we upgrade tslint: I think since the tslint.json is fixed it should be OK though
                 // 2017-08-30: tslint 5.7.0 changed no-namespace rule to 'ignore global augmentation', reduced 293->292 below
+                // 2017-10-30: tslint 5.8.0 no-empty-interface now disregards interfaces with generic types #3260, reduced 292 -> 283 below
                 Assert.AreEqual(8, mockErrorsTableDataSource.Snapshots[expected1].Count());
-                Assert.AreEqual(292, mockErrorsTableDataSource.Snapshots[expected2].Count());
+                Assert.AreEqual(283, mockErrorsTableDataSource.Snapshots[expected2].Count());
                 Assert.AreEqual(2, mockErrorsTableDataSource.Snapshots[expected3].Count());
                 Assert.AreEqual(2, mockErrorsTableDataSource.Snapshots[expected4].Count());
                 Assert.AreEqual(2, mockErrorsTableDataSource.Snapshots[expected5].Count());
