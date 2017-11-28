@@ -29,7 +29,6 @@ namespace WebLinterVsix.FileListeners
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
-            Logger.Log("VsTextViewCreated entered, thread=" + System.Threading.Thread.CurrentThread.ManagedThreadId);
             try
             {
                 // If we open a folder then our package isn't initialized but this class does get created
@@ -44,7 +43,6 @@ namespace WebLinterVsix.FileListeners
 
                 if (TextDocumentFactoryService.TryGetTextDocument(textView.TextDataModel.DocumentBuffer, out ITextDocument _document))
                 {
-                    Logger.Log("VsTextViewCreated got document, thread=" + System.Threading.Thread.CurrentThread.ManagedThreadId + ", document=" + _document.FilePath);
                     if (!LintableFiles.IsLintableTsOrTsxFile(_document.FilePath)) return;
                     _document.FileActionOccurred += DocumentSaved;
                     textView.Properties.AddProperty("lint_filename", _document.FilePath);
@@ -54,15 +52,12 @@ namespace WebLinterVsix.FileListeners
                     {
                         Task.Run(async () =>
                         {
-                            Logger.Log("VsTextViewCreated calling linter service, thread=" + System.Threading.Thread.CurrentThread.ManagedThreadId + ", document=" + _document.FilePath);
                             await CallLinterService(_document.FilePath);
-                            Logger.Log("VsTextViewCreated returned from linter service, thread=" + System.Threading.Thread.CurrentThread.ManagedThreadId + ", document=" + _document.FilePath);
                         });
                     }
                 }
             }
             catch (Exception ex) { Logger.LogAndWarn(ex); }
-            Logger.Log("VsTextViewCreated exited, thread=" + System.Threading.Thread.CurrentThread.ManagedThreadId);
         }
 
         private void TextviewClosed(object sender, EventArgs e)
