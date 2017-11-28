@@ -7,7 +7,7 @@ pushd %~dp0..\src\WebLinter\Node
 echo Installing packages...
 call npm install ^
      tslint@5.8.0 ^
-     typescript@2.5.3 ^
+     typescript@2.6.2 ^
      --no-optional --quiet > nul
 
 
@@ -23,6 +23,7 @@ del /s /q CHANGELOG > nul
 del /s /q CHANGES > nul
 del /s /q CNAME > nul
 del /s /q README > nul
+del /s /q package-lock.json > nul
 
 for /d /r . %%d in (benchmark)  do @if exist "%%d" rd /s /q "%%d" > nul
 for /d /r . %%d in (bench)      do @if exist "%%d" rd /s /q "%%d" > nul
