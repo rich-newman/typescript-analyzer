@@ -26,10 +26,10 @@ namespace WebLinterVsix.FileListeners
         [Import]
         public ITextDocumentFactoryService TextDocumentFactoryService { get; set; }
 
-        private ITextDocument _document;
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
+            Logger.Log("VsTextViewCreated entered, thread=" + System.Threading.Thread.CurrentThread.ManagedThreadId);
             try
             {
                 // If we open a folder then our package isn't initialized but this class does get created
@@ -40,30 +40,29 @@ namespace WebLinterVsix.FileListeners
 
                 // Both "Web Compiler" and "Bundler & Minifier" extensions add this property on their
                 // generated output files. Generated output should be ignored from linting
-                if (textView.Properties.TryGetProperty("generated", out bool generated) && generated)
-                    return;
+                if (textView.Properties.TryGetProperty("generated", out bool generated) && generated) return;
 
-                if (TextDocumentFactoryService.TryGetTextDocument(textView.TextDataModel.DocumentBuffer, out _document))
+                if (TextDocumentFactoryService.TryGetTextDocument(textView.TextDataModel.DocumentBuffer, out ITextDocument _document))
                 {
-                    Task.Run(async () =>
+                    Logger.Log("VsTextViewCreated got document, thread=" + System.Threading.Thread.CurrentThread.ManagedThreadId + ", document=" + _document.FilePath);
+                    if (!LintableFiles.IsLintableTsOrTsxFile(_document.FilePath)) return;
+                    _document.FileActionOccurred += DocumentSaved;
+                    textView.Properties.AddProperty("lint_filename", _document.FilePath);
+                    // Don't run linter again if error list already contains errors for the file.
+                    if (!TableDataSource.Instance.HasErrors(_document.FilePath) &&
+                            WebLinterPackage.Settings != null && !WebLinterPackage.Settings.OnlyRunIfRequested)
                     {
-                        _document.FileActionOccurred += DocumentSaved;
-
-                        if (!LintableFiles.IsLintableTsOrTsxFile(_document.FilePath))
-                            return;
-
-                        textView.Properties.AddProperty("lint_filename", _document.FilePath);
-
-                        // Don't run linter again if error list already contains errors for the file.
-                        if (!TableDataSource.Instance.HasErrors(_document.FilePath) &&
-                                WebLinterPackage.Settings != null && !WebLinterPackage.Settings.OnlyRunIfRequested)
+                        Task.Run(async () =>
                         {
+                            Logger.Log("VsTextViewCreated calling linter service, thread=" + System.Threading.Thread.CurrentThread.ManagedThreadId + ", document=" + _document.FilePath);
                             await CallLinterService(_document.FilePath);
-                        }
-                    });
+                            Logger.Log("VsTextViewCreated returned from linter service, thread=" + System.Threading.Thread.CurrentThread.ManagedThreadId + ", document=" + _document.FilePath);
+                        });
+                    }
                 }
             }
             catch (Exception ex) { Logger.LogAndWarn(ex); }
+            Logger.Log("VsTextViewCreated exited, thread=" + System.Threading.Thread.CurrentThread.ManagedThreadId);
         }
 
         private void TextviewClosed(object sender, EventArgs e)
