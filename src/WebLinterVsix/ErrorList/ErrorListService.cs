@@ -6,6 +6,7 @@ namespace WebLinterVsix
 {
     class ErrorListService
     {
+        private static object _processLintingLocker = new object();
         public static void ProcessLintingResults(IEnumerable<LintingResult> results, string[] fileNames,
                                                     string[] filterFileNames, bool showErrorList)
         {
@@ -16,15 +17,17 @@ namespace WebLinterVsix
             IEnumerable<string> lintedFilesWithNoErrors = useFilter ?
                 filterFileNames.Where(f => !allErrors.Select(e => e.FileName).Contains(f)) :
                 fileNames.Where(f => !allErrors.Select(e => e.FileName).Contains(f));
-
-            if (allErrors.Any())
+            lock (_processLintingLocker)
             {
-                TableDataSource.Instance.AddErrors(allErrors);
-                if (showErrorList)
-                    TableDataSource.Instance.BringToFront();
-            }
+                if (allErrors.Any())
+                {
+                    TableDataSource.Instance.AddErrors(allErrors);
+                    if (showErrorList)
+                        TableDataSource.Instance.BringToFront();
+                }
 
-            TableDataSource.Instance.CleanErrors(lintedFilesWithNoErrors);
+                TableDataSource.Instance.CleanErrors(lintedFilesWithNoErrors);
+            }
         }
     }
 }
