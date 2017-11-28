@@ -25,3 +25,6 @@ x64/
 *.ncrunchsolution
 *.ncrunchproject
 _NCrunch_WebCompiler
+
+# npm
+package-lock.json
