@@ -3,7 +3,15 @@
 These are the changes to each version that have been released
 on the official Visual Studio extension gallery.
 
-## 1.12
+## 1.14
+
+**2017-11-29**
+
+- Underlying TypeScript upgraded to TypeScript 2.6.2.
+- Fixed bug causing intermittent errors at startup if multiple code windows are open (root cause of error in [#23](https://github.com/rich-newman/typescript-analyzer/issues/23)).
+- Fixed bug that could cause same file to be linted multiple times if multiple code windows open at startup.
+
+## 1.13
 
 **2017-10-30**
 
