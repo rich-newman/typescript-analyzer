@@ -128,7 +128,7 @@
         "variable-declaration": "onespace"
       }
     ],
-    "typeof-compare": true,
+    "typeof-compare": false,
     "unified-signatures": true,
     "use-isnan": true,
     "variable-name": [ true, "ban-keywords", "check-format", "allow-pascal-case" ],
