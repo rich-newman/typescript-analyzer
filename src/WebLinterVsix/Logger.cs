@@ -66,7 +66,8 @@ namespace WebLinterVsix
 
         private static bool EnsurePane()
         {
-            if (pane == null)
+            // during unit tests, _provider is not set. Do not try to get pane then.
+            if (pane == null && _provider != null)
             {
                 Guid guid = Guid.NewGuid();
                 IVsOutputWindow output = (IVsOutputWindow)_provider.GetService(typeof(SVsOutputWindow));

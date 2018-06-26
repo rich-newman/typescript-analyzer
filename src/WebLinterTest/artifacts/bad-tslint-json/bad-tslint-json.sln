@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bad-tslint-json", "bad-tslint-json.csproj", "{EE022247-D8C0-43AA-AF0D-CD0772B92D22}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE022247-D8C0-43AA-AF0D-CD0772B92D22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE022247-D8C0-43AA-AF0D-CD0772B92D22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE022247-D8C0-43AA-AF0D-CD0772B92D22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE022247-D8C0-43AA-AF0D-CD0772B92D22}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B341AE5E-3205-4922-9B76-5C6592FBC68D}
+	EndGlobalSection
+EndGlobal

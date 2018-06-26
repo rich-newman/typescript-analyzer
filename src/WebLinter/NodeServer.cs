@@ -22,18 +22,18 @@ namespace WebLinter
 
         public async Task<string> CallServer(string path, ServerPostData postData, bool callSync)
         {
-            await EnsureNodeProcessIsRunning(callSync);
-
-            string url = $"{BASE_URL}:{BasePort}/{path.ToLowerInvariant()}";
-            string json = JsonConvert.SerializeObject(postData);
-
             try
             {
+                await EnsureNodeProcessIsRunning(callSync);
+
+                string url = $"{BASE_URL}:{BasePort}/{path.ToLowerInvariant()}";
+                string json = JsonConvert.SerializeObject(postData);
+
                 using (WebClient client = new WebClient())
                 {
-                    if(callSync)
+                    if (callSync)
                     {
-                        Task<string> task = Task.Run(async () => 
+                        Task<string> task = Task.Run(async () =>
                                                      await client.UploadStringTaskAsync(url, json));
                         bool completed = task.Wait(5000);
                         if (!completed) throw new Exception("TsLint call on build timed out.  Timeout is 5 seconds.");
@@ -45,11 +45,13 @@ namespace WebLinter
                     }
                 }
             }
-            catch (WebException ex)
+            catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.ToString());
                 Down();
-                return string.Empty;
+                // return error message so that it will be shown in error list
+                // e.g. if firewall blocks connection: "Unable to connect to the remote server"
+                return "Failed to communicate with TsLint server: " + ex.Message + (ex.InnerException != null ? " --> " + ex.InnerException.Message : "");
             }
         }
 
@@ -101,10 +103,14 @@ namespace WebLinter
                         System.Threading.Thread.Sleep(100);
                     else
                         await Task.Delay(100);
+
+                    if (_process.HasExited)
+                        throw new Exception($"TsLint server failed to start: {start.FileName} {start.Arguments}");
                 }
                 catch (Exception)
                 {
                     Down();
+                    throw;
                 }
             }
         }
