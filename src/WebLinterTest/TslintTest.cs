@@ -40,6 +40,9 @@ namespace WebLinterTest
                 Assert.AreEqual("Calls to 'console.log' are not allowed.", result.First().Errors.First().Message);
                 string actual = File.ReadAllText("../../artifacts/tslint/aTest.ts");
                 string expected = File.ReadAllText("../../artifacts/tslint/aFixed.ts");
+                // normalize by removing space indents and using Windows line breaks
+                actual = System.Text.RegularExpressions.Regex.Replace(actual, "\r?\n\\s+", "\r\n");
+                expected = System.Text.RegularExpressions.Regex.Replace(expected, "\r?\n\\s+", "\r\n");
                 Assert.AreEqual(expected, actual);
             }
             finally
