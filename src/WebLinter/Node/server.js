@@ -25,6 +25,7 @@ var start = function (port) {
         });
 
         req.on('end', function () {
+            var debug = false;
             try {
                 if (body === "")
                     return;
@@ -33,15 +34,27 @@ var start = function (port) {
 
                 if (linter) {
                     var data = JSON.parse(body);
+                    debug = data.debug;
                     var result = linter(data.config, data.fixerrors, data.files, data.usetsconfig, data.debug);
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
                     res.write(result);
+                } else {
+                    throw Error("No linter found for " + path);
                 }
             }
             catch (e) {
-                res.writeHead(500, { 'Content-Type': 'text/plain' });
-                res.write("Server error: " + e.message);
+                if (debug) {
+                    console.log(e);
+                }
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                var response = {
+                    "exception": JSON.stringify(e, Object.getOwnPropertyNames(e)),
+                    "error": true,
+                    "message": e.message,
+                    "path": path
+                };
+                res.write(JSON.stringify(response));
             }
             finally {
                 res.end();
@@ -58,21 +71,15 @@ var linters = {
             files.forEach(f => console.log(f));
             console.log(usetsconfig);
         }
-        try {
-            var options = {
-                fix: fixErrors,
-                formatter: "json"
-            };
+        var options = {
+            fix: fixErrors,
+            formatter: "json"
+        };
 
-            if (usetsconfig) {
-                return linttsconfigs(configFile, files, options, debug);
-            } else {
-                return lintFiles(configFile, files, options, debug);
-            }
-        }
-        catch (err) {
-            if (debug) console.log(err.message);
-            return err.message;
+        if (usetsconfig) {
+            return linttsconfigs(configFile, files, options, debug);
+        } else {
+            return lintFiles(configFile, files, options, debug);
         }
     }
 
