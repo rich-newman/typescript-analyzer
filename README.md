@@ -86,3 +86,7 @@ This option on Tools/Options/TypeScript Analyzer runs tslint locally for an [Ang
 This approach bypasses some of our existing infrastructure.  In particular it uses the local versions of tslint and typescript in the node_modules subfolder rather than the versions shipped with the analyzer.  It needs an [Angular CLI](https://cli.angular.io/) install to work.  It's also a little slower than our usual linting.  For the results to show up in the Error List the files to lint still have to be included in the Visual Studio project, or included in a regular tsconfig.json that is in the Visual Studio project with 'Use tsconfig.json files' set in the options.
 
 If the call to 'ng lint' fails for any reason the analyzer falls back to using the prepackaged tslint.  At present we don't have good reporting if that happens.
+
+### Debugging / developing
+
+If you want to help enhancing TypeScript Analyzer, just clone the repository and open the project with Visual Studio.  Set a breakpoint and start debugging project WebLinterVsix (F5).  It will open a new instance of Visual Studio in which you can make use of TypeScript Analyzer until your breakpoint will be hit.  Happy coding!  And don't forget to create a pull request!

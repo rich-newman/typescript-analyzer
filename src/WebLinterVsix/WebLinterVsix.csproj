@@ -29,6 +29,12 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
   </PropertyGroup>
+    <PropertyGroup>
+      <!-- Allow debugging with F5 -->
+      <StartAction>Program</StartAction>
+      <StartProgram>$(DevEnvDir)\devenv.exe</StartProgram>
+      <StartArguments>/rootsuffix Exp</StartArguments>
+    </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
