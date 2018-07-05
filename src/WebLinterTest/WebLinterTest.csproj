@@ -110,6 +110,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AssemblyMethods.cs" />
+    <Compile Include="BadTslintJsonTest.cs" />
     <Compile Include="BuildFileLocationsTest.cs" />
     <Compile Include="EmptyUnloadedProjectsTest.cs" />
     <Compile Include="LintEndToEndTest.cs" />

@@ -1,4 +1,5 @@
 ﻿// Modifications Copyright Rich Newman 2017
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -90,8 +91,24 @@ namespace WebLinter
 
         private void ParseErrors(string output)
         {
-            JArray array = ParseToJArray(output);
-            HashSet<LintingError> seen = new HashSet<LintingError>();
+            JArray array = null;
+            try
+            {
+                array = JArray.Parse(output);
+            }
+            catch (JsonReaderException)
+            {
+                // In case of error from TSLint, just show error to user.
+                // There is no use in showing exception details or throwing a new exception.
+                LintingError le = new LintingError("TSLint", 0, 0, true, "TSLint")
+                {
+                    Message = output,
+                    Provider = this
+                };
+                _result.Errors.Add(le);
+                _result.HasVsErrors = true;
+                return;
+            }
             bool hasVSErrors = false;
             foreach (JObject obj in array)
             {
@@ -114,27 +131,9 @@ namespace WebLinter
                                   $"https://palantir.github.io/tslint/rules/{le.ErrorCode}";
                     le.Provider = this;
                     _result.Errors.Add(le);
-                    seen.Add(le);
                 }
             }
             _result.HasVsErrors = hasVSErrors;
-        }
-
-        private static JArray ParseToJArray(string output)
-        {
-            JArray array;
-            try
-            {
-                array = JArray.Parse(output);
-            }
-            catch (Exception ex)
-            {
-                string message = $@"Unable to parse output from tslint. List of linting errors is expected.
-tslint Output: {output}
-Parsing Exception: {ex.Message}";
-                throw new FormatException(message, ex);
-            }
-            return array;
         }
 
         private string ParseHttpReference(string message, string root)
