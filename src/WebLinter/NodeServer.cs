@@ -75,17 +75,18 @@ namespace WebLinter
                     // This should never happen, since server.js always returns JSON object
                     log?.Invoke("Invalid response from TsLint server: " + innerEx.ToString());
                     return "Internal error";
-                }                
+                }
+                finally
+                {
+                    Down();
+                }
             }
             catch (Exception ex)
             {
                 log?.Invoke(ex.ToString());
                 // e.g. if EXE not found or fails to start due to port-in-use error
-                return "Failed to start TsLint server: " + ex.Message + (ex.InnerException != null ? " --> " + ex.InnerException.Message : "");
-            }
-            finally
-            {
                 Down();
+                return "Failed to start TsLint server: " + ex.Message + (ex.InnerException != null ? " --> " + ex.InnerException.Message : "");
             }
         }
 
