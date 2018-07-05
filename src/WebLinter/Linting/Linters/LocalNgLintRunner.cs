@@ -25,7 +25,7 @@ namespace WebLinter
                 string message = "Attempted to lint with local 'ng lint' and failed.  Falling back to regular lint call.  ";
                 message += $"Error message:\n{ex.Message}";
                 CallLog(message);
-                output = await Linter.Server.CallServer(name, postData, callSync);
+                output = await Linter.Server.CallServer(name, postData, callSync, _log);
             }
             return output;
         }

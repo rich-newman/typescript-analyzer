@@ -15,11 +15,13 @@ namespace WebLinter
         {
             _settings = settings;
             _fixErrors = fixErrors;
+            _log = log;
             if (settings.UseProjectNGLint) _localNgLintRunner = new LocalNgLintRunner(log);
         }
 
         public static NodeServer Server { get; } = new NodeServer();
         private LocalNgLintRunner _localNgLintRunner;
+        private Action<string> _log;
 
         public readonly string Name = "TSLint";
         public readonly string ConfigFileName = "tslint.json";
@@ -53,7 +55,7 @@ namespace WebLinter
             // The ng lint runner doesn't need the files list, does need tslint.json
             ServerPostData postData = CreatePostData(files);
             string output = _settings.UseProjectNGLint ? await _localNgLintRunner.Run(Name, postData, callSync) :
-                                                         await Server.CallServer(Name, postData, callSync);
+                                                         await Server.CallServer(Name, postData, callSync, _log);
             if (!string.IsNullOrEmpty(output)) ParseErrors(output);
             return _result;
         }
