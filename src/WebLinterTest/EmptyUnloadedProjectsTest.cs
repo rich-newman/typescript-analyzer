@@ -4,16 +4,12 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using WebLinterVsix;
-using Microsoft.VisualStudio.Shell.Interop;
-using System.Linq;
-using Microsoft.VisualStudio;
-
 namespace WebLinterTest
 {
-    public class EmptyUnloadedProjectsTestBase
+    public class ProjectsTestBase
     {
-        protected EnvDTE80.DTE2 dte;
-        protected Solution solution;
+        protected static EnvDTE80.DTE2 dte;
+        protected static Solution solution;
         protected MockSettings settings;
         protected UIHierarchyItem[] selectedItems;
         protected MockErrorsTableDataSource mockErrorsTableDataSource;
@@ -24,10 +20,10 @@ namespace WebLinterTest
             Type type = Type.GetTypeFromProgID("VisualStudio.DTE.15.0");
             object inst = Activator.CreateInstance(type, true);
             dte = (EnvDTE80.DTE2)inst;
-            var test = (EnvDTE.DTE)inst;
+            var test = (DTE)inst;
             //test.
             dte.Solution.Open(Path.GetFullPath(solutionPath));
-            
+
             solution = dte.Solution;
             settings = new MockSettings() { UseTsConfig = false };
             WebLinterPackage.Settings = settings;
@@ -44,7 +40,8 @@ namespace WebLinterTest
             return selectedItems;
         }
 
-        protected void Cleanup()
+        [ClassCleanup]
+        public static void Cleanup()
         {
             if (solution != null) { solution.Close(); solution = null; }
             if (dte != null) dte.Quit();
@@ -55,7 +52,7 @@ namespace WebLinterTest
     }
 
     [TestClass]
-    public class EmptyUnloadedProjectsTest : EmptyUnloadedProjectsTestBase
+    public class EmptyUnloadedProjectsTest : ProjectsTestBase
     {
         [TestMethod, TestCategory("Empty/Unloaded Projects")]
         public async Task LintEmptySolution()
@@ -73,7 +70,6 @@ namespace WebLinterTest
             finally
             {
                 TableDataSource.InjectMockErrorsTableDataSource(null);
-                Cleanup();
             }
         }
 

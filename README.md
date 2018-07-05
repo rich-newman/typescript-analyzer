@@ -83,7 +83,7 @@ A locally installed instance of [codelyzer](http://codelyzer.com/) will work wit
 
 This option on Tools/Options/TypeScript Analyzer runs tslint locally for an [Angular CLI](https://cli.angular.io/) installation by issuing an 'ng lint' command from a hidden cmd.exe window in the project folder.  This is useful if your Angular project uses older versions of codelyzer (before 3.0).
 
-**This option only works with versions of Angular CLI up to 1.7.4, and doesn't work with versions 6.0.0 or later.**
+**This option only works with versions of Angular CLI up to 1.7.4, and doesn't work with version 6.0.0 or later.**
 
 This approach bypasses some of our existing infrastructure.  In particular it uses the local versions of tslint and typescript in the node_modules subfolder rather than the versions shipped with the analyzer.  It needs an [Angular CLI](https://cli.angular.io/) install to work.  It's also a little slower than our usual linting.  For the results to show up in the Error List the files to lint still have to be included in the Visual Studio project, or included in a regular tsconfig.json that is in the Visual Studio project with 'Use tsconfig.json files' set in the options.
 
