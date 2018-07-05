@@ -3,6 +3,13 @@
 These are the changes to each version that have been released
 on the official Visual Studio extension gallery.
 
+## 1.16
+
+**2018-07-05**
+
+- Underlying TSLint upgraded to 5.10.0, TypeScript 2.9.2.
+- Improved error handling when the call to TSLint fails.  Messages are placed in the Error List as well as under TypeScript Analyzer in the Output window.
+
 ## 1.15
 
 **2018-04-19**
