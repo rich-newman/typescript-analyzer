@@ -89,4 +89,5 @@ If the call to 'ng lint' fails for any reason the analyzer falls back to using t
 
 ### Debugging / developing
 
-If you want to help enhancing TypeScript Analyzer, just clone the repository and open the project with Visual Studio.  Set a breakpoint and start debugging project WebLinterVsix (F5).  It will open a new instance of Visual Studio in which you can make use of TypeScript Analyzer until your breakpoint will be hit.  Happy coding!  And don't forget to create a pull request!
+If you want to help enhancing TypeScript Analyzer, just ensure [node is installed](https://nodejs.org/en/download/), clone the repository and open the project with Visual Studio.  Set a breakpoint and start debugging project WebLinterVsix (F5).  It will open a new instance of Visual Studio in which you can make use of TypeScript Analyzer until your breakpoint will be hit.  Happy coding!  And don't forget to create a pull request!
+
