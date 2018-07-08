@@ -18,7 +18,7 @@ The menu options for the TypeScript Analyzer are separate from the menu options 
 
 ### TSLint Version
 
-The TypeScript Analyzer is using TSLint version 5.10.0.
+The TypeScript Analyzer is using TSLint version 5.9.1.
 
 ### Analyze Using tsconfig.json
 
@@ -59,6 +59,8 @@ The TypeScript Analyzer has a default tslint.json file.  This is used on initial
 
 The current default tslint.json contains all of the recommended rules and settings for TSLint 5.2.0.    All of the rules have been added individually, rather than use the simpler 'extends' syntax that the file supports ("extends": "tslint:recommended").  This is because it's easier to enable or disable a rule without referring to the documentation in this format.  This also allows you to more easily set the severity of an individual rule (see below).  You are of course free to change your tslint.json to use the 'extends' syntax.
 
+**If you installed an earlier version of the TypeScript Analyzer than 1.2 then you will need to reset your tslint.json to enable the new rules** ('Tools/TypeScript Analyzer/Reset TypeScript Analyzer Settings').
+
 ### TSLint Errors/Warnings and defaultSeverity
 
 TSLint now has its own errors and warnings.  However TSLint 'errors' are different from the usual errors in Visual Studio in the sense that they are not serious problems that will halt a build.  Trailing whitespace is by default an 'error' in TSLint for example.
@@ -75,7 +77,7 @@ There is an 'Only run if requested' option on Tools/Options/TypeScript Analyzer.
 
 ### codelyzer
 
-A locally installed instance of [codelyzer](http://codelyzer.com/) will work with the TypeScript Analyzer.  However, the analyzer ships with its own versions of tslint and typescript. It runs these from a temporary folder.  Hence for codelyzer to work it's best to install it locally along with the same versions, currently tslint 5.10.0 and typescript 2.9.2.  It will usually also work with other compatible versions.  However, we know that versions of codelyzer before 3.0 are not compatible with these versions of tslint and typescript.  See below for an alternative.
+A locally installed instance of [codelyzer](http://codelyzer.com/) will work with the TypeScript Analyzer.  However, the analyzer ships with its own versions of tslint and typescript. It runs these from a temporary folder.  Hence for codelyzer to work it's best to install it locally along with the same versions, currently tslint 5.9.1 and typescript 2.8.1.  It will usually also work with other compatible versions.  However, we know that versions of codelyzer before 3.0 are not compatible with these versions of tslint and typescript.  See below for an alternative.
 
 ### 'Use local ng lint' Option
 
