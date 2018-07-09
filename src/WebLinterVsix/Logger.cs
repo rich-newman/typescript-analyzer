@@ -41,25 +41,16 @@ namespace WebLinterVsix
 
         public static void LogAndWarn(Exception ex)
         {
-            try
-            {
-                if (ex != null)
-                {
-                    Log(ex.ToString());
-                    string warning = "A TypeScript Analyzer error occurred. See Output window for more details.";
-                    WebLinterPackage.Dte.StatusBar.Text = warning;
-                }
-            }
-            catch { }
+                if (ex != null) LogAndWarn(ex.Message);
         }
 
-        public static void LogAndWarn(string message)
+        public static void LogAndWarn(string message, bool showWarning = true)
         {
             try
             {
                 Log(message);
-                string warning = "A TypeScript Analyzer issue occurred. See Output window for more details.";
-                WebLinterPackage.Dte.StatusBar.Text = warning;
+                if (showWarning)
+                    WebLinterPackage.Dte.StatusBar.Text = "A TypeScript Analyzer error occurred. See Output window for more details.";
             }
             catch { }
         }

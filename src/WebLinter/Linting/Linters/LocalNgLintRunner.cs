@@ -9,8 +9,8 @@ namespace WebLinter
 {
     internal class LocalNgLintRunner
     {
-        private Action<string> _log;
-        internal LocalNgLintRunner(Action<string> log) {_log = log; }
+        private Action<string, bool> _log;
+        internal LocalNgLintRunner(Action<string, bool> log) {_log = log; }
 
         internal async Task<string> Run(string name, ServerPostData postData, bool callSync)
         {
@@ -18,13 +18,13 @@ namespace WebLinter
             try
             {
                 output = await RunLocalProcess(callSync, postData);
-                CallLog("Lint with local 'ng lint' succeeded");
+                CallLog("Lint with local 'ng lint' succeeded", showWarning: false);
             }
             catch (Exception ex)
             {
                 string message = "Attempted to lint with local 'ng lint' and failed.  Falling back to regular lint call.  ";
                 message += $"Error message:\n{ex.Message}";
-                CallLog(message);
+                CallLog(message, showWarning: true);
                 output = await Linter.Server.CallServer(name, postData, callSync, _log);
             }
             return output;
@@ -122,11 +122,11 @@ tslint Output: {stdErr} ";
             return stdOut;
         }
 
-        internal void CallLog(string message)
+        private void CallLog(string message, bool showWarning)
         {
             try
             {
-                _log?.Invoke(message);
+                _log?.Invoke(message, showWarning);
             }
             catch (Exception) { }
         }

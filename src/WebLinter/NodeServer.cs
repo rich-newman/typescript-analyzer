@@ -20,7 +20,7 @@ namespace WebLinter
 
         public int BasePort { get; private set; }
 
-        public async Task<string> CallServer(string path, ServerPostData postData, bool callSync, Action<string> log)
+        public async Task<string> CallServer(string path, ServerPostData postData, bool callSync, Action<string, bool> log)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace WebLinter
                 {
                     if (ex.Response == null)
                     {
-                        log?.Invoke(ex.ToString());
+                        log?.Invoke(ex.ToString(), true);
                         // e.g. if firewall blocks connection: "Unable to connect to the remote server"
                         return "Failed to communicate with TsLint server: " + ex.Message + (ex.InnerException != null ? " --> " + ex.InnerException.Message : "");
                     }
@@ -63,17 +63,17 @@ namespace WebLinter
                         string exceptionString = obj.exception;
                         dynamic exception = JsonConvert.DeserializeObject(exceptionString);
                         log?.Invoke("TsLint reported error: " + Environment.NewLine 
-                            + JsonConvert.SerializeObject(exception, Formatting.Indented).Replace("\\n", "\n"));
+                            + JsonConvert.SerializeObject(exception, Formatting.Indented).Replace("\\n", "\n"), true);
                         string messageFromServer = obj.message;
                         return messageFromServer;
                     }
-                    log?.Invoke("WebException without error from TsLint. Response: " + resp);
+                    log?.Invoke("WebException without error from TsLint. Response: " + resp, true);
                     return "Internal error";
                 }
                 catch (Exception innerEx)
                 {
                     // This should never happen, since server.js always returns JSON object
-                    log?.Invoke("Invalid response from TsLint server: " + innerEx.ToString());
+                    log?.Invoke("Invalid response from TsLint server: " + innerEx.ToString(), true);
                     return "Internal error";
                 }
                 finally
@@ -83,7 +83,7 @@ namespace WebLinter
             }
             catch (Exception ex)
             {
-                log?.Invoke(ex.ToString());
+                log?.Invoke(ex.ToString(), true);
                 // e.g. if EXE not found or fails to start due to port-in-use error
                 Down();
                 return "Failed to start TsLint server: " + ex.Message + (ex.InnerException != null ? " --> " + ex.InnerException.Message : "");

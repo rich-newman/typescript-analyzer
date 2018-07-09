@@ -11,7 +11,7 @@ namespace WebLinter
 {
     public class Linter
     {
-        public Linter(ISettings settings, bool fixErrors, Action<string> log)
+        public Linter(ISettings settings, bool fixErrors, Action<string, bool> log)
         {
             _settings = settings;
             _fixErrors = fixErrors;
@@ -21,7 +21,7 @@ namespace WebLinter
 
         public static NodeServer Server { get; } = new NodeServer();
         private LocalNgLintRunner _localNgLintRunner;
-        private Action<string> _log;
+        private Action<string, bool> _log;
 
         public readonly string Name = "TSLint";
         public readonly string ConfigFileName = "tslint.json";
