@@ -8,7 +8,10 @@ on the official Visual Studio extension gallery.
 **2018-07-05**
 
 - Underlying TSLint upgraded to 5.10.0, TypeScript 2.9.2.
-- Improved error handling when the call to TSLint fails.  Messages are placed in the Error List as well as under TypeScript Analyzer in the Output window.
+- Improved error handling when the call to TSLint fails.  Messages are placed in the Error List as well as under TypeScript Analyzer in the Output window.  Also improved handling of status bar messages slightly.
+- Increased timeouts for synchronous calls made on a build to the Analyzer, particularly for local ng lint calls.  Stopped timeouts crashing the extension.
+
+Thanks to @lukeowlclaw for the Error List improvements.
 
 ## 1.15
 
