@@ -32,8 +32,8 @@ namespace WebLinter
         public Task<IDisposable> LockSync()
         {
             var task = m_semaphore.WaitAsync();
-            bool completed = task.Wait(130000);
-            if (!completed) throw new Exception("LockSync timed out.  Timeout is 10 seconds.");
+            bool completed = task.Wait(60000);
+            if (!completed) throw new Exception("LockSync timed out.  Timeout is 60 seconds.");
             return m_releaser;
         }
 

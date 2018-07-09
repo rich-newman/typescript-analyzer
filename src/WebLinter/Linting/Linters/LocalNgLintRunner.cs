@@ -75,7 +75,7 @@ tslint Output: {stdErr} ";
         private string RunLocalProcessSync(ProcessStartInfo startInfo, out string stdErr)
         {
             string stdOut = stdErr = "";
-            int timeout = 10000;
+            int timeout = 120000;
             using (Process process = new Process())
             {
                 process.StartInfo = startInfo;
@@ -86,17 +86,25 @@ tslint Output: {stdErr} ";
                 using (AutoResetEvent errorWaitHandle = new AutoResetEvent(false))
                 {
                     process.OutputDataReceived += (sender, e) => {
-                        if (e.Data == null)
-                            outputWaitHandle.Set();
-                        else
-                            output.AppendLine(e.Data);
+                        try
+                        {
+                            if (e.Data == null)
+                                outputWaitHandle.Set();
+                            else
+                                output.AppendLine(e.Data);
+                        }
+                        catch (Exception) { }
                     };
                     process.ErrorDataReceived += (sender, e) =>
                     {
-                        if (e.Data == null)
-                            errorWaitHandle.Set();
-                        else
-                            error.AppendLine(e.Data);
+                        try
+                        {
+                            if (e.Data == null)
+                                errorWaitHandle.Set();
+                            else
+                                error.AppendLine(e.Data);
+                        }
+                        catch (Exception) { }
                     };
                     process.Start();
                     process.BeginOutputReadLine();
@@ -108,7 +116,7 @@ tslint Output: {stdErr} ";
                         stdOut = output.ToString();
                     }
                     else
-                        throw new Exception("ng lint call on build timed out.  Timeout is 10 seconds.");
+                        throw new Exception("Local ng lint call on build timed out.  Timeout is 120 seconds.");
                 }
             }
             return stdOut;

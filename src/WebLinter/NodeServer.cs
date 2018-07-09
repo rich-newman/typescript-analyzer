@@ -35,8 +35,8 @@ namespace WebLinter
                     {
                         Task<string> task = Task.Run(async () =>
                                                      await client.UploadStringTaskAsync(url, json));
-                        bool completed = task.Wait(5000);
-                        if (!completed) throw new Exception("TsLint call on build timed out.  Timeout is 5 seconds.");
+                        bool completed = task.Wait(60000);
+                        if (!completed) throw new Exception("TsLint call on build timed out.  Timeout is 60 seconds.");
                         return completed ? task.Result : null;
                     }
                     else
