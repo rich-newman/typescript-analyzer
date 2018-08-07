@@ -18,7 +18,7 @@ The menu options for the TypeScript Analyzer are separate from the menu options 
 
 ### TSLint Version
 
-The TypeScript Analyzer is using TSLint version 5.10.0.
+The TypeScript Analyzer is using TSLint version 5.11.0.
 
 ### Analyze Using tsconfig.json
 
@@ -75,7 +75,7 @@ There is an 'Only run if requested' option on Tools/Options/TypeScript Analyzer.
 
 ### codelyzer
 
-A locally installed instance of [codelyzer](http://codelyzer.com/) will work with the TypeScript Analyzer.  However, the analyzer ships with its own versions of tslint and typescript. It runs these from a temporary folder.  Hence for codelyzer to work it's best to install it locally along with the same versions, currently tslint 5.10.0 and typescript 2.9.2.  It will usually also work with other compatible versions.  However, we know that versions of codelyzer before 3.0 are not compatible with these versions of tslint and typescript.  See below for an alternative.
+A locally installed instance of [codelyzer](http://codelyzer.com/) will work with the TypeScript Analyzer.  However, the analyzer ships with its own versions of tslint and typescript. It runs these from a temporary folder.  Hence for codelyzer to work it's best to install it locally along with the same versions, currently tslint 5.11.0 and typescript 3.0.1.  It will usually also work with other compatible versions.  However, we know that versions of codelyzer before 3.0 are not compatible with these versions of tslint and typescript.  See below for an alternative.
 
 ### 'Use local ng lint' Option
 
@@ -86,6 +86,26 @@ This option on Tools/Options/TypeScript Analyzer runs tslint locally for an [Ang
 This approach bypasses some of our existing infrastructure.  In particular it uses the local versions of tslint and typescript in the node_modules subfolder rather than the versions shipped with the analyzer.  It needs an [Angular CLI](https://cli.angular.io/) install to work.  It's also a little slower than our usual linting.  For the results to show up in the Error List the files to lint still have to be included in the Visual Studio project, or included in a regular tsconfig.json that is in the Visual Studio project with 'Use tsconfig.json files' set in the options.
 
 If the call to 'ng lint' fails for any reason the analyzer falls back to using the prepackaged tslint.  At present we don't have good reporting if that happens.
+
+### Linting .js and .jsx files
+
+This option on Tools/Options/TypeScript Analyzer allows .js and .jsx files to be linted using TSLint, as well as .ts and tsx files.
+
+For this to work a jsRules (note the capital 'R') section needs to be created in tslint.json (Tools/TypeScript Analyzer/Edit TSLint settings), as described in the TSLint documentation.  All rules are turned off by default, so need to be explicitly turned on.
+For example, a tslint.json that (only) applies the no-console rule to both TypeScript and JavaScript files would look as below:
+
+```javascript
+{
+  "rules": {
+    "no-console": true,
+  },
+  "jsRules": {
+    "no-console": true,
+  }
+}
+```
+
+Note that Visual Studio 2017 already uses ESLint to lint .js files, so you may want to disable this (Tools/Options/Text Editor/JavaScript/TypeScript/ESLint/Enable ESLint).
 
 ### Debugging / developing
 

@@ -3,6 +3,13 @@
 These are the changes to each version that have been released
 on the official Visual Studio extension gallery.
 
+## 1.17
+
+**2018-08-07**
+
+- Underlying TSLint upgraded to 5.11.0, TypeScript 3.0.1.
+- Support for linting .js and .jsx files added, controlled by 'Lint .js and .jsx files' flag in Tools/Options/TypeScript Analyzer.
+
 ## 1.16
 
 **2018-07-05**
