@@ -1,23 +1,19 @@
 ﻿// Modifications Copyright Rich Newman 2017
-using System;
-using System.ComponentModel.Composition;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Interop;
-using System.Windows.Threading;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
+using System;
+using System.ComponentModel.Composition;
+using System.IO;
+using System.Threading.Tasks;
 using WebLinterVsix.Helpers;
 
 namespace WebLinterVsix.FileListeners
 {
     [Export(typeof(IVsTextViewCreationListener))]
     [ContentType("JavaScript")]
-    [ContentType("JSX")]
     [ContentType("TypeScript")]
     [TextViewRole(PredefinedTextViewRoles.Document)]
     class SourceFileCreationListener : IVsTextViewCreationListener
@@ -28,7 +24,6 @@ namespace WebLinterVsix.FileListeners
         [Import]
         public ITextDocumentFactoryService TextDocumentFactoryService { get; set; }
 
-
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
             try
@@ -36,7 +31,7 @@ namespace WebLinterVsix.FileListeners
                 // If we open a folder then our package isn't initialized but this class does get created
                 // We get failures in the events because Settings is null, so don't do anything if that's the case
                 if (WebLinterPackage.Settings == null) return;
-                var textView = EditorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
+                IWpfTextView textView = EditorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
                 textView.Closed += TextviewClosed;
 
                 // Both "Web Compiler" and "Bundler & Minifier" extensions add this property on their
@@ -45,9 +40,10 @@ namespace WebLinterVsix.FileListeners
 
                 if (TextDocumentFactoryService.TryGetTextDocument(textView.TextDataModel.DocumentBuffer, out ITextDocument _document))
                 {
-                    if (!LintableFiles.IsLintableTsTsxJsJsxFile(_document.FilePath)) return;
+                    if (!LintableFiles.IsValidFile(_document.FilePath)) return;
                     _document.FileActionOccurred += DocumentSaved;
                     textView.Properties.AddProperty("lint_filename", _document.FilePath);
+                    if (!LintableFiles.IsLintableTsTsxJsJsxFile(_document.FilePath)) return;
                     // Don't run linter again if error list already contains errors for the file.
                     if (!TableDataSource.Instance.HasErrors(_document.FilePath) &&
                             WebLinterPackage.Settings != null && !WebLinterPackage.Settings.OnlyRunIfRequested)

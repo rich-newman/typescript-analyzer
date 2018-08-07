@@ -66,10 +66,13 @@ namespace WebLinterVsix.Helpers
             return true;
         }
 
+        public static bool IsValidFile(string fileName) 
+            => !string.IsNullOrEmpty(fileName) && Path.IsPathRooted(fileName) && File.Exists(fileName);
+
         public static bool IsLintableTsTsxJsJsxFile(string fileName, bool checkIgnoreOptions = true)
         {
             // Check if filename is absolute because when debugging, script files are sometimes dynamically created.
-            if (string.IsNullOrEmpty(fileName) || !Path.IsPathRooted(fileName) || !File.Exists(fileName)) return false;
+            if (!IsValidFile(fileName)) return false;
             if (!LinterFactory.IsLintableFileExtension(fileName, WebLinterPackage.Settings.LintJsFiles)) return false;
             return IsLintableFile(fileName, checkIgnoreOptions);
         }
