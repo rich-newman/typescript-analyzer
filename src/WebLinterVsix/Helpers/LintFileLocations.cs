@@ -27,7 +27,7 @@ namespace WebLinterVsix.Helpers
         public static IEnumerable<string> FindInProjectItem(ProjectItem projectItem)
         {
             string itemPath = projectItem.GetFullPath();
-            if (LintableFiles.IsLintableTsOrTsxFile(itemPath))
+            if (LintableFiles.IsLintableTsTsxJsJsxFile(itemPath))
                 yield return itemPath;
             // Checking the ignore pattern here is an optimization that prevents us iterating ignored folders
             if (projectItem.ProjectItems == null || LintableFiles.ContainsIgnorePattern(itemPath)) yield break;

@@ -13,6 +13,7 @@ namespace WebLinter
         bool UseTsConfig { get; }
         bool OnlyRunIfRequested { get; }
         bool UseProjectNGLint { get; }
+        bool LintJsFiles { get; }
         IEnumerable<string> GetIgnorePatterns();
         void ResetSettings();
     }

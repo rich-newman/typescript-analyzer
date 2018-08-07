@@ -30,11 +30,14 @@ namespace WebLinterTest
         public bool TSLintShowErrors => false;
         public bool UseTsConfig { get; set; } = false;
         public bool UseProjectNGLint => false;
+        public bool LintJsFiles => false;
         public bool OnlyRunIfRequested => true;
         public bool RunOnBuild => false;
         public bool CleanErrorsOnBuild => false;
         public bool IgnoreNestedFiles { get; set; } = true;
         public string[] IgnorePatterns { get; set; } = new string[0];
+
+
         public IEnumerable<string> GetIgnorePatterns() { return IgnorePatterns; }
         public void ResetSettings() { }
     }

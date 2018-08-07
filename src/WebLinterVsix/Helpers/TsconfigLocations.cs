@@ -71,7 +71,7 @@ namespace WebLinterVsix.Helpers
             {
                 if (selItem.Object is ProjectItem item &&
                     item.GetFullPath() is string projectItemPath &&
-                    LintableFiles.IsLintableTsOrTsxFile(projectItemPath))
+                    LintableFiles.IsLintableTsTsxJsJsxFile(projectItemPath))
                 {
                     result.Add(projectItemPath);
                 }

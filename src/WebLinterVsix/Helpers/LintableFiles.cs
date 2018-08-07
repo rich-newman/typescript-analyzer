@@ -44,10 +44,10 @@ namespace WebLinterVsix.Helpers
         public static bool IsLintableProjectItem(string projectItemPath)
         {
             return IsLintableDirectory(projectItemPath) ||
-                   (!WebLinterPackage.Settings.UseTsConfig && IsLintableTsOrTsxFile(projectItemPath)) ||
+                   (!WebLinterPackage.Settings.UseTsConfig && IsLintableTsTsxJsJsxFile(projectItemPath)) ||
                    (WebLinterPackage.Settings.UseTsConfig &&
                        (IsLintableTsconfig(projectItemPath) ||
-                        IsLintableTsOrTsxFile(projectItemPath, checkIgnoreOptions: false)));
+                        IsLintableTsTsxJsJsxFile(projectItemPath, checkIgnoreOptions: false)));
         }
 
         public static bool IsLintableDirectory(string path)
@@ -66,11 +66,11 @@ namespace WebLinterVsix.Helpers
             return true;
         }
 
-        public static bool IsLintableTsOrTsxFile(string fileName, bool checkIgnoreOptions = true)
+        public static bool IsLintableTsTsxJsJsxFile(string fileName, bool checkIgnoreOptions = true)
         {
             // Check if filename is absolute because when debugging, script files are sometimes dynamically created.
             if (string.IsNullOrEmpty(fileName) || !Path.IsPathRooted(fileName) || !File.Exists(fileName)) return false;
-            if (!LinterFactory.IsExtensionTsOrTsx(fileName)) return false;
+            if (!LinterFactory.IsLintableFileExtension(fileName, WebLinterPackage.Settings.LintJsFiles)) return false;
             return IsLintableFile(fileName, checkIgnoreOptions);
         }
 

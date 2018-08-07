@@ -11,14 +11,12 @@ namespace WebLinter
     public static class LinterFactory
     {
         public static readonly string ExecutionPath = Path.Combine(Path.GetTempPath(), Constants.CACHE_NAME + Constants.VERSION);
-        private static string[] _supported = new string[] { ".TS", ".TSX" };
         private static AsyncLock _mutex = new AsyncLock();
 
-        public static bool IsExtensionTsOrTsx(string fileName)
+        public static bool IsLintableFileExtension(string fileName, bool lintJsFiles)
         {
             string extension = Path.GetExtension(fileName).ToUpperInvariant();
-
-            return _supported.Contains(extension);
+            return extension == ".TS" || extension == ".TSX" || (lintJsFiles && (extension == ".JS" || extension == ".JSX"));
         }
 
         public static async Task<LintingResult[]> Lint(ISettings settings, params string[] fileNames) 
@@ -45,6 +43,8 @@ namespace WebLinter
                     case ".TS":
                     case ".TSX":
                     case ".JSON":
+                    case ".JS":
+                    case ".JSX":
                         AddLinter(dic, new Linter(settings, fixErrors, log), group);
                         break;
                 }

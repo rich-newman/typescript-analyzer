@@ -16,6 +16,8 @@ using WebLinterVsix.Helpers;
 namespace WebLinterVsix.FileListeners
 {
     [Export(typeof(IVsTextViewCreationListener))]
+    [ContentType("JavaScript")]
+    [ContentType("JSX")]
     [ContentType("TypeScript")]
     [TextViewRole(PredefinedTextViewRoles.Document)]
     class SourceFileCreationListener : IVsTextViewCreationListener
@@ -43,7 +45,7 @@ namespace WebLinterVsix.FileListeners
 
                 if (TextDocumentFactoryService.TryGetTextDocument(textView.TextDataModel.DocumentBuffer, out ITextDocument _document))
                 {
-                    if (!LintableFiles.IsLintableTsOrTsxFile(_document.FilePath)) return;
+                    if (!LintableFiles.IsLintableTsTsxJsJsxFile(_document.FilePath)) return;
                     _document.FileActionOccurred += DocumentSaved;
                     textView.Properties.AddProperty("lint_filename", _document.FilePath);
                     // Don't run linter again if error list already contains errors for the file.
@@ -85,7 +87,7 @@ namespace WebLinterVsix.FileListeners
             {
                 if (WebLinterPackage.Settings != null && !WebLinterPackage.Settings.OnlyRunIfRequested &&
                     e.FileActionType == FileActionTypes.ContentSavedToDisk &&
-                    LintableFiles.IsLintableTsOrTsxFile(e.FilePath)) // We may have changed settings since the event was hooked
+                    LintableFiles.IsLintableTsTsxJsJsxFile(e.FilePath)) // We may have changed settings since the event was hooked
                 {
                     await CallLinterService(e.FilePath);
                 }

@@ -88,7 +88,13 @@ namespace WebLinterVsix
         [Description("If True, will attempt to use the projects own ng lint and tslint configuration.  Useful if your project uses older versions for example codelyzer < 3.0.  Falls back to the plugin built-in ts lint")]
         [DefaultValue(false)]
         public bool UseProjectNGLint { get; set; }
-        
+
+        [Category("Basic")]
+        [DisplayName("Lint .js and .jsx files")]
+        [Description("If True, will lint .js and .jsx files in addition to .ts and .tsx files.  This option uses rules in the the jsrules section of tslint.json, which is empty in the default tslint.json.")]
+        [DefaultValue(false)]
+        public bool LintJsFiles { get; set; }
+
         public IEnumerable<string> GetIgnorePatterns()
         {
             var raw = IgnoreFolderNames.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);

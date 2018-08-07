@@ -156,8 +156,11 @@ namespace WebLinterVsix
             if (projectItem.GetFullPath() is string fileName)
             {
                 // It's possible for the same file to be in two VS projects, linked in to either, issue #20
-                if (LinterFactory.IsExtensionTsOrTsx(fileName) && !fileNameToProjectNameMap.ContainsKey(fileName))
+                if (LinterFactory.IsLintableFileExtension(fileName, WebLinterPackage.Settings.LintJsFiles)
+                    && !fileNameToProjectNameMap.ContainsKey(fileName))
+                {
                     fileNameToProjectNameMap.Add(fileName, projectName);
+                }
                 if (projectItem.ProjectItems == null) return;
                 foreach (ProjectItem subProjectItem in projectItem.ProjectItems)
                     FindProjectItems(subProjectItem, projectName, fileNameToProjectNameMap);
