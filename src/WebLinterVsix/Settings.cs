@@ -91,7 +91,7 @@ namespace WebLinterVsix
 
         [Category("Basic")]
         [DisplayName("Lint .js and .jsx files")]
-        [Description("If True, will lint .js and .jsx files in addition to .ts and .tsx files.  This option uses rules in the the jsrules section of tslint.json, which is empty in the default tslint.json.")]
+        [Description("If True, will lint .js and .jsx files in addition to .ts and .tsx files.  This option uses rules in the the jsRules section of tslint.json.  This section is empty by default.")]
         [DefaultValue(false)]
         public bool LintJsFiles { get; set; }
 
