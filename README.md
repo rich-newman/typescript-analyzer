@@ -91,7 +91,10 @@ If the call to 'ng lint' fails for any reason the analyzer falls back to using t
 
 This option on Tools/Options/TypeScript Analyzer allows .js and .jsx files to be linted using TSLint, as well as .ts and tsx files.
 
-For this to work a jsRules (note the capital 'R') section needs to be created in tslint.json (Tools/TypeScript Analyzer/Edit TSLint settings), as described in the TSLint documentation.  All rules are turned off by default, so need to be explicitly turned on.
+For this to work you need to enable the option in Tools/Options **and** to create a 'jsRules' section in your tslint.json at the same level as the existing 'rules' section (Tools/TypeScript Analyzer/Edit TSLint settings).  Rules that apply to .ts and .tsx files then appear in the existing 'rules' section, and rules that apply to .js and .jsx files need to be added to the new 'jsRules' section.  
+
+This means if you want a rule to apply to .ts and .js files it needs to appear twice in tslint.json, once in each section.  Some rules will only work with TypeScript (.ts and .tsx) files.  See the [TSLint documentation for more details](https://palantir.github.io/tslint/rules/).
+
 For example, a tslint.json that (only) applies the no-console rule to both TypeScript and JavaScript files would look as below:
 
 ```javascript
