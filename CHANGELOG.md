@@ -5,7 +5,7 @@ on the official Visual Studio extension gallery.
 
 ## 1.17
 
-**2018-08-07**
+**2018-08-08**
 
 - Underlying TSLint upgraded to 5.11.0, TypeScript 3.0.1.
 - Support for linting .js and .jsx files added, controlled by 'Lint .js and .jsx files' flag in Tools/Options/TypeScript Analyzer.
