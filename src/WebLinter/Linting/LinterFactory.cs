@@ -79,7 +79,7 @@ namespace WebLinter
                 var log_file = Path.Combine(ExecutionPath, "log.txt");
 
                 if (!Directory.Exists(node_modules) || !File.Exists(log_file) ||
-                    (Directory.Exists(node_modules) && Directory.GetDirectories(node_modules).Length < 39))
+                    (Directory.Exists(node_modules) && Directory.GetDirectories(node_modules).Length < 41))
                 {
                     // This is called async at startup.  If we do a build before it's completed it gets
                     // called sync but the mutex will block the call until the previous async call has

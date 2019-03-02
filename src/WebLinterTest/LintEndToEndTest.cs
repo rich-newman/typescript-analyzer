@@ -125,16 +125,19 @@ namespace WebLinterTest
                 // May be too painful when we upgrade tslint: I think since the tslint.json is fixed it should be OK though
                 // 2017-08-30: tslint 5.7.0 changed no-namespace rule to 'ignore global augmentation', reduced 293->292 below
                 // 2017-10-30: tslint 5.8.0 no-empty-interface now disregards interfaces with generic types #3260, reduced 292 -> 283 below
-                Assert.AreEqual(8, mockErrorsTableDataSource.Snapshots[expected1].Count());
-                Assert.AreEqual(283, mockErrorsTableDataSource.Snapshots[expected2].Count());
-                Assert.AreEqual(2, mockErrorsTableDataSource.Snapshots[expected3].Count());
-                Assert.AreEqual(2, mockErrorsTableDataSource.Snapshots[expected4].Count());
-                Assert.AreEqual(2, mockErrorsTableDataSource.Snapshots[expected5].Count());
-                Assert.AreEqual(2, mockErrorsTableDataSource.Snapshots[expected6].Count());
-                Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected7].Count());
-                Assert.AreEqual(9, mockErrorsTableDataSource.Snapshots[expected8].Count());
-                Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected9].Count());
-                Assert.AreEqual(2, mockErrorsTableDataSource.Snapshots[expected10].Count());
+                // 2019-03-02: tslint 15.13.0 enabled the completed-docs rules if NOT using tsconfig.json, as here, previously only ran if
+                //             a tsconfig.json was specified.  That is it stopped being 'typed' = 'uses tslint' = 'uses type checker'.  
+                //             The rule was in tslint.json for this test, so extra test errors appeared. tslint issue #3557.
+                Assert.AreEqual(22, mockErrorsTableDataSource.Snapshots[expected1].Count());
+                Assert.AreEqual(1294, mockErrorsTableDataSource.Snapshots[expected2].Count());
+                Assert.AreEqual(5, mockErrorsTableDataSource.Snapshots[expected3].Count());
+                Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected4].Count());
+                Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected5].Count());
+                Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected6].Count());
+                Assert.AreEqual(4, mockErrorsTableDataSource.Snapshots[expected7].Count());
+                Assert.AreEqual(11, mockErrorsTableDataSource.Snapshots[expected8].Count());
+                Assert.AreEqual(4, mockErrorsTableDataSource.Snapshots[expected9].Count());
+                Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected10].Count());
 
                 // Pick an error and check we are generating all details - expected4 is file1.ts
                 LintingError lintingError = mockErrorsTableDataSource.Snapshots[expected4].First(le => le.ErrorCode == "no-empty");
