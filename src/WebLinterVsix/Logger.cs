@@ -9,10 +9,10 @@ namespace WebLinterVsix
     {
         private static IVsOutputWindowPane pane;
         private static object _syncRoot = new object();
-        private static IServiceProvider _provider;
+        private static WebLinterPackage _provider;
         private static string _name;
 
-        public static void Initialize(IServiceProvider provider, string name)
+        public static void Initialize(WebLinterPackage provider, string name)
         {
             _provider = provider;
             _name = name;
@@ -41,7 +41,7 @@ namespace WebLinterVsix
 
         public static void LogAndWarn(Exception ex)
         {
-                if (ex != null) LogAndWarn(ex.Message);
+            if (ex != null) LogAndWarn(ex.Message);
         }
 
         public static void LogAndWarn(string message, bool showWarning = true)
@@ -61,7 +61,7 @@ namespace WebLinterVsix
             if (pane == null && _provider != null)
             {
                 Guid guid = Guid.NewGuid();
-                IVsOutputWindow output = (IVsOutputWindow)_provider.GetService(typeof(SVsOutputWindow));
+                IVsOutputWindow output = _provider.GetIVsOutputWindow();
                 output.CreatePane(ref guid, _name, 1, 1);
                 output.GetPane(ref guid, out pane);
             }
