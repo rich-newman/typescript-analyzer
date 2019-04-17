@@ -1,8 +1,14 @@
 @echo off
 
 echo Running build.cmd to create folder WebLinterVsix\TypeScriptAnalyzerNode
-if exist %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode\log.txt echo Nothing to do - WebLinterVsix\TypeScriptAnalyzerNode\log.txt already exists & goto:done
-if not exist %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode mkdir %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode
+REM Update tslint and typescript versions by changing version numbers below, after which a rebuild will use the new versions
+SET tslintversion=5.13.1
+SET tsversion=3.3.3333
+SET logfile=log-tslint%tslintversion%-ts%tsversion%.txt
+if exist %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode\%logfile% echo Nothing to do - WebLinterVsix\TypeScriptAnalyzerNode\%logfile% already exists & goto:done
+echo Deleting and recreating folder WebLinterVsix\TypeScriptAnalyzerNode... 
+if exist %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode rmdir /s /q %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode
+mkdir %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode
 
 echo Copying and unzipping core files (node.exe, server.js)...
 copy /y %~dp0..\src\WebLinter\Node\*.* %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode
@@ -14,8 +20,8 @@ del /q node.7z
 
 echo Installing packages...
 call npm install ^
-     tslint@5.13.1 ^
-     typescript@3.3.3333 ^
+     tslint@%tslintversion% ^
+     typescript@%tsversion% ^
      --no-optional --quiet > nul
 
 echo Deleting unneeded files and folders...
@@ -46,8 +52,8 @@ for /d /r . %%d in (tests)      do @if exist "%%d" rd /s /q "%%d" > nul
 for /d /r . %%d in (testing)    do @if exist "%%d" rd /s /q "%%d" > nul
 for /d /r . %%d in (tst)        do @if exist "%%d" rd /s /q "%%d" > nul
 
-echo Creating log.txt success file...
-type nul > log.txt
+echo Creating %logfile% success file...
+type nul > %logfile%
 :done
 echo build.cmd completed
 pushd "%~dp0"
