@@ -58,14 +58,8 @@
     <Compile Include="ServerPostData.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Node\prepare.cmd" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Node\7z.dll" />
     <EmbeddedResource Include="Node\7z.exe" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Node\node_modules.7z" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Node\node.7z" />
@@ -78,7 +72,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)build\build.cmd"</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

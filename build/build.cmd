@@ -1,15 +1,22 @@
 @echo off
 
-if exist %~dp0..\src\WebLinter\Node\node_modules.7z goto:done
+echo Running build.cmd to create folder WebLinterVsix\TypeScriptAnalyzerNode
+if exist %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode\log.txt echo Nothing to do - WebLinterVsix\TypeScriptAnalyzerNode\log.txt already exists & goto:done
+if not exist %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode mkdir %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode
 
-pushd %~dp0..\src\WebLinter\Node
+echo Copying and unzipping core files (node.exe, server.js)...
+copy /y %~dp0..\src\WebLinter\Node\*.* %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode
+pushd %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode
+7z.exe x -y node.7z
+del /q 7z.dll
+del /q 7z.exe
+del /q node.7z
 
 echo Installing packages...
 call npm install ^
      tslint@5.13.1 ^
      typescript@3.3.3333 ^
      --no-optional --quiet > nul
-
 
 echo Deleting unneeded files and folders...
 del /s /q *.html > nul
@@ -39,11 +46,8 @@ for /d /r . %%d in (tests)      do @if exist "%%d" rd /s /q "%%d" > nul
 for /d /r . %%d in (testing)    do @if exist "%%d" rd /s /q "%%d" > nul
 for /d /r . %%d in (tst)        do @if exist "%%d" rd /s /q "%%d" > nul
 
-echo Compressing artifacts and cleans up...
-"%~dp07z.exe" a -r -mx9 node_modules.7z node_modules > nul
-rmdir /S /Q node_modules > nul
-
-
+echo Creating log.txt success file...
+type nul > log.txt
 :done
-echo Done
+echo build.cmd completed
 pushd "%~dp0"

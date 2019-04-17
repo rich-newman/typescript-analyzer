@@ -5,5 +5,6 @@ namespace WebLinter
     {
         public const string VERSION = "1.18";
         public const string CACHE_NAME = "TypeScriptAnalyzer";
+        public const string NODE_FOLDER_NAME = "TypeScriptAnalyzerNode";
     }
 }

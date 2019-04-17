@@ -1,5 +1,4 @@
-﻿// Modifications Copyright Rich Newman 2017
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Threading;
@@ -52,24 +51,6 @@ namespace WebLinterVsix
             }
 
             base.Dispose(true);
-        }
-    }
-
-    [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
-    [ProvideAutoLoad(UIContextGuids80.NoSolution, PackageAutoLoadFlags.BackgroundLoad)]
-    public sealed class WebLinterInitPackage : AsyncPackage
-    {
-        protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
-        {
-            try
-            {
-                await LinterFactory.EnsureNodeFolderCreated();
-            }
-            catch (Exception ex)
-            {
-                Logger.Log(ex);
-            }
         }
     }
 }
