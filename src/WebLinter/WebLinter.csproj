@@ -58,14 +58,14 @@
     <Compile Include="ServerPostData.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Node\7z.dll" />
-    <EmbeddedResource Include="Node\7z.exe" />
+    <None Include="Node\7z.dll" />
+    <None Include="Node\7z.exe" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Node\node.7z" />
+    <None Include="Node\node.7z" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Node\server.js" />
+    <None Include="Node\server.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
