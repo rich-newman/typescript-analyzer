@@ -35,8 +35,20 @@ namespace WebLinterTest
             solution = dte.Solution;
 
             settings = new MockSettings() { UseTsConfig = true };
+        }
+
+        [TestInitialize]
+        public void TestInitialize()
+        { 
             WebLinterVsix.WebLinterPackage.Settings = settings;
             WebLinterVsix.WebLinterPackage.Dte = dte;
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            WebLinterVsix.WebLinterPackage.Settings = null;
+            WebLinterVsix.WebLinterPackage.Dte = null;
         }
 
         [ClassCleanup]
