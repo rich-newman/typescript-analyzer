@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -28,6 +29,7 @@ namespace WebLinterVsix
         public static DTE2 Dte;
         public static ISettings Settings;
         private SolutionEvents _events;
+        public static List<Tuple<IWpfTextView, ITextDocument>> UnhandledStartUpFiles = new List<Tuple<IWpfTextView, ITextDocument>>();
 
         protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
@@ -66,65 +68,18 @@ namespace WebLinterVsix
 
         private void HandleOpenSolution(object sender = null, EventArgs e = null)
         {
-            foreach (object windowObject in Dte.Windows)
+            foreach (Tuple<IWpfTextView, ITextDocument> tuple in UnhandledStartUpFiles)
             {
-                if (windowObject is Window window && window.Type == vsWindowType.vsWindowTypeDocument && window.Document != null)
-                {
-                    IVsTextView vsTextView = GetIVsTextView(window.Document.FullName);
-                    if (vsTextView == null) continue;
-                    IWpfTextView wpfTextView = GetWpfView(vsTextView);
-                    if (wpfTextView == null) continue;
-                    ITextDocument _document = GetTextDocument(wpfTextView);
-                    if (_document == null) continue;
-                    WebLinterVsix.FileListeners.SourceFileCreationListener.OnFileOpened(wpfTextView, _document);
-                }
+                WebLinterVsix.FileListeners.SourceFileCreationListener.OnFileOpened(tuple.Item1, tuple.Item2);
             }
-        }
-
-        private ITextDocument GetTextDocument(IWpfTextView wpfTextView)
-        {
-            IComponentModel componentModel = (IComponentModel)GetService(typeof(SComponentModel));
-            ITextDocumentFactoryService textDocumentFactoryService = componentModel.GetService<ITextDocumentFactoryService>();
-            if (textDocumentFactoryService.TryGetTextDocument(wpfTextView.TextDataModel.DocumentBuffer, out ITextDocument _document))
-                return _document;
-            else
-                return null;
-        }
-
-        // https://stackoverflow.com/questions/45751908/how-to-get-iwpftextview-from-command-visual-studio-extension-2017
-        private IWpfTextView GetWpfView(IVsTextView textViewCurrent)
-        {
-            IComponentModel componentModel = (IComponentModel)GetService(typeof(SComponentModel));
-            IVsEditorAdaptersFactoryService editor = componentModel.GetService<IVsEditorAdaptersFactoryService>();
-            return editor.GetWpfTextView(textViewCurrent);
-        }
-
-        // https://stackoverflow.com/questions/2413530/find-an-ivstextview-or-iwpftextview-for-a-given-projectitem-in-vs-2010-rc-exten/2427368#2427368
-        internal IVsTextView GetIVsTextView(string filePath)
-        {
-            Microsoft.VisualStudio.OLE.Interop.IServiceProvider sp = (Microsoft.VisualStudio.OLE.Interop.IServiceProvider)GetGlobalService(typeof(SDTE));
-            ServiceProvider serviceProvider = new ServiceProvider(sp);
-            if (VsShellUtilities.IsDocumentOpen(serviceProvider, filePath, Guid.Empty, out _, out _, out IVsWindowFrame windowFrame))
-                return VsShellUtilities.GetTextView(windowFrame);
-            else
-                return null;
+            UnhandledStartUpFiles.Clear();
         }
 
         public IVsOutputWindow GetIVsOutputWindow() => (IVsOutputWindow)GetService(typeof(SVsOutputWindow));
 
-        // public static ISettings Settings;
-        public ISettings GetSettings() {
-            var result = (Settings)GetDialogPage(typeof(Settings));
-            return result;
-        }
-
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                Linter.Server.Down();
-            }
-
+            if (disposing) Linter.Server.Down();
             base.Dispose(true);
         }
     }
