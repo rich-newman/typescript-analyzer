@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.Editor;
+﻿using EnvDTE;
+using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -43,7 +44,7 @@ namespace WebLinterVsix.FileListeners
             try
             {
 
-                if (wpfTextView == null || textDocument == null) return;
+                if (wpfTextView == null || textDocument == null || !IsInSolution(textDocument.FilePath)) return;
                 if (wpfTextView.Properties.TryGetProperty("lint_filename", out string fileName) && fileName != null) return;
                 if (wpfTextView.Properties.TryGetProperty("generated", out bool generated) && generated) return;
                 if (!LintableFiles.IsValidFile(textDocument.FilePath)) return;  // Is the filepath valid and does the file exist
@@ -63,6 +64,13 @@ namespace WebLinterVsix.FileListeners
                 }
             }
             catch (Exception ex) { Logger.LogAndWarn(ex); }
+        }
+
+        private static bool IsInSolution(string fileName)
+        {
+            if (WebLinterPackage.Dte == null) return false;
+            ProjectItem item = WebLinterPackage.Dte.Solution.FindProjectItem(fileName);
+            return item?.GetFullPath() is string;
         }
 
         private static void TextviewClosed(object sender, EventArgs e)
