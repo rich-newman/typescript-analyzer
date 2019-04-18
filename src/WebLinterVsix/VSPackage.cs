@@ -43,11 +43,7 @@ namespace WebLinterVsix
             Logger.Initialize(this, Vsix.Name);
 
             bool isSolutionLoaded = await IsSolutionLoadedAsync();
-            if (isSolutionLoaded)
-            {
-                await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-                HandleOpenSolution();
-            }
+            if (isSolutionLoaded) HandleOpenSolution();
 
             LintFilesCommand.Initialize(this);
             FixLintErrorsCommand.Initialize(this);
