@@ -18,6 +18,10 @@ namespace WebLinterVsix.FileListeners
     [TextViewRole(PredefinedTextViewRoles.Document)]
     class SourceFileCreationListener : IVsTextViewCreationListener
     {
+        public SourceFileCreationListener()
+        {
+            Console.WriteLine("Test");
+        }
         [Import]
         public IVsEditorAdaptersFactoryService EditorAdaptersFactoryService { get; set; }
 
@@ -28,42 +32,47 @@ namespace WebLinterVsix.FileListeners
         {
             try
             {
-                // If we open a folder then our package isn't initialized but this class does get created
-                // We get failures in the events because Settings is null, so don't do anything if that's the case
-                if (WebLinterPackage.Settings == null) return;
+                if (WebLinterPackage.Settings == null) return;  // We're not initialized
                 IWpfTextView textView = EditorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
-                textView.Closed += TextviewClosed;
-
-                // Both "Web Compiler" and "Bundler & Minifier" extensions add this property on their
-                // generated output files. Generated output should be ignored from linting
-                if (textView.Properties.TryGetProperty("generated", out bool generated) && generated) return;
-
                 if (TextDocumentFactoryService.TryGetTextDocument(textView.TextDataModel.DocumentBuffer, out ITextDocument _document))
                 {
-                    if (!LintableFiles.IsValidFile(_document.FilePath)) return;
-                    _document.FileActionOccurred += DocumentSaved;
-                    textView.Properties.AddProperty("lint_filename", _document.FilePath);
-                    if (!LintableFiles.IsLintableTsTsxJsJsxFile(_document.FilePath)) return;
-                    // Don't run linter again if error list already contains errors for the file.
-                    if (!TableDataSource.Instance.HasErrors(_document.FilePath) &&
-                            WebLinterPackage.Settings != null && !WebLinterPackage.Settings.OnlyRunIfRequested)
-                    {
-                        Task.Run(async () =>
-                        {
-                            await CallLinterService(_document.FilePath);
-                        });
-                    }
+                    OnFileOpened(textView, _document);
                 }
             }
             catch (Exception ex) { Logger.LogAndWarn(ex); }
         }
 
-        private void TextviewClosed(object sender, EventArgs e)
+        public static void OnFileOpened(IWpfTextView textView, ITextDocument _document)
+        {
+            if (textView == null || _document == null) return;
+            if (textView.Properties.TryGetProperty("lint_filename", out string fileName) && fileName != null) return;
+            if (textView.Properties.TryGetProperty("generated", out bool generated) && generated) return;
+            if (!LintableFiles.IsValidFile(_document.FilePath)) return;  // Is the filepath valid and does the file exist
+            textView.Properties.AddProperty("lint_filename", _document.FilePath);
+            textView.Properties.AddProperty("lint_document", _document);
+            textView.Closed += TextviewClosed;
+            _document.FileActionOccurred += DocumentSaved; // Hook the event whether lintable or not: it may become lintable
+            if (!LintableFiles.IsLintableTsTsxJsJsxFile(_document.FilePath)) return;
+            // Don't run linter again if error list already contains errors for the file.
+            if (!TableDataSource.Instance.HasErrors(_document.FilePath) &&
+                    WebLinterPackage.Settings != null && !WebLinterPackage.Settings.OnlyRunIfRequested)
+            {
+                Task.Run(async () =>
+                {
+                    await CallLinterService(_document.FilePath);
+                });
+            }
+
+        }
+
+        private static void TextviewClosed(object sender, EventArgs e)
         {
             try
             {
                 IWpfTextView view = (IWpfTextView)sender;
                 if (view != null) view.Closed -= TextviewClosed;
+                if (view != null && view.Properties.TryGetProperty("lint_document", out ITextDocument _document))
+                    _document.FileActionOccurred -= DocumentSaved;
                 if (WebLinterPackage.Settings == null || WebLinterPackage.Settings.OnlyRunIfRequested) return;
 
                 System.Threading.ThreadPool.QueueUserWorkItem((o) =>
@@ -77,7 +86,7 @@ namespace WebLinterVsix.FileListeners
             catch (Exception ex) { Logger.LogAndWarn(ex); }
         }
 
-        private async void DocumentSaved(object sender, TextDocumentFileActionEventArgs e)
+        private async static void DocumentSaved(object sender, TextDocumentFileActionEventArgs e)
         {
             try
             {
