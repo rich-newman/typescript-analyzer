@@ -1,12 +1,10 @@
-﻿// Modifications Copyright Rich Newman 2017
-using Microsoft.VisualStudio.Editor;
+﻿using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
 using System;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Threading.Tasks;
 using WebLinterVsix.Helpers;
 
