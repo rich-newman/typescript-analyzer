@@ -1,15 +1,15 @@
 @echo off
 
 echo Running build.cmd to create folder WebLinterVsix\TypeScriptAnalyzerNode
-if exist %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode\log.txt echo Nothing to do - WebLinterVsix\TypeScriptAnalyzerNode\log.txt already exists & goto:done
+if exist "%~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode\log.txt" echo Nothing to do - WebLinterVsix\TypeScriptAnalyzerNode\log.txt already exists & goto:done
 
 echo Deleting and recreating folder WebLinterVsix\TypeScriptAnalyzerNode... 
-if exist %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode rmdir /s /q %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode
-mkdir %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode
+if exist "%~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode" rmdir /s /q "%~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode"
+mkdir "%~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode"
 
 echo Copying and unzipping core files (node.exe, server.js)...
-copy /y %~dp0..\src\WebLinter\Node\*.* %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode
-pushd %~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode
+copy /y "%~dp0..\src\WebLinter\Node\*.*" "%~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode"
+pushd "%~dp0..\src\WebLinterVsix\TypeScriptAnalyzerNode"
 7z.exe x -y node.7z
 del /q 7z.dll
 del /q 7z.exe
