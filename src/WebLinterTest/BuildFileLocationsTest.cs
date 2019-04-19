@@ -28,7 +28,7 @@ namespace WebLinterTest
         public static void ClassInitialize(TestContext testContext)
         {
             MessageFilter.Register();
-            Type type = System.Type.GetTypeFromProgID("VisualStudio.DTE.16.0");
+            Type type = System.Type.GetTypeFromProgID("VisualStudio.DTE.15.0");
             object inst = System.Activator.CreateInstance(type, true);
             dte = (EnvDTE80.DTE2)inst;
             dte.Solution.Open(Path.GetFullPath(@"../../artifacts/tsconfig/Tsconfig.sln"));
