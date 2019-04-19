@@ -17,7 +17,7 @@ namespace WebLinterTest
         protected void Initialize(string solutionPath)
         {
             MessageFilter.Register();
-            Type type = Type.GetTypeFromProgID("VisualStudio.DTE.15.0");
+            Type type = Type.GetTypeFromProgID("VisualStudio.DTE.16.0");
             object inst = Activator.CreateInstance(type, true);
             dte = (EnvDTE80.DTE2)inst;
             var test = (DTE)inst;
