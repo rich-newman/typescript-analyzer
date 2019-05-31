@@ -17,8 +17,8 @@ del /q node.7z
 
 echo Installing packages...
 call npm install ^
-     tslint@5.13.1 ^
-     typescript@3.3.3333 ^
+     tslint@5.17.0 ^
+     typescript@3.5.1 ^
      --no-optional --quiet > nul
 
 echo Deleting unneeded files and folders...
