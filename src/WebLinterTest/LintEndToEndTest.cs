@@ -140,8 +140,11 @@ namespace WebLinterTest
                 // 2019-03-02: tslint 15.13.0 enabled the completed-docs rules if NOT using tsconfig.json, as here, previously only ran if
                 //             a tsconfig.json was specified.  That is it stopped being 'typed' = 'uses tslint' = 'uses type checker'.  
                 //             The rule was in tslint.json for this test, so extra test errors appeared. tslint issue #3557.
+                // 2019-05-31: tslint 15.17.0 treats IntrinsicAttributes, IntrinsicClassAttributes and IntrinsicElements interface names
+                //             as failing the 'interface name must start with a capitalized I' test, version 5.13.1 didn't, +3 errors in
+                //             expected2 (react.d.ts).  interface-name rule.
                 Assert.AreEqual(22, mockErrorsTableDataSource.Snapshots[expected1].Count());
-                Assert.AreEqual(1294, mockErrorsTableDataSource.Snapshots[expected2].Count());
+                Assert.AreEqual(1297, mockErrorsTableDataSource.Snapshots[expected2].Count());
                 Assert.AreEqual(5, mockErrorsTableDataSource.Snapshots[expected3].Count());
                 Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected4].Count());
                 Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected5].Count());
