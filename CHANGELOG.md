@@ -3,6 +3,16 @@
 These are the changes to each version that have been released
 on the official Visual Studio extension gallery.
 
+## 1.19
+
+**2019-05-31**
+
+- Underlying TSLint upgraded to 5.17.0, TypeScript 3.5.1.
+- Upgrade so will work in Visual Studio 2019 as well as Visual Studio 2017.
+- As part of upgrade, make launch of extension asynchronous.  This will improve Visual Studio startup time.  The active open .ts file in the solution should be linted on solution open more reliably than previously.  Inactive open .ts files are not linted at startup (they never were).
+- Install node files as part of extension install, rather than doing an npm install on the first run (or sooner) of the extension.  This makes the VSIX download slightly larger, but again means Visual Studio startup is less impacted by the extension.
+- Fix unit tests so they work with the two versions of Visual Studio.  Note that Visual Studio 2017 has to be installed on the machine for the tests to work at all.  The tests should run reliably if the solution is opened in Visual Studio 2017.  They will also run in Visual Studio 2019 if Visual Studio 2017 is installed, but can get confused about library references (a 'Run All' can fail for certain tests).
+
 ## 1.18
 
 **2019-02-03**

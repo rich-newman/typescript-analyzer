@@ -1,12 +1,12 @@
 ## TypeScript Analyzer
 
-An extension to Visual Studio 2017 that runs [TSLint](https://palantir.github.io/tslint/) on TypeScript files. 
+An extension to Visual Studio 2017 and Visual Studio 2019 that runs [TSLint](https://palantir.github.io/tslint/) on TypeScript files. 
 
 To install visit [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=RichNewman.TypeScriptAnalyzer) or search for 'TypeScript Analyzer' in Extensions and Updates in Visual Studio 2017.
 
 ### Background
 
-This is a version of Mads Kristensen's [Web Analyzer for Visual Studio 2015](https://visualstudiogallery.msdn.microsoft.com/6edc26d4-47d8-4987-82ee-7c820d79be1d).  It has been upgraded to Visual Studio 2017.  Support for ESLint, CSSLint and CoffeeLint has been removed, as this is available in Visual Studio 2017 itself.  Only support for TSLint has been retained.
+This is a version of Mads Kristensen's [Web Analyzer for Visual Studio 2015](https://visualstudiogallery.msdn.microsoft.com/6edc26d4-47d8-4987-82ee-7c820d79be1d).  It has been upgraded to Visual Studio 2017 and Visual Studio 2019.  Support for ESLint, CSSLint and CoffeeLint has been removed, as this is now available in Visual Studio itself.  Only support for TSLint has been retained.
 
 **Please refer to Mads Kristensen's [documentation for the Web Analyzer](https://github.com/madskristensen/WebAnalyzer) for a full list of the original features.**
 
@@ -18,7 +18,7 @@ The menu options for the TypeScript Analyzer are separate from the menu options 
 
 ### TSLint Version
 
-The TypeScript Analyzer is using TSLint version 5.13.1.
+The TypeScript Analyzer is using TSLint version 5.17.0.
 
 ### Analyze Using tsconfig.json
 
@@ -26,7 +26,7 @@ By default the TypeScript Analyzer hands individual .ts and .tsx files to TSLint
 
 If this option is set to true then the TypeScript Analyzer only ever passes tsconfig.json files found in the Visual Studio solution to TSLint.  TSLint will lint the files found in those tsconfig.jsons.
 
-Also if this option is set then TSLint can use the additional [TSLint 'semantic' rules](https://palantir.github.io/tslint/usage/type-checking/).  These require a program object to be created, which can only be done from a tsconfig.json file.  These semantic rules are tagged with 'Requires Type Info' on the [TSLint rules page](https://palantir.github.io/tslint/rules/).  For this to work TSLint needs to use TypeScript and the TypeScript Analyzer provides an internal copy, currently at version 3.3.3333.
+Also if this option is set then TSLint can use the additional [TSLint 'semantic' rules](https://palantir.github.io/tslint/usage/type-checking/).  These require a program object to be created, which can only be done from a tsconfig.json file.  These semantic rules are tagged with 'Requires Type Info' on the [TSLint rules page](https://palantir.github.io/tslint/rules/).  For this to work TSLint needs to use TypeScript and the TypeScript Analyzer provides an internal copy, currently at version 3.5.1.
 
 ##### Rules For Finding tsconfig.json Files
 
@@ -108,7 +108,7 @@ For example, a tslint.json that (only) applies the no-console rule to both TypeS
 }
 ```
 
-Note that Visual Studio 2017 already uses ESLint to lint .js files, so you may want to disable this (Tools/Options/Text Editor/JavaScript/TypeScript/ESLint/Enable ESLint).
+Note that Visual Studio already uses ESLint to lint .js files, so you may want to disable this (Tools/Options/Text Editor/JavaScript/TypeScript/ESLint/Enable ESLint).
 
 ### Debugging / developing
 
