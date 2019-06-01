@@ -100,10 +100,10 @@ For example, a tslint.json that (only) applies the no-console rule to both TypeS
 ```javascript
 {
   "rules": {
-    "no-console": true,
+    "no-console": true
   },
   "jsRules": {
-    "no-console": true,
+    "no-console": true
   }
 }
 ```
