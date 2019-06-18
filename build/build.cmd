@@ -17,8 +17,6 @@ del /q node.7z
 
 echo Installing packages...
 call npm install ^
-     tslint@5.17.0 ^
-     typescript@3.5.1 ^
      --no-optional --quiet > nul
 
 echo Deleting unneeded files and folders...
@@ -34,6 +32,7 @@ del /s /q CHANGES > nul
 del /s /q CNAME > nul
 del /s /q README > nul
 del /s /q package-lock.json > nul
+del /q package.json > nul
 
 for /d /r . %%d in (benchmark)  do @if exist "%%d" rd /s /q "%%d" > nul
 for /d /r . %%d in (bench)      do @if exist "%%d" rd /s /q "%%d" > nul
