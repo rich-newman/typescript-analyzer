@@ -18,7 +18,7 @@ The menu options for the TypeScript Analyzer are separate from the menu options 
 
 ### TSLint Version
 
-The TypeScript Analyzer is using TSLint version 5.17.0.
+The TypeScript Analyzer is using TSLint version 5.18.0.
 
 ### Analyze Using tsconfig.json
 
@@ -26,7 +26,7 @@ By default the TypeScript Analyzer hands individual .ts and .tsx files to TSLint
 
 If this option is set to true then the TypeScript Analyzer only ever passes tsconfig.json files found in the Visual Studio solution to TSLint.  TSLint will lint the files found in those tsconfig.jsons.
 
-Also if this option is set then TSLint can use the additional [TSLint 'semantic' rules](https://palantir.github.io/tslint/usage/type-checking/).  These require a program object to be created, which can only be done from a tsconfig.json file.  These semantic rules are tagged with 'Requires Type Info' on the [TSLint rules page](https://palantir.github.io/tslint/rules/).  For this to work TSLint needs to use TypeScript and the TypeScript Analyzer provides an internal copy, currently at version 3.5.1.
+Also if this option is set then TSLint can use the additional [TSLint 'semantic' rules](https://palantir.github.io/tslint/usage/type-checking/).  These require a program object to be created, which can only be done from a tsconfig.json file.  These semantic rules are tagged with 'Requires Type Info' on the [TSLint rules page](https://palantir.github.io/tslint/rules/).  For this to work TSLint needs to use TypeScript and the TypeScript Analyzer provides an internal copy, currently at version 3.5.3.
 
 ##### Rules For Finding tsconfig.json Files
 
