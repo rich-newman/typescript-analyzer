@@ -3,6 +3,12 @@
 These are the changes to each version that have been released
 on the official Visual Studio extension gallery.
 
+## 1.21
+
+**2020-01-09**
+
+- Underlying TSLint upgraded to 5.20.1, TypeScript 3.7.4.
+
 ## 1.20
 
 **2019-08-12**

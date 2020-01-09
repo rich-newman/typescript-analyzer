@@ -152,11 +152,19 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\.bin\esparse.ps1">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\.bin\esvalidate">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\.bin\esvalidate.cmd">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\.bin\esvalidate.ps1">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -168,11 +176,19 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\.bin\js-yaml.ps1">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\.bin\mkdirp">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\.bin\mkdirp.cmd">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\.bin\mkdirp.ps1">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -184,11 +200,19 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\.bin\semver.ps1">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\.bin\tsc">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\.bin\tsc.cmd">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\.bin\tsc.ps1">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -200,11 +224,19 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\.bin\tslint.ps1">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\.bin\tsserver">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\.bin\tsserver.cmd">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\.bin\tsserver.ps1">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -488,11 +520,19 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\diff\rollup.config.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\diff\runtime.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\diff\yarn.lock">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\diff\yarn-error.log">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\diff\.vscode\settings.json">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -501,6 +541,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\diff\dist\diff.min.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\diff\lib\index.es6.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1032,10 +1076,6 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\resolve\.editorconfig">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\resolve\.eslintignore">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1069,6 +1109,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\resolve\lib\core.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\resolve\lib\is-core.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -2120,6 +2164,14 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\invalidVoidRule.d.ts">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\invalidVoidRule.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\jsdocFormatRule.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -2400,6 +2452,14 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\noForInRule.d.ts">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\noForInRule.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\noImplicitDependenciesRule.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -2541,6 +2601,14 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\noParameterReassignmentRule.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\noPromiseAsBooleanRule.d.ts">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\noPromiseAsBooleanRule.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -3008,6 +3076,14 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\strictStringExpressionsRule.d.ts">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\strictStringExpressionsRule.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\strictTypePredicatesRule.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -3213,6 +3289,14 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\code-examples\noObjectLiteralTypeAssertion.examples.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\code-examples\noPromiseAsBoolean.examples.d.ts">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\code-examples\noPromiseAsBoolean.examples.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -3728,6 +3812,10 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\lib.es2018.asyncgenerator.d.ts">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\lib.es2018.asynciterable.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -3937,6 +4025,318 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\zh-tw\diagnosticMessages.generated.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CHS\Targets\ProjectItemsSchema.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CHS\Targets\TypeScriptCompile.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CHS\Targets\TypeScriptProjectProperties.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CHS\TypeScriptDebugEngine\TypeScriptDebugEngine.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CHS\TypeScriptLanguageService\Microsoft.CodeAnalysis.TypeScript.EditorFeatures.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CHS\TypeScriptTasks\TypeScript.Tasks.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CHT\Targets\ProjectItemsSchema.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CHT\Targets\TypeScriptCompile.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CHT\Targets\TypeScriptProjectProperties.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CHT\TypeScriptDebugEngine\TypeScriptDebugEngine.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CHT\TypeScriptLanguageService\Microsoft.CodeAnalysis.TypeScript.EditorFeatures.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CHT\TypeScriptTasks\TypeScript.Tasks.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CSY\Targets\ProjectItemsSchema.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CSY\Targets\TypeScriptCompile.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CSY\Targets\TypeScriptProjectProperties.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CSY\TypeScriptDebugEngine\TypeScriptDebugEngine.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CSY\TypeScriptLanguageService\Microsoft.CodeAnalysis.TypeScript.EditorFeatures.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\CSY\TypeScriptTasks\TypeScript.Tasks.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\DEU\Targets\ProjectItemsSchema.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\DEU\Targets\TypeScriptCompile.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\DEU\Targets\TypeScriptProjectProperties.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\DEU\TypeScriptDebugEngine\TypeScriptDebugEngine.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\DEU\TypeScriptLanguageService\Microsoft.CodeAnalysis.TypeScript.EditorFeatures.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\DEU\TypeScriptTasks\TypeScript.Tasks.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\ESN\Targets\ProjectItemsSchema.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\ESN\Targets\TypeScriptCompile.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\ESN\Targets\TypeScriptProjectProperties.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\ESN\TypeScriptDebugEngine\TypeScriptDebugEngine.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\ESN\TypeScriptLanguageService\Microsoft.CodeAnalysis.TypeScript.EditorFeatures.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\ESN\TypeScriptTasks\TypeScript.Tasks.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\FRA\Targets\ProjectItemsSchema.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\FRA\Targets\TypeScriptCompile.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\FRA\Targets\TypeScriptProjectProperties.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\FRA\TypeScriptDebugEngine\TypeScriptDebugEngine.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\FRA\TypeScriptLanguageService\Microsoft.CodeAnalysis.TypeScript.EditorFeatures.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\FRA\TypeScriptTasks\TypeScript.Tasks.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\ITA\Targets\ProjectItemsSchema.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\ITA\Targets\TypeScriptCompile.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\ITA\Targets\TypeScriptProjectProperties.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\ITA\TypeScriptDebugEngine\TypeScriptDebugEngine.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\ITA\TypeScriptLanguageService\Microsoft.CodeAnalysis.TypeScript.EditorFeatures.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\ITA\TypeScriptTasks\TypeScript.Tasks.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\JPN\Targets\ProjectItemsSchema.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\JPN\Targets\TypeScriptCompile.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\JPN\Targets\TypeScriptProjectProperties.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\JPN\TypeScriptDebugEngine\TypeScriptDebugEngine.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\JPN\TypeScriptLanguageService\Microsoft.CodeAnalysis.TypeScript.EditorFeatures.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\JPN\TypeScriptTasks\TypeScript.Tasks.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\KOR\Targets\ProjectItemsSchema.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\KOR\Targets\TypeScriptCompile.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\KOR\Targets\TypeScriptProjectProperties.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\KOR\TypeScriptDebugEngine\TypeScriptDebugEngine.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\KOR\TypeScriptLanguageService\Microsoft.CodeAnalysis.TypeScript.EditorFeatures.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\KOR\TypeScriptTasks\TypeScript.Tasks.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\PLK\Targets\ProjectItemsSchema.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\PLK\Targets\TypeScriptCompile.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\PLK\Targets\TypeScriptProjectProperties.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\PLK\TypeScriptDebugEngine\TypeScriptDebugEngine.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\PLK\TypeScriptLanguageService\Microsoft.CodeAnalysis.TypeScript.EditorFeatures.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\PLK\TypeScriptTasks\TypeScript.Tasks.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\PTB\Targets\ProjectItemsSchema.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\PTB\Targets\TypeScriptCompile.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\PTB\Targets\TypeScriptProjectProperties.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\PTB\TypeScriptDebugEngine\TypeScriptDebugEngine.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\PTB\TypeScriptLanguageService\Microsoft.CodeAnalysis.TypeScript.EditorFeatures.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\PTB\TypeScriptTasks\TypeScript.Tasks.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\RUS\Targets\ProjectItemsSchema.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\RUS\Targets\TypeScriptCompile.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\RUS\Targets\TypeScriptProjectProperties.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\RUS\TypeScriptDebugEngine\TypeScriptDebugEngine.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\RUS\TypeScriptLanguageService\Microsoft.CodeAnalysis.TypeScript.EditorFeatures.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\RUS\TypeScriptTasks\TypeScript.Tasks.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\TRK\Targets\ProjectItemsSchema.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\TRK\Targets\TypeScriptCompile.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\TRK\Targets\TypeScriptProjectProperties.xaml.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\TRK\TypeScriptDebugEngine\TypeScriptDebugEngine.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\TRK\TypeScriptLanguageService\Microsoft.CodeAnalysis.TypeScript.EditorFeatures.dll.lcl">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\loc\lcl\TRK\TypeScriptTasks\TypeScript.Tasks.dll.lcl">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

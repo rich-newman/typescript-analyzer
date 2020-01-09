@@ -143,8 +143,14 @@ namespace WebLinterTest
                 // 2019-05-31: tslint 15.17.0 treats IntrinsicAttributes, IntrinsicClassAttributes and IntrinsicElements interface names
                 //             as failing the 'interface name must start with a capitalized I' test, version 5.13.1 didn't, +3 errors in
                 //             expected2 (react.d.ts).  interface-name rule.
+                // 2020-01-07: tslint 5.20.1 has stopped reporting line 2164 in react.d.ts in WebLinterTest/artifacts/
+                //             tsconfig/multiple as being over 120 characters, in spite of the fact it clearly is, was reported in 
+                //             earlier versions, and other lines over 120 characters in that file are being correctly reported.  Reduces
+                //             errors in expected2 from 1297 to 1296. Edit: this is because of the check-strings flag for max-line-length 
+                //             introduced in 5.19.0 and set to false by default.  If it is set to true the error reappears.  Whether it's
+                //             really meant to allow multiple string options on a line or this is a bug I'm not sure.
                 Assert.AreEqual(22, mockErrorsTableDataSource.Snapshots[expected1].Count());
-                Assert.AreEqual(1297, mockErrorsTableDataSource.Snapshots[expected2].Count());
+                Assert.AreEqual(1296, mockErrorsTableDataSource.Snapshots[expected2].Count());
                 Assert.AreEqual(5, mockErrorsTableDataSource.Snapshots[expected3].Count());
                 Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected4].Count());
                 Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected5].Count());
