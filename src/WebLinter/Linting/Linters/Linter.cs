@@ -120,7 +120,7 @@ namespace WebLinter
                 int lineNumber = obj["startPosition"]?["line"]?.Value<int>() ?? 0;
                 int columnNumber = obj["startPosition"]?["character"]?.Value<int>() ?? 0;
                 bool isError = _settings.TSLintShowErrors ?
-                    obj["ruleSeverity"]?.Value<string>() == "ERROR" : false;
+                    obj["ruleSeverity"]?.Value<string>()?.ToUpper() == "ERROR" : false;
                 hasVSErrors = hasVSErrors || isError;
                 string errorCode = obj["ruleName"]?.Value<string>();
 
