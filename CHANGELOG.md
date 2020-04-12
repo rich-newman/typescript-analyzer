@@ -5,7 +5,7 @@ on the official Visual Studio extension gallery.
 
 ## 1.22
 
-**2020-04-20**
+**2020-04-12**
 
 - Underlying TSLint upgraded to 6.1.1, TypeScript 3.8.3.
 
