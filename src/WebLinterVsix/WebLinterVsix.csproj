@@ -252,6 +252,26 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\@babel\helper-validator-identifier\LICENSE">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\@babel\helper-validator-identifier\package.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\@babel\helper-validator-identifier\lib\identifier.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\@babel\helper-validator-identifier\lib\index.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\@babel\helper-validator-identifier\lib\keyword.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\@babel\highlight\LICENSE">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -520,19 +540,7 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\diff\rollup.config.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\diff\runtime.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\diff\yarn-error.log">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\diff\.vscode\settings.json">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -649,30 +657,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\esprima\dist\esprima.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\esutils\LICENSE.BSD">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\esutils\package.json">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\esutils\lib\ast.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\esutils\lib\code.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\esutils\lib\keyword.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\esutils\lib\utils.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -928,6 +912,14 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\minimist\test\all_bool.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\minimist\test\bool.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\minimist\test\dash.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -940,7 +932,15 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\minimist\test\kv_short.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\minimist\test\long.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\minimist\test\num.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -952,7 +952,19 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\minimist\test\proto.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\minimist\test\short.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\minimist\test\stop_early.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\minimist\test\unknown.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -973,66 +985,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\mkdirp\bin\cmd.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\mkdirp\test\chmod.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\mkdirp\test\clobber.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\mkdirp\test\mkdirp.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\mkdirp\test\opts_fs.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\mkdirp\test\opts_fs_sync.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\mkdirp\test\perm.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\mkdirp\test\perm_sync.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\mkdirp\test\race.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\mkdirp\test\rel.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\mkdirp\test\return.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\mkdirp\test\return_sync.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\mkdirp\test\root.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\mkdirp\test\sync.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\mkdirp\test\umask.js">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\mkdirp\test\umask_sync.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -3444,6 +3396,14 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\completed-docs\constructorExclusion.d.ts">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\completed-docs\constructorExclusion.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\lib\rules\completed-docs\exclusion.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -3864,11 +3824,19 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\lib.es2020.bigint.d.ts">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\lib.es2020.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\lib.es2020.full.d.ts">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\lib.es2020.promise.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
