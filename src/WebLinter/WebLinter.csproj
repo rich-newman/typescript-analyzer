@@ -65,7 +65,6 @@
     <None Include="Node\node.7z" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Node\package-lock.json" />
     <None Include="Node\package.json" />
     <None Include="Node\server.js" />
   </ItemGroup>
