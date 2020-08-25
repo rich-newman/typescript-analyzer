@@ -1,6 +1,10 @@
-// Modifications Copyright Rich Newman 2017
-var http = require("http"),
-    fs = require("fs");
+'use strict';
+
+const http = require("http"),
+    fs = require("fs"),
+    path = require("path"),
+    { ESLint } = require("eslint"),
+    typescript = require("typescript");
 
 var start = function (port) {
     http.createServer(function (req, res) {
@@ -24,7 +28,7 @@ var start = function (port) {
             body += data;
         });
 
-        req.on('end', function () {
+        req.on('end', async function () {
             var debug = false;
             try {
                 if (body === "")
@@ -35,7 +39,7 @@ var start = function (port) {
                 if (linter) {
                     var data = JSON.parse(body);
                     debug = data.debug;
-                    var result = linter(data.config, data.fixerrors, data.files, data.usetsconfig, data.debug);
+                    var result = await linter(data.config, data.fixerrors, data.files, data.usetsconfig, data.debug);
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
                     res.write(result);
@@ -77,15 +81,99 @@ var linters = {
         };
 
         if (usetsconfig) {
-            return linttsconfigs(configFile, files, options, debug);
+            return tslinttsconfigs(configFile, files, options, debug);
         } else {
-            return lintFiles(configFile, files, options, debug);
+            return tslintFiles(configFile, files, options, debug);
+        }
+    },
+    eslint: async function (configFile, fixErrors, files, usetsconfig, debug) {
+        if (debug) {
+            console.log('Config file: ' + configFile);
+            console.log('Files to lint:');
+            files.forEach(f => console.log(f));
+            console.log('Use TSConfig: ' + usetsconfig);
+            //console.log(process.versions);
+            console.log('__dirname: ' + __dirname);
+        }
+        if (usetsconfig) {
+            return await eslinttsconfigs(configFile, files, fixErrors, debug);
+        } else {
+            return await eslintFiles(configFile, files, fixErrors, debug);
         }
     }
-
 };
 
-function lintFiles(configFile, files, options, debug) {
+async function eslintFiles(eslintConfigFile, files, fixErrors, debug) {
+    const results = await calleslint(eslintConfigFile, files, fixErrors, debug, {});
+    return JSON.stringify(results);
+}
+
+async function calleslint(eslintConfigFile, files, fixErrors, debug, parserOptions) {
+    const configData = {
+        parser: __dirname + '\\node_modules\\@typescript-eslint\\parser\\dist\\index.js',
+        plugins: ['@typescript-eslint'],
+        parserOptions: parserOptions
+    };
+    const options = {
+        overrideConfigFile: eslintConfigFile,
+        overrideConfig: configData,
+        resolvePluginsRelativeTo: __dirname,
+        extensions: [".ts"]
+    };
+    if (fixErrors) {
+        options.fix = true;
+    }
+    const ignoreFile = path.join(path.dirname(eslintConfigFile), '.eslintignore');
+    if (fs.existsSync(ignoreFile)) {
+        options.ignorePath = ignoreFile;
+    }
+    const eslint = new ESLint(options);
+    //if (debug  && files.length > 0) {
+    //    const config = await eslint.calculateConfigForFile(files[0]);
+    //    console.log(config);
+    //}
+
+    const results = await eslint.lintFiles(files);
+    if (fixErrors) {
+        await ESLint.outputFixes(results);
+    }
+    if (debug) {
+        const formatter = await eslint.loadFormatter("stylish");
+        const prettyResult = formatter.format(results);
+        console.log(prettyResult);
+    }
+    return results;
+}
+
+async function eslinttsconfigs(eslintConfigFile, tsconfigFiles, fixErrors, debug) {
+    let allResults = [];
+    for (const tsconfigFile of tsconfigFiles) {
+        const parserOptions = {
+            tsconfigRootDir: path.dirname(tsconfigFile),
+            project: [tsconfigFile],
+            sourceType: "module"
+        };
+        const files = gettsconfigContents(tsconfigFile, debug);
+        const results = await calleslint(eslintConfigFile, files, fixErrors, debug, parserOptions);
+        allResults = allResults.concat(results);
+    }
+    return JSON.stringify(allResults);
+}
+
+function gettsconfigContents(tsconfigFile, debug) {
+    // The replace deals with the node bollocks of leaving the BOM in there
+    const contents = fs.readFileSync(tsconfigFile, "utf8").replace(/^\uFEFF/, '');
+    const jsonContents = JSON.parse(contents);
+    const tsconfigFilePath = path.dirname(tsconfigFile);
+    const tsResult = typescript.parseJsonConfigFileContent(jsonContents, typescript.sys, tsconfigFilePath);
+    //if (debug) {
+    //    console.log("tsconfig.json contents:");
+    //    console.log(tsResult);
+    //}
+    return tsResult.fileNames || [];
+}
+
+function tslintFiles(configFile, files, options, debug) {
     var tslint = require("tslint");
     var linter = new tslint.Linter(options);
     for (var i = 0; i < files.length; i++) {
@@ -99,7 +187,7 @@ function lintFiles(configFile, files, options, debug) {
 
 }
 
-function linttsconfigs(tslintConfigFile, tsconfigFiles, options, debug) {
+function tslinttsconfigs(tslintConfigFile, tsconfigFiles, options, debug) {
     var tslint = require("tslint");
     var failures = [];
     for (var tsconfigCtr = 0; tsconfigCtr < tsconfigFiles.length; tsconfigCtr++) {
