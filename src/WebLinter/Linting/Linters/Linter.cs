@@ -25,6 +25,9 @@ namespace WebLinter
 
         public readonly string Name = "TSLint";
         public readonly string ConfigFileName = "tslint.json";
+        //public readonly string Name = "eslint";
+        //public readonly string ConfigFileName = ".eslintrc.js";
+
         private ISettings _settings { get; }
         private bool _fixErrors { get; }
 
@@ -100,9 +103,9 @@ namespace WebLinter
             }
             catch (JsonReaderException)
             {
-                // In case of error from TSLint, just show error to user.
+                // In case of error from the linter, just show error to user.
                 // There is no use in showing exception details or throwing a new exception.
-                LintingError le = new LintingError("TSLint", 0, 0, true, "TSLint")
+                LintingError le = new LintingError(Name, 0, 0, true, Name)
                 {
                     Message = output,
                     Provider = this
@@ -111,6 +114,48 @@ namespace WebLinter
                 _result.HasVsErrors = true;
                 return;
             }
+            if (Name == "TSLint")
+                ParseTslintErrors(array);
+            else
+                ParseEslintErrors(array);
+        }
+
+        private void ParseEslintErrors(JArray array)
+        {
+            bool hasVSErrors = false;
+            foreach (JObject obj in array)
+            {
+                string fileName = obj["filePath"]?.Value<string>().Replace("/", "\\");
+                if (string.IsNullOrEmpty(fileName)) continue;
+                JArray messages = obj["messages"]?.Value<JArray>() ?? new JArray();
+                foreach (JToken message in messages)
+                {
+                    int lineNumber = (message["line"]?.Value<int>() ?? 1) - 1;  // eslint line numbers out by one
+                    int columnNumber = (message["column"]?.Value<int>() ?? 1) - 1;
+                    bool isError = _settings.TSLintShowErrors ? message["severity"]?.Value<int>() == 2 : false;
+                    hasVSErrors = hasVSErrors || isError;
+                    string errorCode = message["ruleId"]?.Value<string>();
+
+                    //var endLineNumber = message["endLine"]?.Value<int>() ?? 0;
+                    //var endColumnNumber = message["endColumn"]?.Value<int>() ?? 0;
+
+                    LintingError le = new LintingError(fileName, lineNumber, columnNumber, isError, errorCode);
+                    if (!_result.Errors.Contains(le))
+                    {
+                        le.Message = message["message"]?.Value<string>();
+                        //le.HelpLink = ParseHttpReference(le.Message, "https://goo.gl/") ??
+                        //              ParseHttpReference(le.Message, "https://angular.io/") ??
+                        //              $"https://palantir.github.io/tslint/rules/{le.ErrorCode}";
+                        le.Provider = this;
+                        _result.Errors.Add(le);
+                    }
+                }
+            }
+            _result.HasVsErrors = hasVSErrors;
+        }
+
+        private void ParseTslintErrors(JArray array)
+        {
             bool hasVSErrors = false;
             foreach (JObject obj in array)
             {
