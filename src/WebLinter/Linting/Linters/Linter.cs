@@ -56,7 +56,7 @@ namespace WebLinter
             ServerPostData postData = CreatePostData(files);
             string output = _settings.UseProjectNGLint ? await _localNgLintRunner.Run(Name, postData, callSync) :
                                                          await Server.CallServer(Name, postData, callSync, _log);
-            if (!string.IsNullOrEmpty(output)) ParseErrors(output);
+            if (!string.IsNullOrEmpty(output)) ParseErrors(output, isCalledFromBuild: callSync);
             return _result;
         }
 
@@ -91,7 +91,7 @@ namespace WebLinter
             return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         }
 
-        private void ParseErrors(string output)
+        private void ParseErrors(string output, bool isCalledFromBuild)
         {
             JArray array = null;
             try
@@ -132,6 +132,7 @@ namespace WebLinter
                                   ParseHttpReference(le.Message, "https://angular.io/") ??
                                   $"https://palantir.github.io/tslint/rules/{le.ErrorCode}";
                     le.Provider = this;
+                    le.IsBuildError = isCalledFromBuild;
                     _result.Errors.Add(le);
                 }
             }

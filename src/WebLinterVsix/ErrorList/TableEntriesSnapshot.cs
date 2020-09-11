@@ -43,10 +43,6 @@ namespace WebLinterVsix
                 {
                     content = Vsix.Name;
                 }
-                else if (columnName == StandardTableKeyNames.ErrorSource)
-                {
-                    content = Vsix.Name;
-                }
                 else if (columnName == StandardTableKeyNames.Line)
                 {
                     content = _errors[index].LineNumber;
@@ -69,7 +65,7 @@ namespace WebLinterVsix
                 }
                 else if (columnName == StandardTableKeyNames.ErrorSource)
                 {
-                    content = ErrorSource.Other;
+                    content = _errors[index].IsBuildError ? ErrorSource.Build : ErrorSource.Other;
                 }
                 else if (columnName == StandardTableKeyNames.BuildTool)
                 {

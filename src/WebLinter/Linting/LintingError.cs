@@ -25,6 +25,7 @@ namespace WebLinter
         public bool IsError { get; } = true;
         public string ErrorCode { get; }
         public string HelpLink { get; set; }
+        public bool IsBuildError { get; set; }
 
         public override string ToString()
         {

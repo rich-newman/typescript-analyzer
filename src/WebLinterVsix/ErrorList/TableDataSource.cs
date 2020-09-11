@@ -39,11 +39,11 @@ namespace WebLinterVsix
             compositionService.DefaultCompositionService.SatisfyImportsOnce(this);
 
             var manager = TableManagerProvider.GetTableManager(StandardTables.ErrorsTable);
-            manager.AddSource(this, StandardTableColumnDefinitions.DetailsExpander,
-                                                   StandardTableColumnDefinitions.ErrorSeverity, StandardTableColumnDefinitions.ErrorCode,
-                                                   StandardTableColumnDefinitions.ErrorSource, StandardTableColumnDefinitions.BuildTool,
-                                                   StandardTableColumnDefinitions.ErrorSource, StandardTableColumnDefinitions.ErrorCategory,
-                                                   StandardTableColumnDefinitions.Text, StandardTableColumnDefinitions.DocumentName, StandardTableColumnDefinitions.Line, StandardTableColumnDefinitions.Column);
+            manager.AddSource(this, StandardTableColumnDefinitions.DetailsExpander, StandardTableColumnDefinitions.ErrorSeverity, 
+                StandardTableColumnDefinitions.ErrorCode, StandardTableColumnDefinitions.BuildTool, 
+                StandardTableColumnDefinitions.ErrorSource, StandardTableColumnDefinitions.ErrorCategory,
+                StandardTableColumnDefinitions.Text, StandardTableColumnDefinitions.DocumentName, 
+                StandardTableColumnDefinitions.Line, StandardTableColumnDefinitions.Column);
         }
 
         // Don't try this at home
