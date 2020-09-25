@@ -1028,6 +1028,10 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\resolve\.editorconfig">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\resolve\.eslintignore">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -3676,10 +3680,6 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\diagnosticMessages.generated.json">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\lib.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -3836,6 +3836,10 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\lib.es2020.intl.d.ts">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\lib.es2020.promise.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -3856,18 +3860,6 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\lib.esnext.array.d.ts">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\lib.esnext.asynciterable.d.ts">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\lib.esnext.bigint.d.ts">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\lib.esnext.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -3880,7 +3872,11 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\lib.esnext.symbol.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\lib.esnext.promise.d.ts">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\typescript\lib\lib.esnext.string.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
