@@ -22,6 +22,8 @@ namespace WebLinter
         public string Message { get; set; }
         public int LineNumber { get; }
         public int ColumnNumber { get; }
+        public int? EndLineNumber { get; set; }
+        public int? EndColumnNumber { get; set; }
         public bool IsError { get; } = true;
         public string ErrorCode { get; }
         public string HelpLink { get; set; }
@@ -34,7 +36,7 @@ namespace WebLinter
 
         protected bool Equals(LintingError other)
         {
-            return string.Equals(FileName, other.FileName) && LineNumber == other.LineNumber && ColumnNumber == other.ColumnNumber && 
+            return string.Equals(FileName, other.FileName) && LineNumber == other.LineNumber && ColumnNumber == other.ColumnNumber &&
                 IsError == other.IsError && string.Equals(ErrorCode, other.ErrorCode);
         }
 

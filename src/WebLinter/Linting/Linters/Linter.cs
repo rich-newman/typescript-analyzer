@@ -128,6 +128,9 @@ namespace WebLinter
                 if (!_result.Errors.Contains(le))
                 {
                     le.Message = obj["failure"]?.Value<string>();
+                    le.EndLineNumber = obj["endPosition"]?["line"]?.Value<int>() ?? 0;
+                    le.EndColumnNumber = obj["endPosition"]?["character"]?.Value<int>() ?? 0;
+
                     le.HelpLink = ParseHttpReference(le.Message, "https://goo.gl/") ??
                                   ParseHttpReference(le.Message, "https://angular.io/") ??
                                   $"https://palantir.github.io/tslint/rules/{le.ErrorCode}";
