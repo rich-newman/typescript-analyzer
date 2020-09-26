@@ -106,6 +106,9 @@
     <Compile Include="source.extension.cs">
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>
+    <Compile Include="Tagging\LintingErrorTag.cs" />
+    <Compile Include="Tagging\Tagger.cs" />
+    <Compile Include="Tagging\TaggerProvider.cs" />
     <Compile Include="VSCommandTable.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -132,7 +135,7 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="app.config" />
-	<Content Include="TypeScriptAnalyzerNode\log.txt">
+    <Content Include="TypeScriptAnalyzerNode\log.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
