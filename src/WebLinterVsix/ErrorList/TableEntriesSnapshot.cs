@@ -26,6 +26,7 @@ namespace WebLinterVsix
 
         public string FilePath { get; }
         public string ProjectName { get; }
+        public List<LintingError> Errors => _errors;
 
         public override int VersionNumber { get; } = 1;
 

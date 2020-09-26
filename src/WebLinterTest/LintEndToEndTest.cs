@@ -16,6 +16,8 @@ namespace WebLinterTest
         private Dictionary<string, IGrouping<string, LintingError>> _snapshots = new Dictionary<string, IGrouping<string, LintingError>>();
         public Dictionary<string, IGrouping<string, LintingError>> Snapshots => _snapshots;
 
+        public event EventHandler ErrorListChanged;
+
         public void AddErrors(IEnumerable<LintingError> errors)
         {
             if (errors == null || !errors.Any()) return;
@@ -39,6 +41,7 @@ namespace WebLinterTest
 
         public bool HasErrors() => _snapshots.Count > 0;
         public bool HasErrors(string fileName) => _snapshots.ContainsKey(fileName);
+        public void RaiseErrorListChanged() { }
     }
 
     /// <summary>

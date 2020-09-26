@@ -27,6 +27,7 @@ namespace WebLinterVsix
                 }
 
                 TableDataSource.Instance.CleanErrors(lintedFilesWithNoErrors);
+                TableDataSource.Instance.RaiseErrorListChanged();
             }
         }
     }

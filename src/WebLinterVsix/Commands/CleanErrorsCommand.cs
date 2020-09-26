@@ -59,6 +59,7 @@ namespace WebLinterVsix
         private void CleanErrors(object sender, EventArgs e)
         {
             TableDataSource.Instance.CleanAllErrors();
+            TableDataSource.Instance.RaiseErrorListChanged();
         }
     }
 }

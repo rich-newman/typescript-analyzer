@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.Shell.TableManager;
 using WebLinter;
 using EnvDTE;
 using System.Diagnostics;
+using System.Windows;
 
 namespace WebLinterVsix
 {
@@ -20,15 +21,33 @@ namespace WebLinterVsix
         void CleanAllErrors();
         bool HasErrors();
         bool HasErrors(string fileName);
+        event EventHandler ErrorListChanged;
+        void RaiseErrorListChanged();
     }
 
     internal class TableDataSource : ITableDataSource, IErrorsTableDataSource
     {
         private static IErrorsTableDataSource _instance;
         private readonly List<SinkManager> _managers = new List<SinkManager>();
+
+        // TODO restore Snapshots code
+        //internal static Dictionary<string, TableEntriesSnapshot> Snapshots { get; } = new Dictionary<string, TableEntriesSnapshot>();
         private static Dictionary<string, TableEntriesSnapshot> _snapshots = new Dictionary<string, TableEntriesSnapshot>();
 
-        internal static Dictionary<string, TableEntriesSnapshot> Snapshots => _snapshots;  // For unit testing only
+        public static Dictionary<string, TableEntriesSnapshot> Snapshots
+        {
+            get
+            {
+                CheckThread();
+                return _snapshots;
+            }
+            set
+            {
+                CheckThread();
+                _snapshots = value;
+            }
+        }
+
 
         [Import]
         private ITableManagerProvider TableManagerProvider { get; set; } = null;
@@ -38,12 +57,13 @@ namespace WebLinterVsix
             var compositionService = ServiceProvider.GlobalProvider.GetService(typeof(SComponentModel)) as IComponentModel;
             compositionService.DefaultCompositionService.SatisfyImportsOnce(this);
 
-            var manager = TableManagerProvider.GetTableManager(StandardTables.ErrorsTable);
-            manager.AddSource(this, StandardTableColumnDefinitions.DetailsExpander, StandardTableColumnDefinitions.ErrorSeverity, 
-                StandardTableColumnDefinitions.ErrorCode, StandardTableColumnDefinitions.BuildTool, 
-                StandardTableColumnDefinitions.ErrorSource, StandardTableColumnDefinitions.ErrorCategory,
-                StandardTableColumnDefinitions.Text, StandardTableColumnDefinitions.DocumentName, 
-                StandardTableColumnDefinitions.Line, StandardTableColumnDefinitions.Column);
+            ITableManager manager = TableManagerProvider.GetTableManager(StandardTables.ErrorsTable);
+            manager.AddSource(this, StandardTableColumnDefinitions.DetailsExpander,
+                                    StandardTableColumnDefinitions.ErrorSeverity, StandardTableColumnDefinitions.ErrorCode,
+                                    StandardTableColumnDefinitions.ErrorSource, StandardTableColumnDefinitions.BuildTool,
+                                    StandardTableColumnDefinitions.ErrorCategory,
+                                    StandardTableColumnDefinitions.Text, StandardTableColumnDefinitions.DocumentName,
+                                    StandardTableColumnDefinitions.Line, StandardTableColumnDefinitions.Column);
         }
 
         // Don't try this at home
@@ -53,11 +73,21 @@ namespace WebLinterVsix
         {
             get
             {
+                CheckThread();
                 if (_instance == null)
                     _instance = new TableDataSource();
 
                 return _instance;
             }
+        }
+
+        // TODO remove CheckThread and all references to it
+        [Conditional("DEBUG")]
+        private static void CheckThread()
+        {
+            if (System.Threading.Thread.CurrentThread.ManagedThreadId != 1)
+                //throw new Exception("TableDataSource not running on UI thread");
+                Debug.WriteLine("TableDataSource called not on UI thread");
         }
 
         #region ITableDataSource members
@@ -108,7 +138,7 @@ namespace WebLinterVsix
             {
                 foreach (var manager in _managers)
                 {
-                    manager.UpdateSink(_snapshots.Values);
+                    manager.UpdateSink(Snapshots.Values);
                 }
             }
         }
@@ -121,11 +151,11 @@ namespace WebLinterVsix
             var cleanErrors = errors.Where(e => e != null && !string.IsNullOrEmpty(e.FileName));
             Dictionary<string, string> fileNameToProjectNameMap = CreateFileNameToProjectNameMap();
             //DebugDumpMap(fileNameToProjectNameMap);
-            foreach (var error in cleanErrors.GroupBy(t => t.FileName))
+            foreach (IGrouping<string, LintingError> error in cleanErrors.GroupBy(t => t.FileName))
             {
                 fileNameToProjectNameMap.TryGetValue(error.Key, out string projectName);
                 TableEntriesSnapshot snapshot = new TableEntriesSnapshot(error.Key, projectName ?? "", error);
-                _snapshots[error.Key] = snapshot;
+                Snapshots[error.Key] = snapshot;
             }
 
             UpdateAllSinks();
@@ -178,10 +208,10 @@ namespace WebLinterVsix
         {
             foreach (string file in files)
             {
-                if (_snapshots.ContainsKey(file))
+                if (Snapshots.ContainsKey(file))
                 {
-                    _snapshots[file].Dispose();
-                    _snapshots.Remove(file);
+                    Snapshots[file].Dispose();
+                    Snapshots.Remove(file);
                 }
             }
 
@@ -198,16 +228,16 @@ namespace WebLinterVsix
 
         public void CleanAllErrors()
         {
-            foreach (string file in _snapshots.Keys)
+            foreach (string file in Snapshots.Keys)
             {
-                var snapshot = _snapshots[file];
+                var snapshot = Snapshots[file];
                 if (snapshot != null)
                 {
                     snapshot.Dispose();
                 }
             }
 
-            _snapshots.Clear();
+            Snapshots.Clear();
 
             lock (_managers)
             {
@@ -225,12 +255,19 @@ namespace WebLinterVsix
 
         public bool HasErrors()
         {
-            return _snapshots.Count > 0;
+            return Snapshots.Count > 0;
         }
 
         public bool HasErrors(string fileName)
         {
-            return _snapshots.ContainsKey(fileName);
+            return Snapshots.ContainsKey(fileName);
+        }
+
+        public event EventHandler ErrorListChanged;
+        public void RaiseErrorListChanged()
+        {
+            Action action = () => ErrorListChanged?.Invoke(this, EventArgs.Empty);
+            Application.Current.Dispatcher.BeginInvoke(action, null);
         }
     }
 }
