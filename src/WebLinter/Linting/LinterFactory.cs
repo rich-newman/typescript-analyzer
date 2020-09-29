@@ -22,8 +22,6 @@ namespace WebLinter
             }
         }
 
-        private static AsyncLock _mutex = new AsyncLock();
-
         public static bool IsLintableFileExtension(string fileName, bool lintJsFiles)
         {
             string extension = Path.GetExtension(fileName).ToUpperInvariant();
