@@ -1,5 +1,4 @@
-﻿// Modifications Copyright Rich Newman 2017
-using Microsoft.VisualStudio.Shell.Interop;
+﻿using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
@@ -8,7 +7,6 @@ namespace WebLinterVsix
     public static class Logger
     {
         private static IVsOutputWindowPane pane;
-        private static object _syncRoot = new object();
         private static WebLinterPackage _provider;
         private static string _name;
 

@@ -4,13 +4,7 @@ using Microsoft.VisualStudio.Text.Tagging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using WebLinter;
 
 namespace WebLinterVsix.Tagging
@@ -49,7 +43,7 @@ namespace WebLinterVsix.Tagging
         // TODO The GetCurrentTextSnapshotVersion method is used for testing only
         internal string GetCurrentTextSnapshotVersion() => _currentTextSnapshot.Version.ToString();
 
-        // FilePath can change whilst the tagger is in use if we rename an open file, don't key on it
+        // FilePath can change whilst the tagger is in use if we rename an open file, so don't key on it
         // _document, _buffer, and _textView are all always the same object for a given tagger because we create a new tagger
         // if the view changes.
         internal string FilePath
