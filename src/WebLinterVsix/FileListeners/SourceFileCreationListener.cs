@@ -45,7 +45,7 @@ namespace WebLinterVsix.FileListeners
         {
             try
             {
-                if (wpfTextView == null || textDocument == null || !IsInSolution(textDocument.FilePath)) return;
+                if (wpfTextView == null || textDocument == null) return; // || !IsInSolution(textDocument.FilePath)) return;
                 // Legacy: Web Compiler and Bundler & Minifier added this property to generated files
                 if (wpfTextView.Properties.TryGetProperty("generated", out bool generated) && generated) return;
                 if (!LintableFiles.IsValidFile(textDocument.FilePath)) return;  // Is the filepath valid and does the file exist
