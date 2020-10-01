@@ -119,6 +119,7 @@ namespace WebLinter
 
                 int lineNumber = obj["startPosition"]?["line"]?.Value<int>() ?? 0;
                 int columnNumber = obj["startPosition"]?["character"]?.Value<int>() ?? 0;
+                if (lineNumber == 0 && columnNumber > 0) columnNumber--;  // Fix tslint off by one error
                 bool isError = _settings.TSLintShowErrors ?
                     obj["ruleSeverity"]?.Value<string>()?.ToUpper() == "ERROR" : false;
                 hasVSErrors = hasVSErrors || isError;
@@ -130,6 +131,7 @@ namespace WebLinter
                     le.Message = obj["failure"]?.Value<string>();
                     le.EndLineNumber = obj["endPosition"]?["line"]?.Value<int>() ?? 0;
                     le.EndColumnNumber = obj["endPosition"]?["character"]?.Value<int>() ?? 0;
+                    if (le.EndLineNumber == 0 && le.EndColumnNumber > 0) le.EndColumnNumber--;  // Fix tslint off by one error
 
                     le.HelpLink = ParseHttpReference(le.Message, "https://goo.gl/") ??
                                   ParseHttpReference(le.Message, "https://angular.io/") ??
