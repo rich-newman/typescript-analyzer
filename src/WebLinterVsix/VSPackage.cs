@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 using WebLinter;
+using WebLinterVsix.Tagging;
 
 namespace WebLinterVsix
 {
@@ -23,6 +24,7 @@ namespace WebLinterVsix
     {
         public static DTE2 Dte;
         public static ISettings Settings;
+        public static TaggerProvider TaggerProvider;
         private SolutionEvents _events;
         public static List<Tuple<IWpfTextView, ITextDocument>> UnhandledStartUpFiles = new List<Tuple<IWpfTextView, ITextDocument>>();
 
@@ -47,6 +49,9 @@ namespace WebLinterVsix
             ResetConfigFilesCommand.Initialize(this);
 
             base.Initialize();
+
+            if (TaggerProvider == null) return;
+            Settings.ShowUnderliningChanged += TaggerProvider.Settings_ShowUnderliningChanged;
         }
 
         private async System.Threading.Tasks.Task<bool> IsSolutionLoadedAsync()

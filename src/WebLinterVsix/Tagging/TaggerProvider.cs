@@ -7,10 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace WebLinterVsix.Tagging
 {
@@ -20,7 +17,7 @@ namespace WebLinterVsix.Tagging
     [TagType(typeof(IErrorTag))]
     [TextViewRole(PredefinedTextViewRoles.Document)]
     [TextViewRole(PredefinedTextViewRoles.Analyzable)]
-    class TaggerProvider : IViewTaggerProvider
+    public class TaggerProvider : IViewTaggerProvider
     {
         private readonly ITextDocumentFactoryService _textDocumentFactoryService;
 
@@ -29,6 +26,7 @@ namespace WebLinterVsix.Tagging
         {
             CheckThread();
             _textDocumentFactoryService = textDocumentFactoryService;
+            WebLinterPackage.TaggerProvider = this;
         }
 
         public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
@@ -78,6 +76,14 @@ namespace WebLinterVsix.Tagging
         // We key on ITextView (rather than filenames) because of renames with open files, when the text view remains
         // the same but the file name changes (and blows up the code)
         private Dictionary<ITextView, Tagger> _taggerCache = new Dictionary<ITextView, Tagger>();
+
+        public void Settings_ShowUnderliningChanged(object sender, EventArgs e)
+        {
+            foreach (KeyValuePair<ITextView, Tagger> tagger in _taggerCache)
+            {
+                tagger.Value.RaiseTagsChanged();
+            }
+        }
 
         [Conditional("DEBUG")]
         private void DebugDumpTaggers()

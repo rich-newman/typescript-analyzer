@@ -1,5 +1,4 @@
-﻿// Modifications Copyright Rich Newman 2017
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace WebLinter
 {
@@ -16,5 +15,7 @@ namespace WebLinter
         bool LintJsFiles { get; }
         IEnumerable<string> GetIgnorePatterns();
         void ResetSettings();
+        bool ShowUnderlining { get; }
+        event System.EventHandler ShowUnderliningChanged;
     }
 }

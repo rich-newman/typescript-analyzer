@@ -26,6 +26,7 @@ namespace WebLinterVsix
             UseTsConfig = false;
             OnlyRunIfRequested = false;
             UseProjectNGLint = false;
+            ShowUnderlining = true;
         }
 
         public override void ResetSettings()
@@ -94,6 +95,25 @@ namespace WebLinterVsix
         [Description("If True, will lint .js and .jsx files in addition to .ts and .tsx files.  This option uses rules in the the jsRules section of tslint.json.  This section is empty by default.")]
         [DefaultValue(false)]
         public bool LintJsFiles { get; set; }
+
+        private bool _showUnderlining;
+        [Category("Basic")]
+        [DisplayName("Show red/green underlining")]
+        [Description("If True, shows red/green underlining in code files for errors/warnings, and gives details on a hover.")]
+        [DefaultValue(true)]
+        public bool ShowUnderlining
+        {
+            get { return _showUnderlining; }
+            set { _showUnderlining = value; RaiseShowUnderliningChanged(); }
+        }
+
+        public event EventHandler ShowUnderliningChanged;
+        public void RaiseShowUnderliningChanged()
+        {
+            Action action = () => ShowUnderliningChanged?.Invoke(this, EventArgs.Empty);
+            System.Windows.Application.Current.Dispatcher.BeginInvoke(action, null);
+        }
+
 
         public IEnumerable<string> GetIgnorePatterns()
         {

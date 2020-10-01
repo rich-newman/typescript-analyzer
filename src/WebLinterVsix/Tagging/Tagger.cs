@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.Text.Tagging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using WebLinter;
 
@@ -80,8 +81,7 @@ namespace WebLinterVsix.Tagging
                 _tagSpans = null;
                 Debug.WriteLine($"In OnErrorListChanged calling TagsChanged, file={FilePath}, thread={Thread.CurrentThread.ManagedThreadId}");
                 // TODO we can get CalculateTagSpans to calculate start and end of tag ranges
-                TagsChanged?.Invoke(this, 
-                    new SnapshotSpanEventArgs(new SnapshotSpan(_currentTextSnapshot, 0, _currentTextSnapshot.Length)));
+                RaiseTagsChanged();
             }
             catch (Exception ex) { Logger.LogAndWarn(ex); }
 
@@ -100,8 +100,24 @@ namespace WebLinterVsix.Tagging
         }
 
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
+        public void RaiseTagsChanged()
+        {
+            TagsChanged?.Invoke(this,
+                new SnapshotSpanEventArgs(new SnapshotSpan(_currentTextSnapshot, 0, _currentTextSnapshot.Length)));
+        }
 
         public IEnumerable<ITagSpan<LintingErrorTag>> GetTags(NormalizedSnapshotSpanCollection spans)
+        {
+            if (!WebLinterPackage.Settings?.ShowUnderlining ?? true) yield break;
+            UpdateTagSpans(spans);
+            foreach (ITagSpan<LintingErrorTag> tagSpan in _tagSpans)
+            {
+                if (spans.IntersectsWith(tagSpan.Span))
+                    yield return tagSpan;
+            }
+        }
+
+        private void UpdateTagSpans(NormalizedSnapshotSpanCollection spans)
         {
             try
             {
@@ -120,13 +136,6 @@ namespace WebLinterVsix.Tagging
                     UpdateTagSpansForNewTextSnapshot();
             }
             catch (Exception ex) { Logger.LogAndWarn(ex); }
-
-            foreach (ITagSpan<LintingErrorTag> tagSpan in _tagSpans)
-            {
-                if (spans.IntersectsWith(tagSpan.Span))
-                    yield return tagSpan;
-            }
-
         }
 
         private bool IsSpansValid(NormalizedSnapshotSpanCollection spans) => 
@@ -139,7 +148,7 @@ namespace WebLinterVsix.Tagging
             spans[0].Snapshot != _currentTextSnapshot;
 
         private List<ITagSpan<LintingErrorTag>> _tagSpans = null;
-        public void CalculateTagSpans()
+        private void CalculateTagSpans()
         {
             Debug.WriteLine($"CalculateTagSpans, file={FilePath}, thread={Thread.CurrentThread.ManagedThreadId}");
             _tagSpans = new List<ITagSpan<LintingErrorTag>>();
