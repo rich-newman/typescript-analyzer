@@ -16,7 +16,7 @@ namespace WebLinterVsix.Tagging
         internal LintingErrorTag(LintingError lintingError)
         {
             ErrorType = lintingError.IsError ? PredefinedErrorTypeNames.SyntaxError : PredefinedErrorTypeNames.Warning;
-            ToolTipContent = $"Analyzer - {lintingError.Message}";
+            ToolTipContent = $"({lintingError.Provider.Name}) {lintingError.Message} ({lintingError.ErrorCode})";
         }
     }
 }
