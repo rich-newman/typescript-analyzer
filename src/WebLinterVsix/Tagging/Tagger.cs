@@ -102,13 +102,14 @@ namespace WebLinterVsix.Tagging
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
         public void RaiseTagsChanged()
         {
+            CheckThread();
             TagsChanged?.Invoke(this,
                 new SnapshotSpanEventArgs(new SnapshotSpan(_currentTextSnapshot, 0, _currentTextSnapshot.Length)));
         }
 
         public IEnumerable<ITagSpan<LintingErrorTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
-            if (!WebLinterPackage.Settings?.ShowUnderlining ?? true) yield break;
+            if (WebLinterPackage.Settings == null || !WebLinterPackage.Settings.ShowUnderlining) yield break;
             UpdateTagSpans(spans);
             foreach (ITagSpan<LintingErrorTag> tagSpan in _tagSpans)
             {
