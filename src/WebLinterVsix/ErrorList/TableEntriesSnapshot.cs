@@ -1,5 +1,4 @@
-﻿// Modifications Copyright Rich Newman 2017
-using System;
+﻿using System;
 using System.Collections.Generic;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell.Interop;

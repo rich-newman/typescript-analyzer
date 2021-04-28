@@ -31,8 +31,10 @@ namespace WebLinterVsix
         private readonly List<SinkManager> _managers = new List<SinkManager>();
 
         // TODO restore Snapshots code
-        //internal static Dictionary<string, TableEntriesSnapshot> Snapshots { get; } = new Dictionary<string, TableEntriesSnapshot>();
-        private static Dictionary<string, TableEntriesSnapshot> _snapshots = new Dictionary<string, TableEntriesSnapshot>();
+        //internal static Dictionary<string, TableEntriesSnapshot> Snapshots { get; }
+        //      = new Dictionary<string, TableEntriesSnapshot>(StringComparer.OrdinalIgnoreCase);
+        private static Dictionary<string, TableEntriesSnapshot> _snapshots = 
+            new Dictionary<string, TableEntriesSnapshot>(StringComparer.OrdinalIgnoreCase);
 
         public static Dictionary<string, TableEntriesSnapshot> Snapshots
         {
@@ -167,7 +169,7 @@ namespace WebLinterVsix
         // We are on the UI thread
         private Dictionary<string, string> CreateFileNameToProjectNameMap()
         {
-            Dictionary<string, string> fileNameToProjectNameMap = new Dictionary<string, string>();
+            Dictionary<string, string> fileNameToProjectNameMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             Solution solution = WebLinterPackage.Dte.Solution;
             if (solution?.Projects == null) return fileNameToProjectNameMap;
             foreach (Project project in solution.Projects)

@@ -31,7 +31,7 @@ namespace WebLinterVsix
             {
                 foreach (var snapshot in snapshots)
                 {
-                    var existing = _snapshots.FirstOrDefault(s => s.FilePath == snapshot.FilePath);
+                    var existing = _snapshots.FirstOrDefault(s => snapshot.FilePath.Equals(s.FilePath, StringComparison.OrdinalIgnoreCase));
 
                     if (existing != null)
                     {
@@ -56,7 +56,7 @@ namespace WebLinterVsix
             {
                 foreach (string file in files)
                 {
-                    var existing = _snapshots.FirstOrDefault(s => s.FilePath == file);
+                    var existing = _snapshots.FirstOrDefault(s => file.Equals(s.FilePath, StringComparison.OrdinalIgnoreCase));
 
                     if (existing != null)
                     {

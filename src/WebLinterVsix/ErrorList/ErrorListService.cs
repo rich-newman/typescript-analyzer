@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WebLinter;
 
@@ -12,11 +13,12 @@ namespace WebLinterVsix
         {
             bool useFilter = WebLinterPackage.Settings.UseTsConfig && filterFileNames != null;
             IEnumerable<LintingError> allErrors = useFilter ?
-                results.Where(r => r.HasErrors).SelectMany(r => r.Errors).Where(e => filterFileNames.Contains(e.FileName)) :
+                results.Where(r => r.HasErrors).SelectMany(r => r.Errors)
+                       .Where(e => filterFileNames.Contains(e.FileName, StringComparer.OrdinalIgnoreCase)) :
                 results.Where(r => r.HasErrors).SelectMany(r => r.Errors);
             IEnumerable<string> lintedFilesWithNoErrors = useFilter ?
-                filterFileNames.Where(f => !allErrors.Select(e => e.FileName).Contains(f)) :
-                fileNames.Where(f => !allErrors.Select(e => e.FileName).Contains(f));
+                filterFileNames.Where(f => !allErrors.Select(e => e.FileName).Contains(f, StringComparer.OrdinalIgnoreCase)) :
+                fileNames.Where(f => !allErrors.Select(e => e.FileName).Contains(f, StringComparer.OrdinalIgnoreCase));
             lock (_processLintingLocker)
             {
                 if (allErrors.Any())
