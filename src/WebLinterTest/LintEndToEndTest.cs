@@ -16,7 +16,7 @@ namespace WebLinterTest
         private Dictionary<string, IGrouping<string, LintingError>> _snapshots = new Dictionary<string, IGrouping<string, LintingError>>();
         public Dictionary<string, IGrouping<string, LintingError>> Snapshots => _snapshots;
 
-        public event EventHandler ErrorListChanged;
+        public event EventHandler ErrorListChanged { add { } remove { } }
 
         public void AddErrors(IEnumerable<LintingError> errors)
         {

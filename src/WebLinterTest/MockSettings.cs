@@ -38,7 +38,7 @@ namespace WebLinterTest
         public bool IgnoreNestedFiles { get; set; } = true;
         public string[] IgnorePatterns { get; set; } = new string[0];
         public bool ShowUnderlining => true;
-        public event EventHandler ShowUnderliningChanged;
+        public event EventHandler ShowUnderliningChanged { add { } remove { } }
 
         public IEnumerable<string> GetIgnorePatterns() { return IgnorePatterns; }
         public void ResetSettings() { }
