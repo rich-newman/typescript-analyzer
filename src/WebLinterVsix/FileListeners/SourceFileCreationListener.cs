@@ -137,7 +137,8 @@ namespace WebLinterVsix.FileListeners
                     if (wpfTextView.TextBuffer.Properties.TryGetProperty("lint_filename", out string fileName))
                     {
                         // TODO there's no locking on TableDataSource, which I think has to have thread affinity to the UI thread
-                        // So we can't call it from a threadpool thread
+                        // So we can't call it from a threadpool thread - reluctant to just change this without a load of testing
+                        // as it's been in here for ages.
                         TableDataSource.Instance.CleanErrors(new[] { fileName });
                     }
                 });

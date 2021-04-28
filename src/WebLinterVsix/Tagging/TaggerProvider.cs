@@ -24,25 +24,21 @@ namespace WebLinterVsix.Tagging
         [ImportingConstructor]
         public TaggerProvider([Import] ITextDocumentFactoryService textDocumentFactoryService)
         {
-            CheckThread();
             _textDocumentFactoryService = textDocumentFactoryService;
             WebLinterPackage.TaggerProvider = this;
         }
 
         public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
         {
-            CheckThread();
             if (buffer != textView.TextBuffer || typeof(IErrorTag) != typeof(T) ||
                 !_textDocumentFactoryService.TryGetTextDocument(buffer, out ITextDocument document)) return null;
             string extension = Path.GetExtension(document.FilePath)?.ToLowerInvariant();
-            if (extension != ".ts") return null; // TODO other extensions
+            if (!IsValidFileExtension(extension)) return null;
             if (!_taggerCache.ContainsKey(textView))
             {
                 _taggerCache.Add(textView, new Tagger(buffer, document, textView, this));
-                document.FileActionOccurred += Document_FileActionOccurred;
                 textView.Closed += (s, e) =>
                 {
-                    CheckThread();
                     _taggerCache[textView].Dispose();
                     _taggerCache.Remove(textView);
                 };
@@ -50,27 +46,10 @@ namespace WebLinterVsix.Tagging
             return _taggerCache[textView] as ITagger<T>;
         }
 
-        private void Document_FileActionOccurred(object sender, TextDocumentFileActionEventArgs e)
+        private bool IsValidFileExtension(string extension)
         {
-            if(e.FileActionType== FileActionTypes.DocumentRenamed)
-            {
-                string test = e.FilePath;  // New filepath, and that's all she wrote, so absolutely useless
-            }
-        }
-
-        // TODO remove GetDocument method
-        internal ITextDocument GetDocument(ITextBuffer buffer)
-        {
-            if (!_textDocumentFactoryService.TryGetTextDocument(buffer, out ITextDocument newDocument)) return null;
-            return newDocument;
-        }
-
-        // I'm pretty sure we're always on the UI thread here: let's blow up in debug if that's ever not true
-        // TODO look at the calling code rather than random exceptions to check threading in the tagger code
-        [Conditional("DEBUG")]
-        private void CheckThread()
-        {
-            if (Thread.CurrentThread.ManagedThreadId != 1) throw new Exception("TaggerProvider not running on UI thread");
+            // TODO only need JavaScript extensions checked if the option to use them is enabled
+            return extension == ".ts" || extension == ".tsx" || extension == ".js" || extension == ".jsx";
         }
 
         // We key on ITextView (rather than filenames) because of renames with open files, when the text view remains
@@ -85,15 +64,21 @@ namespace WebLinterVsix.Tagging
             }
         }
 
-        [Conditional("DEBUG")]
-        private void DebugDumpTaggers()
-        {
-            Debug.WriteLine("CURRENT TAGGERS:");
-            foreach (KeyValuePair<ITextView, Tagger> tagger in _taggerCache)
-            {
-                Debug.WriteLine(tagger.Value.FilePath);
-            }
-        }
+        //[Conditional("DEBUG")]
+        //private void CheckThread()
+        //{
+        //    if (Thread.CurrentThread.ManagedThreadId != 1) throw new Exception("TaggerProvider not running on UI thread");
+        //}
+
+        //[Conditional("DEBUG")]
+        //private void DebugDumpTaggers()
+        //{
+        //    Debug.WriteLine("CURRENT TAGGERS:");
+        //    foreach (KeyValuePair<ITextView, Tagger> tagger in _taggerCache)
+        //    {
+        //        Debug.WriteLine(tagger.Value.FilePath);
+        //    }
+        //}
 
     }
 }

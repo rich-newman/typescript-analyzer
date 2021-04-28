@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.Text.Tagging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using WebLinter;
 
@@ -15,34 +14,14 @@ namespace WebLinterVsix.Tagging
     // before a save
     class Tagger : ITagger<LintingErrorTag>, IDisposable
     {
-        private bool _disposed = false; // TODO remove disposed flag after testing
+        private bool _disposed = false;
         public void Dispose() 
         {
             TableDataSource.Instance.ErrorListChanged -= OnErrorListChanged;
             _disposed = true;
         }
-        // TODO remove buffer if we don't have a need for it
-        private ITextBuffer _buffer;
         private ITextDocument _document;
-        private ITextView _textView;
-        private TaggerProvider _taggerProvider;
-        private ITextSnapshot _currentTextSnapshotUnderlying;
-        private ITextSnapshot _currentTextSnapshot // TODO set back _currentTextSnapshot to field after testing
-        {
-            get 
-            {
-                CheckThread();
-                return _currentTextSnapshotUnderlying; 
-            }
-            set 
-            {
-                CheckThread();
-                _currentTextSnapshotUnderlying = value; 
-            }
-        }
-
-        // TODO The GetCurrentTextSnapshotVersion method is used for testing only
-        internal string GetCurrentTextSnapshotVersion() => _currentTextSnapshot.Version.ToString();
+        private ITextSnapshot _currentTextSnapshot;
 
         // FilePath can change whilst the tagger is in use if we rename an open file, so don't key on it
         // _document, _buffer, and _textView are all always the same object for a given tagger because we create a new tagger
@@ -51,9 +30,8 @@ namespace WebLinterVsix.Tagging
         {
             get 
             {
-                // TODO testing code only - just return _document.FilePath
-                ITextDocument currentDocument = _taggerProvider.GetDocument(_buffer);
-                if (currentDocument != _document) throw new Exception("Document has changed for tagger");
+                //ITextDocument currentDocument = _taggerProvider.GetDocument(_buffer);
+                //if (currentDocument != _document) throw new Exception("Document has changed for tagger");
                 return _document.FilePath;
             }
         }
@@ -62,13 +40,8 @@ namespace WebLinterVsix.Tagging
         {
             CheckThread();
             Debug.WriteLine($"Creating Tagger for {document.FilePath}, thread={Thread.CurrentThread.ManagedThreadId}");
-            _buffer = buffer;
             _document = document;
-            _textView = textView;
-            _taggerProvider = taggerProvider;  // TODO remove reference to provider: it's only for testing, the tagger doesn't need to know
             _currentTextSnapshot = buffer.CurrentSnapshot;
-            //_document.FileActionOccurred += OnFileActionOccurred;
-            //_buffer.ChangedLowPriority += OnBufferChanged;
             this.TagsChanged += OnTagsChanged;
             TableDataSource.Instance.ErrorListChanged += OnErrorListChanged;
         }
@@ -79,7 +52,8 @@ namespace WebLinterVsix.Tagging
             {
                 CheckThread();
                 _tagSpans = null;
-                Debug.WriteLine($"In OnErrorListChanged calling TagsChanged, file={FilePath}, thread={Thread.CurrentThread.ManagedThreadId}");
+                Debug.WriteLine($"In OnErrorListChanged calling TagsChanged, file={FilePath}, " +
+                    $"thread={Thread.CurrentThread.ManagedThreadId}");
                 // TODO we can get CalculateTagSpans to calculate start and end of tag ranges
                 RaiseTagsChanged();
             }
@@ -122,16 +96,16 @@ namespace WebLinterVsix.Tagging
         {
             try
             {
+#if DEBUG
                 CheckThread();
-                Debug.WriteLine($"GetTags: File={FilePath}, New TextSnapshot version={spans[0].Snapshot.Version}, old TextSnapshot version={_currentTextSnapshot.Version}, thread={Thread.CurrentThread.ManagedThreadId}");
-                if (!IsSpansValid(spans)) throw new Exception("Invalid spans in GetTags");  // TODO can take out if it never throws
-                bool isTextBufferChanged = IsTextBufferChanged(spans);
-                if (isTextBufferChanged) throw new Exception("Text buffer changed in Tagger: should have stopped this");
+                Debug.WriteLine($"GetTags: File={FilePath}, New TextSnapshot version={spans[0].Snapshot.Version}, " +
+                    $"old TextSnapshot version={_currentTextSnapshot.Version}, thread={Thread.CurrentThread.ManagedThreadId}");
+                if (!IsSpansValid(spans)) throw new Exception("Invalid spans in GetTags");
+                if (IsTextBufferChanged(spans)) throw new Exception("Text buffer changed in Tagger");
+#endif
                 bool isTextSnapshotChanged = IsTextSnapshotChanged(spans);
                 if (isTextSnapshotChanged) _currentTextSnapshot = spans[0].Snapshot;
-                // TODO this works if the buffer is changed, but makes no sense here since we're throwing above in that case
-                if (isTextBufferChanged) _buffer = spans[0].Snapshot.TextBuffer;
-                if (_tagSpans == null || isTextBufferChanged)
+                if (_tagSpans == null)
                     CalculateTagSpans();
                 else if (isTextSnapshotChanged)
                     UpdateTagSpansForNewTextSnapshot();
@@ -139,11 +113,13 @@ namespace WebLinterVsix.Tagging
             catch (Exception ex) { Logger.LogAndWarn(ex); }
         }
 
+#if DEBUG
         private bool IsSpansValid(NormalizedSnapshotSpanCollection spans) => 
             (spans?.Count ?? 0) > 0 && spans[0].Snapshot?.TextBuffer != null;
 
         private bool IsTextBufferChanged(NormalizedSnapshotSpanCollection spans) => 
             spans[0].Snapshot.TextBuffer != _currentTextSnapshot.TextBuffer;
+#endif
 
         private bool IsTextSnapshotChanged(NormalizedSnapshotSpanCollection spans) =>
             spans[0].Snapshot != _currentTextSnapshot;
