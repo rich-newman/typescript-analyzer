@@ -30,6 +30,7 @@ namespace WebLinterVsix.Tagging
 
         public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
         {
+            CheckThread();
             if (buffer != textView.TextBuffer || typeof(IErrorTag) != typeof(T) ||
                 !_textDocumentFactoryService.TryGetTextDocument(buffer, out ITextDocument document)) return null;
             string extension = Path.GetExtension(document.FilePath)?.ToLowerInvariant();
@@ -64,11 +65,11 @@ namespace WebLinterVsix.Tagging
             }
         }
 
-        //[Conditional("DEBUG")]
-        //private void CheckThread()
-        //{
-        //    if (Thread.CurrentThread.ManagedThreadId != 1) throw new Exception("TaggerProvider not running on UI thread");
-        //}
+        [Conditional("DEBUG")]
+        private void CheckThread()
+        {
+            if (Thread.CurrentThread.ManagedThreadId != 1) throw new Exception("TaggerProvider not running on UI thread");
+        }
 
         //[Conditional("DEBUG")]
         //private void DebugDumpTaggers()

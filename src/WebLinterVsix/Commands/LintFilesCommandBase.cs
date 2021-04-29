@@ -58,7 +58,8 @@ namespace WebLinterVsix
             }
             else
             {
-                WebLinterPackage.Dte.StatusBar.Text = $"No {(WebLinterPackage.Settings.UseTsConfig ? "tsconfig.json" : "ts or tsx")} files found to {(fixErrors ? "fix" : "lint")}";
+                WebLinterPackage.Dte.StatusBar.Text = $"No {(WebLinterPackage.Settings.UseTsConfig ? "tsconfig.json" : "ts or tsx")}" +
+                    $" files found to {(fixErrors ? "fix" : "lint")}";
                 return false;
             }
         }

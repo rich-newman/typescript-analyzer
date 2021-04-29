@@ -35,7 +35,7 @@ namespace WebLinterVsix
             Settings = (Settings)GetDialogPage(typeof(Settings));
 
             _events = Dte.Events.SolutionEvents;
-            _events.AfterClosing += delegate { TableDataSource.Instance.CleanAllErrors(); };
+            _events.AfterClosing += delegate { TableDataSource.Instance.CleanAllErrors(); }; // Called on UI thread
 
             Logger.Initialize(this, Vsix.Name);
 

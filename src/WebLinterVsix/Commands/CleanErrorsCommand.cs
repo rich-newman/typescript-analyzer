@@ -51,6 +51,7 @@ namespace WebLinterVsix
 
         private void BeforeQueryStatus(object sender, EventArgs e)
         {
+            // Called on UI thread
             var button = (OleMenuCommand)sender;
 
             button.Visible = TableDataSource.Instance.HasErrors();
@@ -58,6 +59,7 @@ namespace WebLinterVsix
 
         private void CleanErrors(object sender, EventArgs e)
         {
+            // Called on UI thread
             TableDataSource.Instance.CleanAllErrors();
             TableDataSource.Instance.RaiseErrorListChanged();
         }
