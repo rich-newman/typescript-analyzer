@@ -8,7 +8,6 @@ namespace WebLinterVsix
 {
     class ErrorListService
     {
-        private static object _processLintingLocker = new object();
         public static void ProcessLintingResults(IEnumerable<LintingResult> results, string[] fileNames,
                                                     string[] filterFileNames, bool showErrorList)
         {
