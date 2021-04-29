@@ -45,6 +45,7 @@ namespace WebLinterVsix.FileListeners
         {
             try
             {
+                // Called on UI thread
                 if (wpfTextView == null || textDocument == null) return; // || !IsInSolution(textDocument.FilePath)) return;
                 // Legacy: Web Compiler and Bundler & Minifier added this property to generated files
                 if (wpfTextView.Properties.TryGetProperty("generated", out bool generated) && generated) return;
@@ -136,10 +137,9 @@ namespace WebLinterVsix.FileListeners
                 {
                     if (wpfTextView.TextBuffer.Properties.TryGetProperty("lint_filename", out string fileName))
                     {
-                        // TODO there's no locking on TableDataSource, which I think has to have thread affinity to the UI thread
-                        // So we can't call it from a threadpool thread - reluctant to just change this without a load of testing
-                        // as it's been in here for ages.
-                        TableDataSource.Instance.CleanErrors(new[] { fileName });
+                        //TableDataSource.Instance.CleanErrors(new[] { fileName });
+                        Action action = () => TableDataSource.Instance.CleanErrors(new[] { fileName });
+                        System.Windows.Application.Current.Dispatcher.BeginInvoke(action);
                     }
                 });
             }
@@ -150,6 +150,7 @@ namespace WebLinterVsix.FileListeners
         {
             try
             {
+                // Called from UI thread: file save etc
                 if (WebLinterPackage.Settings != null && !WebLinterPackage.Settings.OnlyRunIfRequested &&
                     (e.FileActionType == FileActionTypes.ContentSavedToDisk || e.FileActionType == FileActionTypes.DocumentRenamed) &&
                     LintableFiles.IsLintableTsTsxJsJsxFile(e.FilePath)) // We may have changed settings since the event was hooked
