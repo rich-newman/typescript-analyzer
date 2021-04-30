@@ -26,7 +26,7 @@ namespace WebLinterVsix
         private static void UpdateTableDataSource(IEnumerable<LintingError> allErrors, 
                                                   bool showErrorList, IEnumerable<string> lintedFilesWithNoErrors)
         {
-            if (Application.Current.Dispatcher.CheckAccess())
+            if (Application.Current?.Dispatcher == null || Application.Current.Dispatcher.CheckAccess())
             {
                 if (allErrors.Any())
                 {
