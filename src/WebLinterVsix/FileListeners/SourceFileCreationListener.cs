@@ -123,6 +123,7 @@ namespace WebLinterVsix.FileListeners
 
         private static void TextviewClosed(object sender, EventArgs e)
         {
+            // UI thread
             try
             {
                 IWpfTextView wpfTextView = (IWpfTextView)sender;
@@ -132,16 +133,8 @@ namespace WebLinterVsix.FileListeners
                 if (wpfTextView.Properties.TryGetProperty("lint_document", out ITextDocument textDocument))
                     textDocument.FileActionOccurred -= OnFileActionOccurred;
                 if (WebLinterPackage.Settings == null || WebLinterPackage.Settings.OnlyRunIfRequested) return;
-
-                System.Threading.ThreadPool.QueueUserWorkItem((o) =>
-                {
-                    if (wpfTextView.TextBuffer.Properties.TryGetProperty("lint_filename", out string fileName))
-                    {
-                        //TableDataSource.Instance.CleanErrors(new[] { fileName });
-                        Action action = () => TableDataSource.Instance.CleanErrors(new[] { fileName });
-                        System.Windows.Application.Current.Dispatcher.BeginInvoke(action);
-                    }
-                });
+                if (wpfTextView.TextBuffer.Properties.TryGetProperty("lint_filename", out string fileName))
+                    TableDataSource.Instance.CleanErrors(new[] { fileName });
             }
             catch (Exception ex) { Logger.LogAndWarn(ex); }
         }
