@@ -29,6 +29,7 @@ namespace WebLinterVsix
 
         private void OnBuildBegin(vsBuildScope Scope, vsBuildAction Action)
         {
+            // Called on UI thread
             if (WebLinterPackage.Settings.CleanErrorsOnBuild &&
                (Action == vsBuildAction.vsBuildActionClean ||
                (Action == vsBuildAction.vsBuildActionRebuildAll && !WebLinterPackage.Settings.RunOnBuild)))
