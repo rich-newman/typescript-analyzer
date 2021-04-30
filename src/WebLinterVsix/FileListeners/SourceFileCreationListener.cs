@@ -123,7 +123,6 @@ namespace WebLinterVsix.FileListeners
 
         private static void TextviewClosed(object sender, EventArgs e)
         {
-            // UI thread
             try
             {
                 IWpfTextView wpfTextView = (IWpfTextView)sender;
@@ -134,7 +133,16 @@ namespace WebLinterVsix.FileListeners
                     textDocument.FileActionOccurred -= OnFileActionOccurred;
                 if (WebLinterPackage.Settings == null || WebLinterPackage.Settings.OnlyRunIfRequested) return;
                 if (wpfTextView.TextBuffer.Properties.TryGetProperty("lint_filename", out string fileName))
-                    TableDataSource.Instance.CleanErrors(new[] { fileName });
+                {
+                    // If we save after closing an unsaved file then OnFileActionOccurred fires before this method and
+                    // calls the linter (await CallLinterService), which calls the linter web service and puts a continuation on the
+                    // message loop. When it calls the web service the UI thread is freed and we get called here.
+                    // If we just clear the error list then the linter finishes and displays the errors again.  
+                    // So we put our CleanErrors call at the back of the message loop and it runs after the linter callback.
+                    // Better would be to recognize this state in OnFileActionOccurred and not run the linter but I'm not sure it's possible
+                    Action action = () => TableDataSource.Instance.CleanErrors(new[] { fileName });
+                    System.Windows.Application.Current.Dispatcher.BeginInvoke(action);
+                }
             }
             catch (Exception ex) { Logger.LogAndWarn(ex); }
         }
