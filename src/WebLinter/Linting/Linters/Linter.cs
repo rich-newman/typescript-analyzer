@@ -93,7 +93,7 @@ namespace WebLinter
 
         private void ParseErrors(string output, bool isCalledFromBuild)
         {
-            JArray array = null;
+            JArray array;
             try
             {
                 array = JArray.Parse(output);
@@ -119,7 +119,8 @@ namespace WebLinter
 
                 int lineNumber = obj["startPosition"]?["line"]?.Value<int>() ?? 0;
                 int columnNumber = obj["startPosition"]?["character"]?.Value<int>() ?? 0;
-                if (lineNumber == 0 && columnNumber > 0) columnNumber--;  // Fix tslint off by one error
+                bool adjustForByteOrderMark = lineNumber == 0 && HasUTF8ByteOrderMark(fileName);
+                if (lineNumber == 0 && columnNumber > 0 && adjustForByteOrderMark) columnNumber--;  // Fix tslint off by one error
                 bool isError = _settings.TSLintShowErrors ?
                     obj["ruleSeverity"]?.Value<string>()?.ToUpper() == "ERROR" : false;
                 hasVSErrors = hasVSErrors || isError;
@@ -131,7 +132,7 @@ namespace WebLinter
                     le.Message = obj["failure"]?.Value<string>();
                     le.EndLineNumber = obj["endPosition"]?["line"]?.Value<int>() ?? 0;
                     le.EndColumnNumber = obj["endPosition"]?["character"]?.Value<int>() ?? 0;
-                    if (le.EndLineNumber == 0 && le.EndColumnNumber > 0) le.EndColumnNumber--;  // Fix tslint off by one error
+                    if (le.EndLineNumber == 0 && le.EndColumnNumber > 0 && adjustForByteOrderMark) le.EndColumnNumber--;
 
                     le.HelpLink = ParseHttpReference(le.Message, "https://goo.gl/") ??
                                   ParseHttpReference(le.Message, "https://angular.io/") ??
@@ -142,6 +143,22 @@ namespace WebLinter
                 }
             }
             _result.HasVsErrors = hasVSErrors;
+        }
+
+        // If you create a file in a Node console app it's encoded as UTF8 with a BOM
+        // If you create a file in an ASP.NET app it's encoded as UTF8, no BOM
+        // This doesn't usually matter. However, tslint treats the BOM as an extra character in the first line when calculating
+        // StartColumnNumber and EndColumnNumber, which means we need to adjust for it to get our underlining positioning correct.
+        // To clarify, you can have two apparently identical .ts files where tslint reports different column numbers for the same error
+        // on the first line.  Fortunately we don't often have errors on the first line, and will only call this method if we do.
+        public static bool HasUTF8ByteOrderMark(string fileName)
+        {
+            var bom = new byte[3];
+            using (var file = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                file.Read(bom, 0, 3);
+            }
+            return bom[0] == 0xef && bom[1] == 0xbb && bom[2] == 0xbf;
         }
 
         private string ParseHttpReference(string message, string root)

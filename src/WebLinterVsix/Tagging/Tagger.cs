@@ -9,9 +9,6 @@ using WebLinter;
 
 namespace WebLinterVsix.Tagging
 {
-    // TODO as a first cut we don't re-run the linter for any new reasons
-    // We have to consider what happens if we edit a file to the underlining - we can end up in the wrong place
-    // before a save
     class Tagger : ITagger<LintingErrorTag>, IDisposable
     {
         private bool _disposed = false;
