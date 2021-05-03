@@ -37,42 +37,9 @@ namespace WebLinter
         public static async Task<LintingResult[]> Lint(ISettings settings, bool fixErrors, bool callSync, Action<string, bool> log, params string[] fileNames)
         {
             if (fileNames.Length == 0)  return new LintingResult[0];
-
-            // TODO - do we even need the grouping???  Don't think so
-            // Also the logic for selecting a linter is in here even though we now only have one
-            var groupedFiles = fileNames.GroupBy(f => Path.GetExtension(f).ToUpperInvariant());
-            Dictionary<Linter, IEnumerable<string>> dic = new Dictionary<Linter, IEnumerable<string>>();
-
-            foreach (IGrouping<string, string> group in groupedFiles)
-            {
-                switch (group.Key)
-                {
-                    case ".TS":
-                    case ".TSX":
-                    case ".JSON":
-                    case ".JS":
-                    case ".JSX":
-                        AddLinter(dic, new Linter(settings, fixErrors, log), group);
-                        break;
-                }
-            }
-
-            if (dic.Count != 0)
-                return await Task.WhenAll(dic.Select(group => group.Key.Lint(callSync, group.Value.ToArray())));
-
-            return new LintingResult[0];
-        }
-
-        private static void AddLinter(Dictionary<Linter, IEnumerable<string>> dic, Linter linter, IEnumerable<string> files)
-        {
-            if (dic.ContainsKey(linter))
-            {
-                dic[linter] = dic[linter].Union(files);
-            }
-            else
-            {
-                dic.Add(linter, files);
-            }
+            Linter linter = new Linter(settings, fixErrors, log);
+            LintingResult result = await linter.Lint(callSync, fileNames);
+            return new LintingResult[] { result };
         }
     }
 }
