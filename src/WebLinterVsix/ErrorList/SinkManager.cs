@@ -9,10 +9,10 @@ namespace WebLinterVsix
     class SinkManager : IDisposable
     {
         private readonly ITableDataSink _sink;
-        private TableDataSource _errorList;
+        private ErrorListDataSource _errorList;
         private List<TableEntriesSnapshot> _snapshots = new List<TableEntriesSnapshot>();
 
-        internal SinkManager(TableDataSource errorList, ITableDataSink sink)
+        internal SinkManager(ErrorListDataSource errorList, ITableDataSink sink)
         {
             _sink = sink;
             _errorList = errorList;

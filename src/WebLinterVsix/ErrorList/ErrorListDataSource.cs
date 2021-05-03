@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace WebLinterVsix
 {
-    internal interface IErrorsTableDataSource
+    internal interface IErrorListDataSource
     {
         void AddErrors(IEnumerable<LintingError> errors);
         void CleanErrors(IEnumerable<string> files);
@@ -24,9 +24,9 @@ namespace WebLinterVsix
         void RaiseErrorListChanged();
     }
 
-    internal class TableDataSource : ITableDataSource, IErrorsTableDataSource
+    internal class ErrorListDataSource : ITableDataSource, IErrorListDataSource
     {
-        private static IErrorsTableDataSource _instance;
+        private static IErrorListDataSource _instance;
         private readonly List<SinkManager> _managers = new List<SinkManager>();
 
         //internal static Dictionary<string, TableEntriesSnapshot> Snapshots { get; }
@@ -46,7 +46,7 @@ namespace WebLinterVsix
         [Import]
         private ITableManagerProvider TableManagerProvider { get; set; } = null;
 
-        private TableDataSource()
+        private ErrorListDataSource()
         {
             CheckThread();
             var compositionService = ServiceProvider.GlobalProvider.GetService(typeof(SComponentModel)) as IComponentModel;
@@ -62,15 +62,15 @@ namespace WebLinterVsix
         }
 
         // Don't try this at home
-        internal static void InjectMockErrorsTableDataSource(IErrorsTableDataSource instance) => _instance = instance;
+        internal static void InjectMockErrorListDataSource(IErrorListDataSource instance) => _instance = instance;
 
-        public static IErrorsTableDataSource Instance
+        public static IErrorListDataSource Instance
         {
             get
             {
                 CheckThread();
                 if (_instance == null)
-                    _instance = new TableDataSource();
+                    _instance = new ErrorListDataSource();
 
                 return _instance;
             }
@@ -80,9 +80,9 @@ namespace WebLinterVsix
         private static void CheckThread()
         {
             if (System.Threading.Thread.CurrentThread.ManagedThreadId != 1 
-                && _instance?.GetType() == typeof(TableDataSource))
-                throw new Exception("TableDataSource not running on UI thread");
-                //Debug.WriteLine("TableDataSource called not on UI thread");
+                && _instance?.GetType() == typeof(ErrorListDataSource))
+                throw new Exception("ErrorListDataSource not running on UI thread");
+                //Debug.WriteLine("ErrorListDataSource called not on UI thread");
         }
 
         #region ITableDataSource members

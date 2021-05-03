@@ -64,8 +64,8 @@ namespace WebLinterTest
 
             // TODO Don't like that singleton much, or my workaround to test: 
             // any reason it can't be instantiated at startup and cached on the package?
-            MockErrorsTableDataSource mockErrorsTableDataSource = new MockErrorsTableDataSource();
-            TableDataSource.InjectMockErrorsTableDataSource(mockErrorsTableDataSource);
+            MockErrorListDataSource mockErrorListDataSource = new MockErrorListDataSource();
+            ErrorListDataSource.InjectMockErrorListDataSource(mockErrorListDataSource);
 
             settings.UseTsConfig = false;
             settings.IgnoreNestedFiles = false;
@@ -75,18 +75,18 @@ namespace WebLinterTest
                 bool hasVSErrors = await LintFilesCommandBase.LintLintLint(false, selectedItems);
 
                 Assert.IsTrue(hasVSErrors);
-                Assert.IsTrue(mockErrorsTableDataSource.HasErrors());
-                Assert.AreEqual(1, mockErrorsTableDataSource.Snapshots.Count);
+                Assert.IsTrue(mockErrorListDataSource.HasErrors());
+                Assert.AreEqual(1, mockErrorListDataSource.Snapshots.Count);
 
-                CollectionAssert.AreEquivalent(new string[] { "TSLint" }, mockErrorsTableDataSource.Snapshots.Keys.ToArray());
+                CollectionAssert.AreEquivalent(new string[] { "TSLint" }, mockErrorListDataSource.Snapshots.Keys.ToArray());
 
-                var actualMsg = mockErrorsTableDataSource.Snapshots["TSLint"].Select(e => e.Message).First();
+                var actualMsg = mockErrorListDataSource.Snapshots["TSLint"].Select(e => e.Message).First();
                 var expectedMsg = "Could not find custom rule directory: ./does-not-exist";
                 StringAssert.Contains(actualMsg, expectedMsg);
             }
             finally
             {
-                TableDataSource.InjectMockErrorsTableDataSource(null);
+                ErrorListDataSource.InjectMockErrorListDataSource(null);
                 settings.UseTsConfig = false;
                 settings.IgnoreNestedFiles = true;
             }

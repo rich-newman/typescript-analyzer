@@ -14,7 +14,7 @@ namespace WebLinterVsix.Tagging
         private bool _disposed = false;
         public void Dispose() 
         {
-            TableDataSource.Instance.ErrorListChanged -= OnErrorListChanged;
+            ErrorListDataSource.Instance.ErrorListChanged -= OnErrorListChanged;
             _disposed = true;
         }
         private ITextDocument _document;
@@ -40,7 +40,7 @@ namespace WebLinterVsix.Tagging
             _document = document;
             _currentTextSnapshot = buffer.CurrentSnapshot;
             this.TagsChanged += OnTagsChanged;
-            TableDataSource.Instance.ErrorListChanged += OnErrorListChanged;
+            ErrorListDataSource.Instance.ErrorListChanged += OnErrorListChanged;
         }
 
         private void OnErrorListChanged(object sender, EventArgs e)
@@ -126,8 +126,8 @@ namespace WebLinterVsix.Tagging
         {
             Debug.WriteLine($"CalculateTagSpans, file={FilePath}, thread={Thread.CurrentThread.ManagedThreadId}");
             _tagSpans = new List<ITagSpan<LintingErrorTag>>();
-            if (!TableDataSource.Snapshots.ContainsKey(FilePath)) return;
-            List<LintingError> errors = TableDataSource.Snapshots[FilePath].Errors;  // Immutable snapshot
+            if (!ErrorListDataSource.Snapshots.ContainsKey(FilePath)) return;
+            List<LintingError> errors = ErrorListDataSource.Snapshots[FilePath].Errors;  // Immutable snapshot
             if (errors == null || errors.Count == 0) return;
             foreach (LintingError lintingError in errors)
             {

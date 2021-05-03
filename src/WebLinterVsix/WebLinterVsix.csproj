@@ -86,7 +86,7 @@
     <Compile Include="Commands\ResetConfigFilesCommand.cs" />
     <Compile Include="Commands\EditConfigFilesCommand.cs" />
     <Compile Include="Commands\CleanErrorsCommand.cs" />
-    <Compile Include="ErrorList\TableDataSource.cs" />
+    <Compile Include="ErrorList\ErrorListDataSource.cs" />
     <Compile Include="ErrorList\ErrorListService.cs" />
     <Compile Include="ErrorList\TableEntriesSnapshot.cs" />
     <Compile Include="ErrorList\SinkManager.cs" />

@@ -34,7 +34,7 @@ namespace WebLinterVsix
                (Action == vsBuildAction.vsBuildActionClean ||
                (Action == vsBuildAction.vsBuildActionRebuildAll && !WebLinterPackage.Settings.RunOnBuild)))
             {
-                TableDataSource.Instance.CleanAllErrors();
+                ErrorListDataSource.Instance.CleanAllErrors();
             }
         }
 
@@ -55,14 +55,14 @@ namespace WebLinterVsix
             // Called on UI thread
             var button = (OleMenuCommand)sender;
 
-            button.Visible = TableDataSource.Instance.HasErrors();
+            button.Visible = ErrorListDataSource.Instance.HasErrors();
         }
 
         private void CleanErrors(object sender, EventArgs e)
         {
             // Called on UI thread
-            TableDataSource.Instance.CleanAllErrors();
-            TableDataSource.Instance.RaiseErrorListChanged();
+            ErrorListDataSource.Instance.CleanAllErrors();
+            ErrorListDataSource.Instance.RaiseErrorListChanged();
         }
     }
 }

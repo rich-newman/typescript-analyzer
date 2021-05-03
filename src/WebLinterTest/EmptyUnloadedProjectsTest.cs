@@ -12,7 +12,7 @@ namespace WebLinterTest
         protected static Solution solution;
         protected MockSettings settings;
         protected UIHierarchyItem[] selectedItems;
-        protected MockErrorsTableDataSource mockErrorsTableDataSource;
+        protected MockErrorListDataSource mockErrorListDataSource;
 
         protected void Initialize(string solutionPath)
         {
@@ -35,8 +35,8 @@ namespace WebLinterTest
             Initialize(solutionPath);
             MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = solution };
             selectedItems = new UIHierarchyItem[] { mockSolutionHierarchyItem };
-            mockErrorsTableDataSource = new MockErrorsTableDataSource();
-            TableDataSource.InjectMockErrorsTableDataSource(mockErrorsTableDataSource);
+            mockErrorListDataSource = new MockErrorListDataSource();
+            ErrorListDataSource.InjectMockErrorListDataSource(mockErrorListDataSource);
             return selectedItems;
         }
 
@@ -64,12 +64,12 @@ namespace WebLinterTest
                 bool hasVSErrors = await LintFilesCommandBase.LintLintLint(false, selectedItems);
 
                 Assert.IsFalse(hasVSErrors);
-                Assert.IsFalse(mockErrorsTableDataSource.HasErrors());
-                Assert.AreEqual(0, mockErrorsTableDataSource.Snapshots.Count);
+                Assert.IsFalse(mockErrorListDataSource.HasErrors());
+                Assert.AreEqual(0, mockErrorListDataSource.Snapshots.Count);
             }
             finally
             {
-                TableDataSource.InjectMockErrorsTableDataSource(null);
+                ErrorListDataSource.InjectMockErrorListDataSource(null);
             }
         }
 

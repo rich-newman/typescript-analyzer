@@ -61,7 +61,7 @@ namespace WebLinterVsix.FileListeners
                 textDocument.FileActionOccurred += OnFileActionOccurred; // Hook the event whether lintable or not: it may become lintable
                 if (!LintableFiles.IsLintableTsTsxJsJsxFile(textDocument.FilePath)) return;
                 // Don't run linter again if error list already contains errors for the file.
-                if (!TableDataSource.Instance.HasErrors(textDocument.FilePath) &&
+                if (!ErrorListDataSource.Instance.HasErrors(textDocument.FilePath) &&
                         WebLinterPackage.Settings != null && !WebLinterPackage.Settings.OnlyRunIfRequested)
                 {
                     Task.Run(async () =>
@@ -140,7 +140,7 @@ namespace WebLinterVsix.FileListeners
                     // If we just clear the error list then the linter finishes and displays the errors again.  
                     // So we put our CleanErrors call at the back of the message loop and it runs after the linter callback.
                     // Better would be to recognize this state in OnFileActionOccurred and not run the linter but I'm not sure it's possible
-                    Action action = () => TableDataSource.Instance.CleanErrors(new[] { fileName });
+                    Action action = () => ErrorListDataSource.Instance.CleanErrors(new[] { fileName });
                     System.Windows.Application.Current.Dispatcher.BeginInvoke(action);
                 }
             }
@@ -163,7 +163,7 @@ namespace WebLinterVsix.FileListeners
                     ITextBuffer textBuffer = (sender as ITextDocument)?.TextBuffer;
                     if (textBuffer != null && textBuffer.Properties.TryGetProperty("lint_filename", out string oldFileName))
                     {
-                        TableDataSource.Instance.CleanErrors(new[] { oldFileName });
+                        ErrorListDataSource.Instance.CleanErrors(new[] { oldFileName });
                         textBuffer.Properties["lint_filename"] = e.FilePath;
                     }
                 }

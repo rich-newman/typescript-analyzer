@@ -11,7 +11,7 @@ using WebLinterVsix.Helpers;
 
 namespace WebLinterTest
 {
-    public class MockErrorsTableDataSource : IErrorsTableDataSource
+    public class MockErrorListDataSource : IErrorListDataSource
     {
         private Dictionary<string, IGrouping<string, LintingError>> _snapshots = new Dictionary<string, IGrouping<string, LintingError>>();
         public Dictionary<string, IGrouping<string, LintingError>> Snapshots => _snapshots;
@@ -100,8 +100,8 @@ namespace WebLinterTest
 
             // TODO Don't like that singleton much, or my workaround to test: 
             // any reason it can't be instantiated at startup and cached on the package?
-            MockErrorsTableDataSource mockErrorsTableDataSource = new MockErrorsTableDataSource();
-            TableDataSource.InjectMockErrorsTableDataSource(mockErrorsTableDataSource);
+            MockErrorListDataSource mockErrorListDataSource = new MockErrorListDataSource();
+            ErrorListDataSource.InjectMockErrorListDataSource(mockErrorListDataSource);
 
             settings.UseTsConfig = false;
             settings.IgnoreNestedFiles = false;
@@ -111,8 +111,8 @@ namespace WebLinterTest
                 bool hasVSErrors = await LintFilesCommandBase.LintLintLint(false, selectedItems);
 
                 Assert.IsFalse(hasVSErrors);
-                Assert.IsTrue(mockErrorsTableDataSource.HasErrors());
-                Assert.AreEqual(10, mockErrorsTableDataSource.Snapshots.Count);
+                Assert.IsTrue(mockErrorListDataSource.HasErrors());
+                Assert.AreEqual(10, mockErrorListDataSource.Snapshots.Count);
 
                 // See LintFileLocationsTest.GetLintFilesForSolutionIncludeNested
                 string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react-dom.d.ts");
@@ -126,16 +126,16 @@ namespace WebLinterTest
                 string expected9 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/file7.ts");
                 string expected10 = Path.GetFullPath(@"../../artifacts/tsconfig/file9.ts"); // Linked file
 
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected1));
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected2));
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected3));
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected4));
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected5));
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected6));
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected7));
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected8));
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected9));
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected10));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected1));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected2));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected3));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected4));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected5));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected6));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected7));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected8));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected9));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected10));
 
                 // May be too painful when we upgrade tslint: I think since the tslint.json is fixed it should be OK though
                 // 2017-08-30: tslint 5.7.0 changed no-namespace rule to 'ignore global augmentation', reduced 293->292 below
@@ -152,19 +152,19 @@ namespace WebLinterTest
                 //             errors in expected2 from 1297 to 1296. Edit: this is because of the check-strings flag for max-line-length 
                 //             introduced in 5.19.0 and set to false by default.  If it is set to true the error reappears.  Whether it's
                 //             really meant to allow multiple string options on a line or this is a bug I'm not sure.
-                Assert.AreEqual(22, mockErrorsTableDataSource.Snapshots[expected1].Count());
-                Assert.AreEqual(1296, mockErrorsTableDataSource.Snapshots[expected2].Count());
-                Assert.AreEqual(5, mockErrorsTableDataSource.Snapshots[expected3].Count());
-                Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected4].Count());
-                Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected5].Count());
-                Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected6].Count());
-                Assert.AreEqual(4, mockErrorsTableDataSource.Snapshots[expected7].Count());
-                Assert.AreEqual(11, mockErrorsTableDataSource.Snapshots[expected8].Count());
-                Assert.AreEqual(4, mockErrorsTableDataSource.Snapshots[expected9].Count());
-                Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected10].Count());
+                Assert.AreEqual(22, mockErrorListDataSource.Snapshots[expected1].Count());
+                Assert.AreEqual(1296, mockErrorListDataSource.Snapshots[expected2].Count());
+                Assert.AreEqual(5, mockErrorListDataSource.Snapshots[expected3].Count());
+                Assert.AreEqual(3, mockErrorListDataSource.Snapshots[expected4].Count());
+                Assert.AreEqual(3, mockErrorListDataSource.Snapshots[expected5].Count());
+                Assert.AreEqual(3, mockErrorListDataSource.Snapshots[expected6].Count());
+                Assert.AreEqual(4, mockErrorListDataSource.Snapshots[expected7].Count());
+                Assert.AreEqual(11, mockErrorListDataSource.Snapshots[expected8].Count());
+                Assert.AreEqual(4, mockErrorListDataSource.Snapshots[expected9].Count());
+                Assert.AreEqual(3, mockErrorListDataSource.Snapshots[expected10].Count());
 
                 // Pick an error and check we are generating all details - expected4 is file1.ts
-                LintingError lintingError = mockErrorsTableDataSource.Snapshots[expected4].First(le => le.ErrorCode == "no-empty");
+                LintingError lintingError = mockErrorListDataSource.Snapshots[expected4].First(le => le.ErrorCode == "no-empty");
                 Assert.AreEqual(expected4, lintingError.FileName);
                 Assert.AreEqual("block is empty", lintingError.Message);
                 Assert.AreEqual(2, lintingError.LineNumber);
@@ -174,7 +174,7 @@ namespace WebLinterTest
             }
             finally
             {
-                TableDataSource.InjectMockErrorsTableDataSource(null);
+                ErrorListDataSource.InjectMockErrorListDataSource(null);
                 settings.UseTsConfig = false;
                 settings.IgnoreNestedFiles = true;
             }
@@ -187,8 +187,8 @@ namespace WebLinterTest
             MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = solution };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockSolutionHierarchyItem };
 
-            MockErrorsTableDataSource mockErrorsTableDataSource = new MockErrorsTableDataSource();
-            TableDataSource.InjectMockErrorsTableDataSource(mockErrorsTableDataSource);
+            MockErrorListDataSource mockErrorListDataSource = new MockErrorListDataSource();
+            ErrorListDataSource.InjectMockErrorListDataSource(mockErrorListDataSource);
 
             settings.UseTsConfig = true;
 
@@ -197,8 +197,8 @@ namespace WebLinterTest
                 bool hasVSErrors = await LintFilesCommandBase.LintLintLint(false, selectedItems);
 
                 Assert.IsFalse(hasVSErrors);
-                Assert.IsTrue(mockErrorsTableDataSource.HasErrors());
-                Assert.AreEqual(7, mockErrorsTableDataSource.Snapshots.Count);
+                Assert.IsTrue(mockErrorListDataSource.HasErrors());
+                Assert.AreEqual(7, mockErrorListDataSource.Snapshots.Count);
 
                 // Note file5 is referenced by a tsconfig that isn't in the project, so doesn't get included
                 string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/file1.ts");
@@ -210,28 +210,28 @@ namespace WebLinterTest
                 string expected7 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/file7.ts");
                 string expected8 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/test.ts");
 
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected1));
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected2));
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected3));
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected4));
-                //Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected5));
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected6));
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected7));
-                Assert.IsTrue(mockErrorsTableDataSource.Snapshots.Keys.Contains(expected8));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected1));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected2));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected3));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected4));
+                //Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected5));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected6));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected7));
+                Assert.IsTrue(mockErrorListDataSource.Snapshots.Keys.Contains(expected8));
 
                 // Similar to TslintWithTsconfigTest.LintAll, again this level of detail may be too much
-                Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected1].Count());
-                Assert.AreEqual(4, mockErrorsTableDataSource.Snapshots[expected2].Count());
-                Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected3].Count());
-                Assert.AreEqual(3, mockErrorsTableDataSource.Snapshots[expected4].Count());
-                //Assert.AreEqual(4, mockErrorsTableDataSource.Snapshots[expected5].Count());
-                Assert.AreEqual(11, mockErrorsTableDataSource.Snapshots[expected6].Count());
-                Assert.AreEqual(4, mockErrorsTableDataSource.Snapshots[expected7].Count());
-                Assert.AreEqual(5, mockErrorsTableDataSource.Snapshots[expected8].Count());
+                Assert.AreEqual(3, mockErrorListDataSource.Snapshots[expected1].Count());
+                Assert.AreEqual(4, mockErrorListDataSource.Snapshots[expected2].Count());
+                Assert.AreEqual(3, mockErrorListDataSource.Snapshots[expected3].Count());
+                Assert.AreEqual(3, mockErrorListDataSource.Snapshots[expected4].Count());
+                //Assert.AreEqual(4, mockErrorListDataSource.Snapshots[expected5].Count());
+                Assert.AreEqual(11, mockErrorListDataSource.Snapshots[expected6].Count());
+                Assert.AreEqual(4, mockErrorListDataSource.Snapshots[expected7].Count());
+                Assert.AreEqual(5, mockErrorListDataSource.Snapshots[expected8].Count());
             }
             finally
             {
-                TableDataSource.InjectMockErrorsTableDataSource(null);
+                ErrorListDataSource.InjectMockErrorListDataSource(null);
                 settings.UseTsConfig = false;
             }
 

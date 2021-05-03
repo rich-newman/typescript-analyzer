@@ -20,28 +20,28 @@ namespace WebLinterVsix
             IEnumerable<string> lintedFilesWithNoErrors = useFilter ?
                 filterFileNames.Where(f => !allErrors.Select(e => e.FileName).Contains(f, StringComparer.OrdinalIgnoreCase)) :
                 fileNames.Where(f => !allErrors.Select(e => e.FileName).Contains(f, StringComparer.OrdinalIgnoreCase));
-            UpdateTableDataSource(allErrors, showErrorList, lintedFilesWithNoErrors);
+            UpdateErrorListDataSource(allErrors, showErrorList, lintedFilesWithNoErrors);
         }
 
-        private static void UpdateTableDataSource(IEnumerable<LintingError> allErrors, 
+        private static void UpdateErrorListDataSource(IEnumerable<LintingError> allErrors, 
                                                   bool showErrorList, IEnumerable<string> lintedFilesWithNoErrors)
         {
             if (Application.Current?.Dispatcher == null || Application.Current.Dispatcher.CheckAccess())
             {
                 if (allErrors.Any())
                 {
-                    TableDataSource.Instance.AddErrors(allErrors);
+                    ErrorListDataSource.Instance.AddErrors(allErrors);
                     if (showErrorList)
-                        TableDataSource.Instance.BringToFront();
+                        ErrorListDataSource.Instance.BringToFront();
                 }
 
-                TableDataSource.Instance.CleanErrors(lintedFilesWithNoErrors);
-                TableDataSource.Instance.RaiseErrorListChanged();
+                ErrorListDataSource.Instance.CleanErrors(lintedFilesWithNoErrors);
+                ErrorListDataSource.Instance.RaiseErrorListChanged();
             }
             else
             {
                 Application.Current.Dispatcher.BeginInvoke(
-                    (Action)(() => UpdateTableDataSource(allErrors, showErrorList, lintedFilesWithNoErrors)));
+                    (Action)(() => UpdateErrorListDataSource(allErrors, showErrorList, lintedFilesWithNoErrors)));
             }
         }
     }
