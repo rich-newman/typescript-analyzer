@@ -28,18 +28,17 @@ namespace WebLinter
             return extension == ".TS" || extension == ".TSX" || (lintJsFiles && (extension == ".JS" || extension == ".JSX"));
         }
 
-        public static async Task<LintingResult[]> Lint(ISettings settings, params string[] fileNames) 
+        public static async Task<LintingResult> Lint(ISettings settings, params string[] fileNames)
             => await Lint(settings, false, false, null, fileNames);
 
-        public static async Task<LintingResult[]> Lint(ISettings settings, bool fixErrors, bool callSync, params string[] fileNames) 
+        public static async Task<LintingResult> Lint(ISettings settings, bool fixErrors, bool callSync, params string[] fileNames)
             => await Lint(settings, fixErrors, callSync, null, fileNames);
 
-        public static async Task<LintingResult[]> Lint(ISettings settings, bool fixErrors, bool callSync, Action<string, bool> log, params string[] fileNames)
+        public static async Task<LintingResult> Lint(ISettings settings, bool fixErrors, bool callSync, Action<string, bool> log, params string[] fileNames)
         {
-            if (fileNames.Length == 0)  return new LintingResult[0];
+            if (fileNames.Length == 0) return null;
             Linter linter = new Linter(settings, fixErrors, log);
-            LintingResult result = await linter.Lint(callSync, fileNames);
-            return new LintingResult[] { result };
+            return await linter.Lint(callSync, fileNames);
         }
     }
 }

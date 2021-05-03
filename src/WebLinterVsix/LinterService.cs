@@ -24,13 +24,13 @@ namespace WebLinterVsix
                 WebLinterPackage.Dte.StatusBar.Animate(true, vsStatusAnimation.vsStatusAnimationGeneral);
 
                 await CopyResourceFilesToUserProfile(false, callSync);
-                LintingResult[] result = await LinterFactory.Lint(WebLinterPackage.Settings, fixErrors, callSync, 
+                LintingResult result = await LinterFactory.Lint(WebLinterPackage.Settings, fixErrors, callSync, 
                                                                     Logger.LogAndWarn, fileNames);
 
                 if (result != null)
                 {
                     ErrorListService.ProcessLintingResults(result, fileNames, filterFileNames, showErrorList);
-                    hasVSErrors = result.Any(r => r.HasVsErrors);
+                    hasVSErrors = result.HasVsErrors;
                 }
             }
             catch (Exception ex)
