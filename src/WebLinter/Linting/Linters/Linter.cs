@@ -119,7 +119,7 @@ namespace WebLinter
 
                 int lineNumber = obj["startPosition"]?["line"]?.Value<int>() ?? 0;
                 int columnNumber = obj["startPosition"]?["character"]?.Value<int>() ?? 0;
-                bool adjustForByteOrderMark = lineNumber == 0 && HasUTF8ByteOrderMark(fileName);
+                bool adjustForByteOrderMark = lineNumber == 0 && !_settings.UseTsConfig && HasUTF8ByteOrderMark(fileName);
                 if (lineNumber == 0 && columnNumber > 0 && adjustForByteOrderMark) columnNumber--;  // Fix tslint off by one error
                 bool isError = _settings.TSLintShowErrors ?
                     obj["ruleSeverity"]?.Value<string>()?.ToUpper() == "ERROR" : false;
@@ -151,6 +151,7 @@ namespace WebLinter
         // StartColumnNumber and EndColumnNumber, which means we need to adjust for it to get our underlining positioning correct.
         // To clarify, you can have two apparently identical .ts files where tslint reports different column numbers for the same error
         // on the first line.  Fortunately we don't often have errors on the first line, and will only call this method if we do.
+        // To make this even more difficult, tslint only does this if we're NOT using tsconfig.jsons.
         public static bool HasUTF8ByteOrderMark(string fileName)
         {
             var bom = new byte[3];
