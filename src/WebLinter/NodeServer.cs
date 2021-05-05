@@ -119,10 +119,10 @@ namespace WebLinter
                     Down();
                     SelectAvailablePort();
 
-                    ProcessStartInfo start = new ProcessStartInfo(Path.Combine(LinterFactory.ExecutionPath, "node.exe"))
+                    ProcessStartInfo start = new ProcessStartInfo(Path.Combine(ExecutionPath, "node.exe"))
                     {
                         WindowStyle = ProcessWindowStyle.Hidden,
-                        Arguments = $"\"{Path.Combine(LinterFactory.ExecutionPath, "server.js")}\" {BasePort}",
+                        Arguments = $"\"{Path.Combine(ExecutionPath, "server.js")}\" {BasePort}",
                         UseShellExecute = false,
                         CreateNoWindow = true
                     };
@@ -195,6 +195,19 @@ namespace WebLinter
             }
 
             return string.Empty;
+        }
+
+        public static readonly string ExecutionPath = Path.Combine(AssemblyDirectory, Constants.NODE_FOLDER_NAME); // + Constants.VERSION);
+
+        public static string AssemblyDirectory
+        {
+            get
+            {
+                string codeBase = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
         }
     }
 }

@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 
 namespace WebLinterVsix.Tagging
@@ -33,8 +32,7 @@ namespace WebLinterVsix.Tagging
             CheckThread();
             if (buffer != textView.TextBuffer || typeof(IErrorTag) != typeof(T) ||
                 !_textDocumentFactoryService.TryGetTextDocument(buffer, out ITextDocument document)) return null;
-            string extension = Path.GetExtension(document.FilePath)?.ToLowerInvariant();
-            if (!IsValidFileExtension(extension)) return null;
+            if (!WebLinter.Linter.IsLintableFileExtension(document.FilePath)) return null;
             if (!_taggerCache.ContainsKey(textView))
             {
                 _taggerCache.Add(textView, new Tagger(buffer, document, textView, this));
@@ -45,12 +43,6 @@ namespace WebLinterVsix.Tagging
                 };
             }
             return _taggerCache[textView] as ITagger<T>;
-        }
-
-        private bool IsValidFileExtension(string extension)
-        {
-            // TODO only need JavaScript extensions checked if the option to use them is enabled
-            return extension == ".ts" || extension == ".tsx" || extension == ".js" || extension == ".jsx";
         }
 
         // We key on ITextView (rather than filenames) because of renames with open files, when the text view remains

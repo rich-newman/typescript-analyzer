@@ -1,5 +1,4 @@
-﻿// Modifications Copyright Rich Newman 2017
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,7 @@ namespace WebLinter
 {
     public class Linter
     {
-        public Linter(ISettings settings, bool fixErrors, Action<string, bool> log)
+        public Linter(ISettings settings, bool fixErrors = false, Action<string, bool> log = null)
         {
             _settings = settings;
             _fixErrors = fixErrors;
@@ -151,7 +150,7 @@ namespace WebLinter
         // StartColumnNumber and EndColumnNumber, which means we need to adjust for it to get our underlining positioning correct.
         // To clarify, you can have two apparently identical .ts files where tslint reports different column numbers for the same error
         // on the first line.  Fortunately we don't often have errors on the first line, and will only call this method if we do.
-        // To make this even more difficult, tslint only does this if we're NOT using tsconfig.jsons.
+        // To make this even more difficult, tslint only does this if we're NOT using tsconfig.jsons as far as I can see.
         public static bool HasUTF8ByteOrderMark(string fileName)
         {
             var bom = new byte[3];
@@ -183,5 +182,11 @@ namespace WebLinter
         public override int GetHashCode() => Name.GetHashCode();
 
         public override string ToString() => Name;
+
+        public static bool IsLintableFileExtension(string fileName, bool lintJsFiles = true)
+        {
+            string extension = Path.GetExtension(fileName).ToUpperInvariant();
+            return extension == ".TS" || extension == ".TSX" || (lintJsFiles && (extension == ".JS" || extension == ".JSX"));
+        }
     }
 }

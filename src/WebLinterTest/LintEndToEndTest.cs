@@ -98,8 +98,6 @@ namespace WebLinterTest
             MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = solution };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockSolutionHierarchyItem };
 
-            // TODO Don't like that singleton much, or my workaround to test: 
-            // any reason it can't be instantiated at startup and cached on the package?
             MockErrorListDataSource mockErrorListDataSource = new MockErrorListDataSource();
             ErrorListDataSource.InjectMockErrorListDataSource(mockErrorListDataSource);
 

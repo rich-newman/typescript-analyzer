@@ -17,6 +17,9 @@ namespace WebLinterVsix
          public static async Task<bool> Lint(bool showErrorList, bool fixErrors, bool callSync, 
                                             string[] fileNames, string[] filterFileNames = null)
         {
+#if DEBUG
+            if (fileNames.Length == 0) throw new Exception("LinterService/Lint called with empty fileNames list");
+#endif
             bool hasVSErrors = false;
             try
             {
@@ -24,8 +27,8 @@ namespace WebLinterVsix
                 WebLinterPackage.Dte.StatusBar.Animate(true, vsStatusAnimation.vsStatusAnimationGeneral);
 
                 await CopyResourceFilesToUserProfile(false, callSync);
-                LintingResult result = await LinterFactory.Lint(WebLinterPackage.Settings, fixErrors, callSync, 
-                                                                    Logger.LogAndWarn, fileNames);
+                Linter linter = new Linter(WebLinterPackage.Settings, fixErrors, Logger.LogAndWarn);
+                LintingResult result = await linter.Lint(callSync, fileNames);
 
                 if (result != null)
                 {

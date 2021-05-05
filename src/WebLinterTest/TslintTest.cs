@@ -16,7 +16,7 @@ namespace WebLinterTest
         [TestMethod, TestCategory("TSLint")]
         public async Task StandardTs()
         {
-            LintingResult result = await LinterFactory.Lint(MockSettings.Instance, "../../artifacts/tslint/a.ts");
+            LintingResult result = await new Linter(MockSettings.Instance).Lint(false, "../../artifacts/tslint/a.ts");
             Assert.IsTrue(result.HasErrors);
             Assert.IsFalse(string.IsNullOrEmpty(result.Errors.First().FileName), "File name is empty");
             Assert.AreEqual(13, result.Errors.Count);
@@ -29,10 +29,11 @@ namespace WebLinterTest
             try
             {
                 File.Copy("../../artifacts/tslint/a.ts", "../../artifacts/tslint/aTest.ts", true);
-                LintingResult result = await LinterFactory.Lint(MockSettings.Instance, true, false, "../../artifacts/tslint/aTest.ts");
+                LintingResult result = await new Linter(MockSettings.Instance, true).Lint(false, "../../artifacts/tslint/aTest.ts");
+
                 // Now, bizarrely, we have to fix twice to fix var -> const with the recommended TSLint rules
                 // See TSLint issues #2835, #2843, #2625
-                result = await LinterFactory.Lint(MockSettings.Instance, true, false, "../../artifacts/tslint/aTest.ts");
+                result = await new Linter(MockSettings.Instance, true).Lint(false, "../../artifacts/tslint/aTest.ts");
                 Assert.IsTrue(result.HasErrors);
                 Assert.IsFalse(string.IsNullOrEmpty(result.Errors.First().FileName), "File name is empty");
                 // 2017-10-30: tslint 5.8.0 curly has a fixer #3262, reduces 4 -> 2 below
@@ -54,7 +55,7 @@ namespace WebLinterTest
         [TestMethod, TestCategory("TSLint")]
         public async Task StandardTsNoErrors()
         {
-            LintingResult result = await LinterFactory.Lint(MockSettings.Instance, "../../artifacts/tslint/e.ts");
+            LintingResult result = await new Linter(MockSettings.Instance).Lint(false, "../../artifacts/tslint/e.ts"); 
             Assert.IsFalse(result.HasErrors);
             Assert.AreEqual(0, result.Errors.Count);
             Assert.IsFalse(string.IsNullOrEmpty(result.FileNames.First()), "File name is empty");
@@ -63,7 +64,7 @@ namespace WebLinterTest
         [TestMethod, TestCategory("TSLint")]
         public async Task StandardTsx()
         {
-            LintingResult result = await LinterFactory.Lint(MockSettings.Instance, "../../artifacts/tslint/c.tsx");
+            LintingResult result = await new Linter(MockSettings.Instance).Lint(false, "../../artifacts/tslint/c.tsx");
             Assert.IsTrue(result.HasErrors);
             Assert.IsFalse(string.IsNullOrEmpty(result.Errors.First().FileName), "File name is empty");
             Assert.AreEqual(6, result.Errors.Count);
@@ -76,7 +77,7 @@ namespace WebLinterTest
             try
             {
                 File.Copy("../../artifacts/tslint/c.tsx", "../../artifacts/tslint/cTest.tsx", true);
-                LintingResult result = await LinterFactory.Lint(MockSettings.Instance, true, false, "../../artifacts/tslint/cTest.tsx");
+                LintingResult result = await new Linter(MockSettings.Instance, true).Lint(false, "../../artifacts/tslint/cTest.tsx");
                 Assert.IsFalse(result.HasErrors);
                 Assert.AreEqual(0, result.Errors.Count);
                 string actual = File.ReadAllText("../../artifacts/tslint/cTest.tsx");
@@ -87,40 +88,28 @@ namespace WebLinterTest
             {
                 File.Delete("../../artifacts/tslint/cTest.tsx");
             }
-}
+        }
 
-[TestMethod, TestCategory("TSLint")]
+        [TestMethod, TestCategory("TSLint")]
         public async Task StandardTsxNoErrors()
         {
-            LintingResult result = await LinterFactory.Lint(MockSettings.Instance, "../../artifacts/tslint/d.tsx");
+            LintingResult result = await new Linter(MockSettings.Instance).Lint(false, "../../artifacts/tslint/d.tsx");
             Assert.IsFalse(result.HasErrors);
             Assert.AreEqual(0, result.Errors.Count);
             Assert.IsFalse(string.IsNullOrEmpty(result.FileNames.First()), "File name is empty");
         }
 
-        //[TestMethod, TestCategory("TSLint")]
-        //public void Multiple()
-        //{
-        //    var result = LinterFactory.Lint(Settings.CWD, Settings.Instance, "../../artifacts/tslint/b.ts", "../../artifacts/tslint/a.ts");
-        //    var first = result;
-        //    var firstErrors = first.Errors.ToArray();
-        //    Assert.IsTrue(first.HasErrors);
-        //    Assert.IsFalse(string.IsNullOrEmpty(firstErrors.First().FileName), "File name is empty");
-        //    Assert.AreEqual(14, firstErrors.Length);
-        //    Assert.AreEqual("if statements must be braced", firstErrors.First().Message);
-        //}
-
         [TestMethod, TestCategory("TSLint")]
         public async Task TsFileNotExist()
         {
-            LintingResult result = await LinterFactory.Lint(MockSettings.Instance, "../../artifacts/tslint/doesntexist.ts");
+            LintingResult result = await new Linter(MockSettings.Instance).Lint(false, "../../artifacts/tslint/doesntexist.ts");
             Assert.IsTrue(result.HasErrors);
         }
 
         [TestMethod, TestCategory("TSLint")]
         public async Task TsxFileNotExist()
         {
-            LintingResult result = await LinterFactory.Lint(MockSettings.Instance, "../../artifacts/tslint/doesntexist.tsx");
+            LintingResult result = await new Linter(MockSettings.Instance).Lint(false, "../../artifacts/tslint/doesntexist.tsx");
             Assert.IsTrue(result.HasErrors);
         }
     }

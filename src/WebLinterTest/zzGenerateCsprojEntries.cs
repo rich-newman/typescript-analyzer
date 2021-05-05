@@ -19,7 +19,7 @@ namespace WebLinterTest
             // Results are in typescript-analyzer\src\WebLinterVsix\TypeScriptAnalyzerNode\temp.txt
             // and need to be used to update WebLinterVsix.csproj
             result = "";
-            string assemblyDirectory = WebLinter.LinterFactory.ExecutionPath;
+            string assemblyDirectory = WebLinter.NodeServer.ExecutionPath;
             assemblyDirectory = assemblyDirectory.Replace("WebLinterTest\\bin\\Debug", "WebLinterVsix");
             Assert.IsTrue(Directory.Exists(assemblyDirectory), $"Source folder for node files ({assemblyDirectory}) doesn't exist");
             pathLocation = assemblyDirectory.LastIndexOf("\\TypeScriptAnalyzerNode") + 1;

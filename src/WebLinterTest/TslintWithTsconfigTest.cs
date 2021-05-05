@@ -25,7 +25,7 @@ namespace WebLinterTest
             string[] fileNames = new string[] { mainProjectTsconfig };
 
             // Act
-            LintingResult result = await LinterFactory.Lint(new MockSettings() { UseTsConfig = true }, false, false, fileNames);
+            LintingResult result = await new Linter(new MockSettings() { UseTsConfig = true }).Lint(false, fileNames);
 
             // Assert
             Assert.IsNotNull(result);
@@ -55,7 +55,7 @@ namespace WebLinterTest
             string[] fileNames = new string[] { topTsconfig, folderbTsconfig };
 
             // Act
-            LintingResult result = await LinterFactory.Lint(new MockSettings() { UseTsConfig = true }, false, false, fileNames);
+            LintingResult result = await new Linter(new MockSettings() { UseTsConfig = true }).Lint(false, fileNames);
 
             // Assert
             // file2 is in both tsconfigs.  It has 4 errors.  With the old code we got 8 in the Error List, and here.
@@ -82,7 +82,7 @@ namespace WebLinterTest
             string[] fileNames = new string[] { topTsconfig, folderaTsconfig, folderbTsconfig, folderbTsconfigEmptyProject };
 
             // Act
-            LintingResult result = await LinterFactory.Lint(new MockSettings() { UseTsConfig = true }, false, false, fileNames);
+            LintingResult result = await new Linter(new MockSettings() { UseTsConfig = true }).Lint(false, fileNames);
 
             // Assert
             // file2 is in both tsconfigs.  It has 4 errors.  With the old code we got 8 in the Error List, and here.

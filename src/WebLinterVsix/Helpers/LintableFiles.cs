@@ -73,7 +73,7 @@ namespace WebLinterVsix.Helpers
         {
             // Check if filename is absolute because when debugging, script files are sometimes dynamically created.
             if (!IsValidFile(fileName)) return false;
-            if (!LinterFactory.IsLintableFileExtension(fileName, WebLinterPackage.Settings.LintJsFiles)) return false;
+            if (!Linter.IsLintableFileExtension(fileName, WebLinterPackage.Settings.LintJsFiles)) return false;
             return IsLintableFile(fileName, checkIgnoreOptions);
         }
 
