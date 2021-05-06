@@ -16,6 +16,5 @@ namespace WebLinter
         IEnumerable<string> GetIgnorePatterns();
         void ResetSettings();
         bool ShowUnderlining { get; }
-        event System.EventHandler ShowUnderliningChanged;
     }
 }

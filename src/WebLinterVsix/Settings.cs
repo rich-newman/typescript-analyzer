@@ -1,5 +1,4 @@
-﻿// Modifications Copyright Rich Newman 2017
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.VisualStudio.Shell;
@@ -90,11 +89,16 @@ namespace WebLinterVsix
         [DefaultValue(false)]
         public bool UseProjectNGLint { get; set; }
 
+        private bool _lintJsFiles;
         [Category("Basic")]
         [DisplayName("Lint .js and .jsx files")]
         [Description("If True, will lint .js and .jsx files in addition to .ts and .tsx files.  This option uses rules in the the jsRules section of tslint.json.  This section is empty by default.")]
         [DefaultValue(false)]
-        public bool LintJsFiles { get; set; }
+        public bool LintJsFiles
+        {
+            get { return _lintJsFiles; }
+            set { _lintJsFiles = value; WebLinterPackage.TaggerProvider?.RefreshTags(clearExisting: false); }  // Clear JS errors in the middle if value is false.  Do I need clearExisting?
+        }
 
         private bool _showUnderlining;
         [Category("Basic")]
@@ -104,16 +108,8 @@ namespace WebLinterVsix
         public bool ShowUnderlining
         {
             get { return _showUnderlining; }
-            set { _showUnderlining = value; RaiseShowUnderliningChanged(); }
+            set { _showUnderlining = value; WebLinterPackage.TaggerProvider?.RefreshTags(clearExisting: false); }
         }
-
-        public event EventHandler ShowUnderliningChanged;
-        public void RaiseShowUnderliningChanged()
-        {
-            Action action = () => ShowUnderliningChanged?.Invoke(this, EventArgs.Empty);
-            System.Windows.Application.Current.Dispatcher.BeginInvoke(action, null);
-        }
-
 
         public IEnumerable<string> GetIgnorePatterns()
         {

@@ -20,8 +20,6 @@ namespace WebLinterVsix
         void CleanAllErrors();
         bool HasErrors();
         bool HasErrors(string fileName);
-        event EventHandler ErrorListChanged;
-        void RaiseErrorListChanged();
     }
 
     internal class ErrorListDataSource : ITableDataSource, IErrorListDataSource
@@ -233,13 +231,6 @@ namespace WebLinterVsix
         {
             CheckThread();
             return Snapshots.ContainsKey(fileName);
-        }
-
-        public event EventHandler ErrorListChanged;
-        public void RaiseErrorListChanged()
-        {
-            CheckThread();
-            ErrorListChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

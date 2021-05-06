@@ -1,5 +1,4 @@
-﻿// Modifications Copyright Rich Newman 2017
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using EnvDTE;
@@ -62,7 +61,7 @@ namespace WebLinterVsix
         {
             // Called on UI thread
             ErrorListDataSource.Instance.CleanAllErrors();
-            ErrorListDataSource.Instance.RaiseErrorListChanged();
+            WebLinterPackage.TaggerProvider?.RefreshTags();
         }
     }
 }

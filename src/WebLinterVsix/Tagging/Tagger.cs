@@ -9,29 +9,15 @@ using WebLinter;
 
 namespace WebLinterVsix.Tagging
 {
-    class Tagger : ITagger<LintingErrorTag>, IDisposable
+    class Tagger : ITagger<LintingErrorTag> //, IDisposable
     {
-        private bool _disposed = false;
-        public void Dispose() 
-        {
-            ErrorListDataSource.Instance.ErrorListChanged -= OnErrorListChanged;
-            _disposed = true;
-        }
         private ITextDocument _document;
         private ITextSnapshot _currentTextSnapshot;
 
         // FilePath can change whilst the tagger is in use if we rename an open file, so don't key on it
         // _document, _buffer, and _textView are all always the same object for a given tagger because we create a new tagger
         // if the view changes.
-        internal string FilePath
-        {
-            get 
-            {
-                //ITextDocument currentDocument = _taggerProvider.GetDocument(_buffer);
-                //if (currentDocument != _document) throw new Exception("Document has changed for tagger");
-                return _document.FilePath;
-            }
-        }
+        internal string FilePath => _document.FilePath;
 
         internal Tagger(ITextBuffer buffer, ITextDocument document, ITextView textView, TaggerProvider taggerProvider)
         {
@@ -39,44 +25,30 @@ namespace WebLinterVsix.Tagging
             Debug.WriteLine($"Creating Tagger for {document.FilePath}, thread={Thread.CurrentThread.ManagedThreadId}");
             _document = document;
             _currentTextSnapshot = buffer.CurrentSnapshot;
-            this.TagsChanged += OnTagsChanged;
-            ErrorListDataSource.Instance.ErrorListChanged += OnErrorListChanged;
+            //this.TagsChanged += OnTagsChanged;
         }
 
-        private void OnErrorListChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                CheckThread();
-                _tagSpans = null;
-                Debug.WriteLine($"In OnErrorListChanged calling TagsChanged, file={FilePath}, " +
-                    $"thread={Thread.CurrentThread.ManagedThreadId}");
-                // TODO we can get CalculateTagSpans to calculate start and end of tag ranges
-                RaiseTagsChanged();
-            }
-            catch (Exception ex) { Logger.LogAndWarn(ex); }
-
-        }
-
-        private void OnTagsChanged(object sender, SnapshotSpanEventArgs e)
-        {
-            Debug.WriteLine($"OnTagsChanged: text {e.Span.GetText()}, file={FilePath}, thread={Thread.CurrentThread.ManagedThreadId}");
-        }
+        //private void OnTagsChanged(object sender, SnapshotSpanEventArgs e)
+        //{
+        //    Debug.WriteLine($"OnTagsChanged: text {e.Span.GetText()}, file={FilePath}, thread={Thread.CurrentThread.ManagedThreadId}");
+        //}
 
         [Conditional("DEBUG")]
         private void CheckThread()
         {
             if (Thread.CurrentThread.ManagedThreadId != 1) throw new Exception("Tagger not running on UI thread");
-            if (_disposed) throw new Exception("Called method on disposed Tagger");
         }
 
-        public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
-        public void RaiseTagsChanged()
+        public void RefreshTags(bool clearExisting)
         {
             CheckThread();
+            if (clearExisting) _tagSpans = null;
+            Debug.WriteLine($"In RefreshTags calling TagsChanged, file={FilePath}, " + $"thread={Thread.CurrentThread.ManagedThreadId}");
             TagsChanged?.Invoke(this,
                 new SnapshotSpanEventArgs(new SnapshotSpan(_currentTextSnapshot, 0, _currentTextSnapshot.Length)));
         }
+
+        public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
 
         public IEnumerable<ITagSpan<LintingErrorTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {

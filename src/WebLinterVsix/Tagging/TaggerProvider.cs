@@ -36,11 +36,7 @@ namespace WebLinterVsix.Tagging
             if (!_taggerCache.ContainsKey(textView))
             {
                 _taggerCache.Add(textView, new Tagger(buffer, document, textView, this));
-                textView.Closed += (s, e) =>
-                {
-                    _taggerCache[textView].Dispose();
-                    _taggerCache.Remove(textView);
-                };
+                textView.Closed += (s, e) => _taggerCache.Remove(textView);
             }
             return _taggerCache[textView] as ITagger<T>;
         }
@@ -49,12 +45,10 @@ namespace WebLinterVsix.Tagging
         // the same but the file name changes (and blows up the code)
         private Dictionary<ITextView, Tagger> _taggerCache = new Dictionary<ITextView, Tagger>();
 
-        public void Settings_ShowUnderliningChanged(object sender, EventArgs e)
+        public void RefreshTags(bool clearExisting = true)
         {
-            foreach (KeyValuePair<ITextView, Tagger> tagger in _taggerCache)
-            {
-                tagger.Value.RaiseTagsChanged();
-            }
+            foreach (KeyValuePair<ITextView, Tagger> tagger in _taggerCache) 
+                tagger.Value.RefreshTags(clearExisting);
         }
 
         [Conditional("DEBUG")]

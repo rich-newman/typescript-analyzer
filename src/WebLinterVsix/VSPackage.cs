@@ -49,9 +49,6 @@ namespace WebLinterVsix
             ResetConfigFilesCommand.Initialize(this);
 
             base.Initialize();
-
-            if (TaggerProvider == null) return;
-            Settings.ShowUnderliningChanged += TaggerProvider.Settings_ShowUnderliningChanged;
         }
 
         private async System.Threading.Tasks.Task<bool> IsSolutionLoadedAsync()

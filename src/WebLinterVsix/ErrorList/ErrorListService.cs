@@ -34,7 +34,7 @@ namespace WebLinterVsix
                 }
 
                 ErrorListDataSource.Instance.CleanErrors(lintedFilesWithNoErrors);
-                ErrorListDataSource.Instance.RaiseErrorListChanged();
+                WebLinterPackage.TaggerProvider?.RefreshTags();
             }
             else
             {
