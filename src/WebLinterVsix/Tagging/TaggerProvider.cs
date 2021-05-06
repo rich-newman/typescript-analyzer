@@ -32,10 +32,11 @@ namespace WebLinterVsix.Tagging
             CheckThread();
             if (buffer != textView.TextBuffer || typeof(IErrorTag) != typeof(T) ||
                 !_textDocumentFactoryService.TryGetTextDocument(buffer, out ITextDocument document)) return null;
+            // For .js/.jsx files we need to create a tagger in case we turn the option on
             if (!WebLinter.Linter.IsLintableFileExtension(document.FilePath)) return null;
             if (!_taggerCache.ContainsKey(textView))
             {
-                _taggerCache.Add(textView, new Tagger(buffer, document, textView, this));
+                _taggerCache.Add(textView, new Tagger(buffer, document));
                 textView.Closed += (s, e) => _taggerCache.Remove(textView);
             }
             return _taggerCache[textView] as ITagger<T>;
@@ -43,7 +44,7 @@ namespace WebLinterVsix.Tagging
 
         // We key on ITextView (rather than filenames) because of renames with open files, when the text view remains
         // the same but the file name changes (and blows up the code)
-        private Dictionary<ITextView, Tagger> _taggerCache = new Dictionary<ITextView, Tagger>();
+        private readonly Dictionary<ITextView, Tagger> _taggerCache = new Dictionary<ITextView, Tagger>();
 
         public void RefreshTags(bool clearExisting = true)
         {

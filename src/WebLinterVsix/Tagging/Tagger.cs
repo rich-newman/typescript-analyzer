@@ -11,7 +11,7 @@ namespace WebLinterVsix.Tagging
 {
     class Tagger : ITagger<LintingErrorTag> //, IDisposable
     {
-        private ITextDocument _document;
+        private readonly ITextDocument _document;
         private ITextSnapshot _currentTextSnapshot;
 
         // FilePath can change whilst the tagger is in use if we rename an open file, so don't key on it
@@ -19,7 +19,7 @@ namespace WebLinterVsix.Tagging
         // if the view changes.
         internal string FilePath => _document.FilePath;
 
-        internal Tagger(ITextBuffer buffer, ITextDocument document, ITextView textView, TaggerProvider taggerProvider)
+        internal Tagger(ITextBuffer buffer, ITextDocument document)
         {
             CheckThread();
             Debug.WriteLine($"Creating Tagger for {document.FilePath}, thread={Thread.CurrentThread.ManagedThreadId}");

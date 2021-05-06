@@ -1,13 +1,10 @@
 ﻿using EnvDTE;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using WebLinter;
 using WebLinterVsix;
-using WebLinterVsix.Helpers;
 
 namespace WebLinterTest
 {
@@ -20,11 +17,12 @@ namespace WebLinterTest
         private static MockSettings settings = null;
 
         [ClassInitialize]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter")]
         public static void ClassInitialize(TestContext testContext)
         {
             MessageFilter.Register();
-            Type type = System.Type.GetTypeFromProgID("VisualStudio.DTE.15.0");
-            object inst = System.Activator.CreateInstance(type, true);
+            Type type = Type.GetTypeFromProgID("VisualStudio.DTE.15.0");
+            object inst = Activator.CreateInstance(type, true);
             dte = (EnvDTE80.DTE2)inst;
             dte.Solution.Open(Path.GetFullPath(@"../../artifacts/bad-tslint-json/bad-tslint-json.sln"));
             solution = dte.Solution;
@@ -35,15 +33,15 @@ namespace WebLinterTest
         [TestInitialize]
         public void TestInitialize()
         {
-            WebLinterVsix.WebLinterPackage.Settings = settings;
-            WebLinterVsix.WebLinterPackage.Dte = dte;
+            WebLinterPackage.Settings = settings;
+            WebLinterPackage.Dte = dte;
         }
 
         [TestCleanup]
         public void TestCleanup()
         {
-            WebLinterVsix.WebLinterPackage.Settings = null;
-            WebLinterVsix.WebLinterPackage.Dte = null;
+            WebLinterPackage.Settings = null;
+            WebLinterPackage.Dte = null;
         }
 
         [ClassCleanup]
@@ -51,8 +49,8 @@ namespace WebLinterTest
         {
             if (solution != null) { solution.Close(); solution = null; }
             if (dte != null) dte.Quit();
-            WebLinterVsix.WebLinterPackage.Settings = null;
-            WebLinterVsix.WebLinterPackage.Dte = null;
+            WebLinterPackage.Settings = null;
+            WebLinterPackage.Dte = null;
             MessageFilter.Revoke();
         }
 
