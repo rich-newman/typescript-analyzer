@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using EnvDTE;
+﻿using EnvDTE;
 using Microsoft.VisualStudio.Shell;
-using WebLinter;
-using System.Linq;
+using System;
+using System.ComponentModel.Design;
 
 namespace WebLinterVsix
 {

@@ -37,8 +37,18 @@ namespace WebLinterTest
             }
         }
 
+        public void CleanJsJsxErrors()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool HasErrors() => _snapshots.Count > 0;
         public bool HasErrors(string fileName) => _snapshots.ContainsKey(fileName);
+
+        public bool HasJsJsxErrors()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     /// <summary>

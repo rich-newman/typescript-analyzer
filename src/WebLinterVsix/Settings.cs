@@ -89,26 +89,24 @@ namespace WebLinterVsix
         [DefaultValue(false)]
         public bool UseProjectNGLint { get; set; }
 
-        private bool _lintJsFiles;
         [Category("Basic")]
         [DisplayName("Lint .js and .jsx files")]
         [Description("If True, will lint .js and .jsx files in addition to .ts and .tsx files.  This option uses rules in the the jsRules section of tslint.json.  This section is empty by default.")]
         [DefaultValue(false)]
-        public bool LintJsFiles
-        {
-            get { return _lintJsFiles; }
-            set { _lintJsFiles = value; WebLinterPackage.TaggerProvider?.RefreshTags(clearExisting: false); }  // Clear JS errors in the middle if value is false.  Do I need clearExisting?
-        }
+        public bool LintJsFiles { get; set; }
 
-        private bool _showUnderlining;
         [Category("Basic")]
         [DisplayName("Show red/green underlining")]
         [Description("If True, shows red/green underlining in code files for errors/warnings, and gives details on a hover.")]
         [DefaultValue(true)]
-        public bool ShowUnderlining
+        public bool ShowUnderlining { get; set; }
+
+        protected override void OnApply(PageApplyEventArgs e)
         {
-            get { return _showUnderlining; }
-            set { _showUnderlining = value; WebLinterPackage.TaggerProvider?.RefreshTags(clearExisting: false); }
+            base.OnApply(e);
+            if (!TSLintEnable && ErrorListDataSource.Instance.HasErrors()) ErrorListDataSource.Instance.CleanAllErrors();
+            if (!LintJsFiles && ErrorListDataSource.Instance.HasJsJsxErrors()) ErrorListDataSource.Instance.CleanJsJsxErrors();
+            WebLinterPackage.TaggerProvider?.RefreshTags();
         }
 
         public IEnumerable<string> GetIgnorePatterns()

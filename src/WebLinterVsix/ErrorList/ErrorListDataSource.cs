@@ -18,8 +18,10 @@ namespace WebLinterVsix
         void CleanErrors(IEnumerable<string> files);
         void BringToFront();
         void CleanAllErrors();
+        void CleanJsJsxErrors();
         bool HasErrors();
         bool HasErrors(string fileName);
+        bool HasJsJsxErrors();
     }
 
     internal class ErrorListDataSource : ITableDataSource, IErrorListDataSource
@@ -184,6 +186,18 @@ namespace WebLinterVsix
                 Debug.WriteLine(item.Key + ":" + item.Value);
         }
 
+        public void CleanJsJsxErrors()
+        {
+            CheckThread();
+            List<string> fileNames = new List<string>();
+            foreach (string fileName in Snapshots.Keys)
+            {
+                if (IsJsOrJsxFile(fileName)) 
+                    fileNames.Add(fileName);
+            }
+            CleanErrors(fileNames);
+        }
+
         public void CleanErrors(IEnumerable<string> files)
         {
             CheckThread();
@@ -213,6 +227,8 @@ namespace WebLinterVsix
             Snapshots.Clear();
             foreach (var manager in _managers)
                 manager.Clear();
+
+            UpdateAllSinks();
         }
 
         public void BringToFront()
@@ -225,6 +241,21 @@ namespace WebLinterVsix
         {
             CheckThread();
             return Snapshots.Count > 0;
+        }
+
+        public bool HasJsJsxErrors()
+        {
+            foreach (KeyValuePair<string, TableEntriesSnapshot> item in Snapshots)
+            {
+                if (IsJsOrJsxFile(item.Key)) return true;
+            }
+            return false;
+        }
+
+        private bool IsJsOrJsxFile(string fileName)
+        {
+            string extension = System.IO.Path.GetExtension(fileName).ToUpperInvariant();
+            return extension == ".JS" || extension == ".JSX";
         }
 
         public bool HasErrors(string fileName)
