@@ -17,9 +17,11 @@ namespace WebLinterTest
         private static MockSettings settings = null;
 
         [ClassInitialize]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter")]
         public static void ClassInitialize(TestContext testContext)
         {
+            // This is the official fix for the unused parameter warning IDE0060.  Nice.
+            // https://github.com/dotnet/roslyn/issues/35063#issuecomment-484616262
+            _ = testContext;
             MessageFilter.Register();
             Type type = Type.GetTypeFromProgID("VisualStudio.DTE.15.0");
             object inst = Activator.CreateInstance(type, true);

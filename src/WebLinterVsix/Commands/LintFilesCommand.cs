@@ -22,7 +22,7 @@ namespace WebLinterVsix
         {
             _package = package ?? throw new ArgumentNullException("package");
             _commandEvents = WebLinterPackage.Dte.Events.CommandEvents;
-            _commandEvents.BeforeExecute += _commandEvents_BeforeExecute;
+            _commandEvents.BeforeExecute += CommandEvents_BeforeExecute;
 
             if (ServiceProvider.GetService(typeof(IMenuCommandService)) is OleMenuCommandService commandService)
             {
@@ -36,12 +36,12 @@ namespace WebLinterVsix
 
         private bool _isBuilding = false;
         private bool _isBuildingSolution = true;
-        private HashSet<int> _buildIds = new HashSet<int> { (int)I.BuildSln, (int)I.RebuildSln, (int)I.BuildCtx, (int)I.RebuildCtx,
+        private readonly HashSet<int> _buildIds = new HashSet<int> { (int)I.BuildSln, (int)I.RebuildSln, (int)I.BuildCtx, (int)I.RebuildCtx,
                                                             (int)I.BuildSel, (int)I.RebuildSel, (int)I.BatchBuildDlg, (int)I.Start,
                                                             (int)I.StartNoDebug };
-        private HashSet<int> _buildSolutionIds = new HashSet<int> { (int)I.BuildSln, (int)I.RebuildSln, (int)I.BatchBuildDlg,
+        private readonly HashSet<int> _buildSolutionIds = new HashSet<int> { (int)I.BuildSln, (int)I.RebuildSln, (int)I.BatchBuildDlg,
                                                                     (int)I.Start, (int)I.StartNoDebug };
-        private void _commandEvents_BeforeExecute(string Guid, int ID, object CustomIn, object CustomOut, ref bool CancelDefault)
+        private void CommandEvents_BeforeExecute(string Guid, int ID, object CustomIn, object CustomOut, ref bool CancelDefault)
         {
             // TODO There's also Build1-9, Rebuild1-9 and BuildLast/RebuildLast.  
             // 1-9 can be called from the build menu if on an item outside a project.

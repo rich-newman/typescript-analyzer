@@ -31,7 +31,7 @@ namespace WebLinterVsix
 
         //internal static Dictionary<string, TableEntriesSnapshot> Snapshots { get; }
         //      = new Dictionary<string, TableEntriesSnapshot>(StringComparer.OrdinalIgnoreCase);
-        private static Dictionary<string, TableEntriesSnapshot> _snapshots = 
+        private static readonly Dictionary<string, TableEntriesSnapshot> _snapshots = 
             new Dictionary<string, TableEntriesSnapshot>(StringComparer.OrdinalIgnoreCase);
 
         public static Dictionary<string, TableEntriesSnapshot> Snapshots
@@ -179,12 +179,12 @@ namespace WebLinterVsix
             }
         }
 
-        [Conditional("DEBUG")]
-        private void DebugDumpMap(Dictionary<string, string> map)
-        {
-            foreach (var item in map)
-                Debug.WriteLine(item.Key + ":" + item.Value);
-        }
+        //[Conditional("DEBUG")]
+        //private void DebugDumpMap(Dictionary<string, string> map)
+        //{
+        //    foreach (var item in map)
+        //        Debug.WriteLine(item.Key + ":" + item.Value);
+        //}
 
         public void CleanJsJsxErrors()
         {
