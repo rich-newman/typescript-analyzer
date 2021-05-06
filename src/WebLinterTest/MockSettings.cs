@@ -1,7 +1,4 @@
-﻿// Modifications Copyright Rich Newman 2017
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.IO;
 using WebLinter;
 
@@ -38,7 +35,6 @@ namespace WebLinterTest
         public bool IgnoreNestedFiles { get; set; } = true;
         public string[] IgnorePatterns { get; set; } = new string[0];
         public bool ShowUnderlining => true;
-        public event EventHandler ShowUnderliningChanged { add { } remove { } }
 
         public IEnumerable<string> GetIgnorePatterns() { return IgnorePatterns; }
         public void ResetSettings() { }

@@ -1,5 +1,4 @@
-﻿// Modifications Copyright Rich Newman 2017
-using EnvDTE;
+﻿using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;

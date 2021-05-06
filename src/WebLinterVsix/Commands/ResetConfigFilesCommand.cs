@@ -1,5 +1,4 @@
-﻿// Modifications Copyright Rich Newman 2017
-using System;
+﻿using System;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Shell;
