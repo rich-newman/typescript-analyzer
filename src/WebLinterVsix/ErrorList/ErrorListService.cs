@@ -9,7 +9,7 @@ namespace WebLinterVsix
     class ErrorListService
     {
         public static void ProcessLintingResults(LintingResult result, string[] fileNames,
-                                                    string[] filterFileNames, bool showErrorList)
+                                                    string[] filterFileNames, bool showErrorList, bool isFixing)
         {
             // Called on worker thread unless we're running on a build when we are on the UI thread
             bool useFilter = WebLinterPackage.Settings.UseTsConfig && filterFileNames != null;
@@ -18,11 +18,11 @@ namespace WebLinterVsix
             IEnumerable<string> lintedFilesWithNoErrors = useFilter ?
                 filterFileNames.Where(f => !allErrors.Select(e => e.FileName).Contains(f, StringComparer.OrdinalIgnoreCase)) :
                 fileNames.Where(f => !allErrors.Select(e => e.FileName).Contains(f, StringComparer.OrdinalIgnoreCase));
-            UpdateErrorListDataSource(allErrors, showErrorList, lintedFilesWithNoErrors);
+            UpdateErrorListDataSource(allErrors, showErrorList, lintedFilesWithNoErrors, isFixing);
         }
 
         private static void UpdateErrorListDataSource(IEnumerable<LintingError> allErrors, 
-                                                  bool showErrorList, IEnumerable<string> lintedFilesWithNoErrors)
+                                                  bool showErrorList, IEnumerable<string> lintedFilesWithNoErrors, bool isFixing)
         {
             if (Application.Current?.Dispatcher == null || Application.Current.Dispatcher.CheckAccess())
             {
@@ -34,12 +34,12 @@ namespace WebLinterVsix
                 }
 
                 ErrorListDataSource.Instance.CleanErrors(lintedFilesWithNoErrors);
-                WebLinterPackage.TaggerProvider?.RefreshTags();
+                WebLinterPackage.TaggerProvider?.RefreshTags(clearExisting: true, isFixing);
             }
             else
             {
                 Application.Current.Dispatcher.BeginInvoke(
-                    (Action)(() => UpdateErrorListDataSource(allErrors, showErrorList, lintedFilesWithNoErrors)));
+                    (Action)(() => UpdateErrorListDataSource(allErrors, showErrorList, lintedFilesWithNoErrors, isFixing)));
             }
         }
     }

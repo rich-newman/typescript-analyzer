@@ -46,10 +46,10 @@ namespace WebLinterVsix.Tagging
         // the same but the file name changes (and blows up the code)
         private readonly Dictionary<ITextView, Tagger> _taggerCache = new Dictionary<ITextView, Tagger>();
 
-        public void RefreshTags(bool clearExisting = true)
+        public void RefreshTags(bool clearExisting = true, bool isFixing = false)
         {
             foreach (KeyValuePair<ITextView, Tagger> tagger in _taggerCache) 
-                tagger.Value.RefreshTags(clearExisting);
+                tagger.Value.RefreshTags(clearExisting, isFixing);
         }
 
         [Conditional("DEBUG")]

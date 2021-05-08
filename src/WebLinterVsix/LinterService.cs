@@ -32,7 +32,7 @@ namespace WebLinterVsix
 
                 if (result != null)
                 {
-                    ErrorListService.ProcessLintingResults(result, fileNames, filterFileNames, showErrorList);
+                    ErrorListService.ProcessLintingResults(result, fileNames, filterFileNames, showErrorList, fixErrors);
                     hasVSErrors = result.HasVsErrors;
                 }
             }

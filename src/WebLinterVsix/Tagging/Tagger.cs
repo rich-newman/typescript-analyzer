@@ -38,10 +38,12 @@ namespace WebLinterVsix.Tagging
             if (Thread.CurrentThread.ManagedThreadId != 1) throw new Exception("Tagger not running on UI thread");
         }
 
-        public void RefreshTags(bool clearExisting)
+        private bool _isFixing = false;
+        public void RefreshTags(bool clearExisting, bool isFixing)
         {
             CheckThread();
-            if (clearExisting) _tagSpans = null;
+            _isFixing = isFixing;
+            if (clearExisting && !isFixing) _tagSpans = null;
             Debug.WriteLine($"In RefreshTags calling TagsChanged, file={FilePath}, " + $"thread={Thread.CurrentThread.ManagedThreadId}");
             TagsChanged?.Invoke(this,
                 new SnapshotSpanEventArgs(new SnapshotSpan(_currentTextSnapshot, 0, _currentTextSnapshot.Length)));
@@ -73,7 +75,12 @@ namespace WebLinterVsix.Tagging
 #endif
                 bool isTextSnapshotChanged = IsTextSnapshotChanged(spans);
                 if (isTextSnapshotChanged) _currentTextSnapshot = spans[0].Snapshot;
-                if (_tagSpans == null)
+                if (_isFixing && isTextSnapshotChanged) // Force recalc when fixing and the text snapshot changes
+                {
+                    _isFixing = false;
+                    CalculateTagSpans();
+                }
+                else if (_tagSpans == null)
                     CalculateTagSpans();
                 else if (isTextSnapshotChanged)
                     UpdateTagSpansForNewTextSnapshot();
