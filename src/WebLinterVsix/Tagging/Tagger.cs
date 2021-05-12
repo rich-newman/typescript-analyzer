@@ -21,7 +21,7 @@ namespace WebLinterVsix.Tagging
         internal Tagger(ITextBuffer buffer, ITextDocument document)
         {
             CheckThread();
-            Debug.WriteLine($"Creating Tagger for {document.FilePath}, thread={Thread.CurrentThread.ManagedThreadId}");
+            ErrorList.TempLogger.Log($"Creating Tagger for {document.FilePath}, thread={Thread.CurrentThread.ManagedThreadId}");
             _document = document;
             _currentTextSnapshot = buffer.CurrentSnapshot;
             //this.TagsChanged += OnTagsChanged;
@@ -42,9 +42,10 @@ namespace WebLinterVsix.Tagging
         public void RefreshTags(bool clearExisting, bool isFixing)
         {
             CheckThread();
-            _isFixing = isFixing;
-            if (clearExisting && !isFixing) _tagSpans = null;
-            Debug.WriteLine($"In RefreshTags calling TagsChanged, file={FilePath}, " + $"thread={Thread.CurrentThread.ManagedThreadId}");
+            _isFixing = isFixing;  // If we fix we need to calculate tags on the next snapshot
+            if (clearExisting) _tagSpans = null;
+            ErrorList.TempLogger.Log($"In RefreshTags calling TagsChanged, file={FilePath}, " 
+                + $"thread={Thread.CurrentThread.ManagedThreadId}");
             TagsChanged?.Invoke(this,
                 new SnapshotSpanEventArgs(new SnapshotSpan(_currentTextSnapshot, 0, _currentTextSnapshot.Length)));
         }
@@ -73,6 +74,8 @@ namespace WebLinterVsix.Tagging
                 if (!IsSpansValid(spans)) throw new Exception("Invalid spans in GetTags");
                 if (IsTextBufferChanged(spans)) throw new Exception("Text buffer changed in Tagger");
 #endif
+                ErrorList.TempLogger.Log($"GetTags: File={FilePath}, New TextSnapshot version={spans[0].Snapshot.Version}, " +
+    $"old TextSnapshot version={_currentTextSnapshot.Version}, thread={Thread.CurrentThread.ManagedThreadId}");
                 bool isTextSnapshotChanged = IsTextSnapshotChanged(spans);
                 if (isTextSnapshotChanged) _currentTextSnapshot = spans[0].Snapshot;
                 if (_isFixing && isTextSnapshotChanged) // Force recalc when fixing and the text snapshot changes
@@ -102,7 +105,7 @@ namespace WebLinterVsix.Tagging
         private List<ITagSpan<LintingErrorTag>> _tagSpans = null;
         private void CalculateTagSpans()
         {
-            Debug.WriteLine($"CalculateTagSpans, file={FilePath}, thread={Thread.CurrentThread.ManagedThreadId}");
+            ErrorList.TempLogger.Log($"CalculateTagSpans, file={FilePath}, thread={Thread.CurrentThread.ManagedThreadId}");
             _tagSpans = new List<ITagSpan<LintingErrorTag>>();
             if (!ErrorListDataSource.Snapshots.ContainsKey(FilePath)) return;
             List<LintingError> errors = ErrorListDataSource.Snapshots[FilePath].Errors;  // Immutable snapshot
@@ -128,7 +131,8 @@ namespace WebLinterVsix.Tagging
 
         public void UpdateTagSpansForNewTextSnapshot()
         {
-            Debug.WriteLine($"UpdateTagSpansForNewTextSnapshot, file={FilePath}: New TextSnapshot version={_currentTextSnapshot.Version}, thread={Thread.CurrentThread.ManagedThreadId}");
+            ErrorList.TempLogger.Log($"UpdateTagSpansForNewTextSnapshot, file={FilePath}: " +
+                $"New TextSnapshot version={_currentTextSnapshot.Version}, thread={Thread.CurrentThread.ManagedThreadId}");
             List<ITagSpan<LintingErrorTag>> newTagSpans = new List<ITagSpan<LintingErrorTag>>();
             foreach (ITagSpan<LintingErrorTag> tagSpan in _tagSpans)
             {

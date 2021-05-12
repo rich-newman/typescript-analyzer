@@ -80,6 +80,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Commands\BuildEventsBase.cs" />
+    <Compile Include="ErrorList\TempLogger.cs" />
     <Compile Include="Helpers\BuildFileLocations.cs" />
     <Compile Include="Commands\FixLintErrorsCommand.cs" />
     <Compile Include="Commands\LintFilesCommandBase.cs" />
