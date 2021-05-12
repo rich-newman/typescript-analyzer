@@ -61,7 +61,6 @@ namespace WebLinterVsix
                                     StandardTableColumnDefinitions.Line, StandardTableColumnDefinitions.Column);
         }
 
-        // Don't try this at home
         internal static void InjectMockErrorListDataSource(IErrorListDataSource instance) => _instance = instance;
 
         public static IErrorListDataSource Instance
@@ -82,7 +81,6 @@ namespace WebLinterVsix
             if (System.Threading.Thread.CurrentThread.ManagedThreadId != 1 
                 && _instance?.GetType() == typeof(ErrorListDataSource))
                 throw new Exception("ErrorListDataSource not running on UI thread");
-                //Debug.WriteLine("ErrorListDataSource called not on UI thread");
         }
 
         #region ITableDataSource members
@@ -103,7 +101,7 @@ namespace WebLinterVsix
 
         public IDisposable Subscribe(ITableDataSink sink)
         {
-            CheckThread();
+            //CheckThread();  // Not necessarily called on UI thread
             return new SinkManager(this, sink);
         }
         #endregion

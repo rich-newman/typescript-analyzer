@@ -34,7 +34,7 @@ namespace WebLinterVsix
                 }
 
                 ErrorListDataSource.Instance.CleanErrors(lintedFilesWithNoErrors);
-                WebLinterPackage.TaggerProvider?.RefreshTags(clearExisting: true, isFixing);
+                WebLinterPackage.TaggerProvider?.RefreshTags(clearExisting: true, isFixing: isFixing);
             }
             else
             {
