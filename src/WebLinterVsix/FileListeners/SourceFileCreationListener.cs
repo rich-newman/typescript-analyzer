@@ -56,8 +56,6 @@ namespace WebLinterVsix.FileListeners
                 // It's possible to open a second textview on the same underlying file/buffer
                 if (wpfTextView.TextBuffer.Properties.TryGetProperty("lint_filename", out string fileName) && fileName != null) return;
                 wpfTextView.TextBuffer.Properties.AddProperty("lint_filename", textDocument.FilePath);
-                //wpfTextView.TextBuffer.PostChanged += TextBuffer_PostChanged;
-                //wpfTextView.TextBuffer.ChangedLowPriority += TextBuffer_ChangedLowPriority;
                 textDocument.FileActionOccurred += OnFileActionOccurred; // Hook the event whether lintable or not: it may become lintable
                 if (!LintableFiles.IsLintableTsTsxJsJsxFile(textDocument.FilePath)) return;
                 // Don't run linter again if error list already contains errors for the file.
@@ -71,29 +69,6 @@ namespace WebLinterVsix.FileListeners
                 }
             }
             catch (Exception ex) { Logger.LogAndWarn(ex); }
-        }
-
-        // Both events called on UI thread, both have sender the TextBuffer, which knows the filename
-        // So we can do Task.Run(async () => await CallLinterService(filePath) as above
-        // We can do it when we're idle only
-        // https://www.syncfusion.com/faq/wpf/threading/what-is-the-equivalent-of-the-windows-forms-onidle-event-in-wpf
-        // We can do it after a sleep with a cancellation token so if this is called again we cancel the lint
-        // It's not so easy to stop a running lint from updating though
-        private static void TextBuffer_ChangedLowPriority(object sender, TextContentChangedEventArgs e)
-        {
-            Debug.WriteLine($"In TextBuffer_ChangedLowPriority, thread={System.Threading.Thread.CurrentThread.ManagedThreadId}");
-        }
-        private static void TextBuffer_PostChanged(object sender, EventArgs e)
-        {
-            Debug.WriteLine($"In TextBuffer_PostChanged, thread={System.Threading.Thread.CurrentThread.ManagedThreadId}");
-            ITextBuffer textBuffer = sender as ITextBuffer;
-            if (textBuffer != null && textBuffer.Properties.TryGetProperty("lint_filename", out string fileName))
-            {
-                Task.Run(async () =>
-                {
-                    await CallLinterService(fileName);
-                });
-            }
         }
 
         // This is clunky.  Is there a better way of tracking text views for a buffer?
