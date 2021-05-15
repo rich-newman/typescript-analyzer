@@ -39,12 +39,12 @@ namespace WebLinterVsix.Tagging
         }
 
         private bool _isFixing = false;
-        public void RefreshTags(bool clearExisting, bool isFixing)
+        public void RefreshTags(bool isFixing)
         {
             CheckThread();
             _isFixing = isFixing;  // If we fix we need to calculate tags on the next snapshot
-            if (clearExisting) _tagSpans = null;
-            Debug.WriteLine($"In RefreshTags calling TagsChanged, file={FilePath}, " 
+            _tagSpans = null;
+            Debug.WriteLine($"In RefreshTags calling TagsChanged, file={FilePath}, "
                 + $"thread={Thread.CurrentThread.ManagedThreadId}");
             TagsChanged?.Invoke(this,
                 new SnapshotSpanEventArgs(new SnapshotSpan(_currentTextSnapshot, 0, _currentTextSnapshot.Length)));
@@ -90,10 +90,10 @@ namespace WebLinterVsix.Tagging
         }
 
 #if DEBUG
-        private bool IsSpansValid(NormalizedSnapshotSpanCollection spans) => 
+        private bool IsSpansValid(NormalizedSnapshotSpanCollection spans) =>
             (spans?.Count ?? 0) > 0 && spans[0].Snapshot?.TextBuffer != null;
 
-        private bool IsTextBufferChanged(NormalizedSnapshotSpanCollection spans) => 
+        private bool IsTextBufferChanged(NormalizedSnapshotSpanCollection spans) =>
             spans[0].Snapshot.TextBuffer != _currentTextSnapshot.TextBuffer;
 #endif
 
@@ -112,8 +112,8 @@ namespace WebLinterVsix.Tagging
             {
                 LintingErrorTag lintingErrorTag = new LintingErrorTag(lintingError);
                 SnapshotPoint startSnapshotPoint = CalculateSnapshotPoint(lintingError.LineNumber, lintingError.ColumnNumber);
-                SnapshotPoint endSnapshotPoint = IsEndProvided(lintingError) ? 
-                    CalculateSnapshotPoint(lintingError.EndLineNumber.Value, lintingError.EndColumnNumber.Value) : 
+                SnapshotPoint endSnapshotPoint = IsEndProvided(lintingError) ?
+                    CalculateSnapshotPoint(lintingError.EndLineNumber.Value, lintingError.EndColumnNumber.Value) :
                     startSnapshotPoint;  // snapshot [1, 1) does include character at 1
                 SnapshotSpan snapshotSpan = new SnapshotSpan(startSnapshotPoint, endSnapshotPoint);
                 ITagSpan<LintingErrorTag> tagSpan = new TagSpan<LintingErrorTag>(snapshotSpan, lintingErrorTag);
@@ -124,7 +124,7 @@ namespace WebLinterVsix.Tagging
         private SnapshotPoint CalculateSnapshotPoint(int lineNumber, int columnNumber) =>
             _currentTextSnapshot.GetLineFromLineNumber(lineNumber).Start.Add(columnNumber);
 
-        private bool IsEndProvided(LintingError lintingError) => 
+        private bool IsEndProvided(LintingError lintingError) =>
             lintingError.EndColumnNumber != null && lintingError.EndLineNumber != null;
 
         public void UpdateTagSpansForNewTextSnapshot()
