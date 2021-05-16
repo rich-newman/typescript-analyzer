@@ -12,13 +12,37 @@ This is a version of Mads Kristensen's [Web Analyzer for Visual Studio 2015](htt
 
 **Please also be aware that, as with the Web Analyzer for Visual Studio 2015, at present this extension needs a Visual Studio solution file to work.  If you open a folder in Visual Studio without a solution the menu options will not appear and the TypeScript Analyzer will not run.**
 
-### Menu Options: TypeScript Analyzer vs Web Code Analysis
+### Basic Operation
 
-The menu options for the TypeScript Analyzer are separate from the menu options for the ESLint, CSSLint and CoffeeLint in Visual Studio 2017 ('Web Code Analysis').  In particular the TypeScript Analyzer can be run for a specific file or files by right-clicking in Solution Explorer and selecting 'Run TypeScript Analyzer'.  Settings can be edited using 'Tools/TypeScript Analyzer/Edit TSLint settings'.  TypeScript Analyzer also has its own entry in the menu in Tools/Options.
+The TypeScript Analyzer runs TSLint on a file when it is opened or saved, or when a run is specifically requested from a context menu.  There are entries in the Solution Explorer context menus to allow the Analyzer to be run on individual files or an entire solution.
+
+Results of a linting run are shown in the Error List window, and the offending code is underlined in the code window.  In the Error List errors are identified by the Description field starting with '(TSLint)'.  Clicking on the rule name in the Code field in the Error List takes you to the relevant TSLint page on the error.
+
+Linting rules are in a default tslint.json file.  This can be accessed and edited via the menu option Tools/Settings/Edit TSLint settings (tslint.json).  Alternatively the rules can be overridden by including a new tslint.json in a Visual Studio project.
+
+Various settings for the TypeScript Analyzer can be found at Tools/Options/TypeScript Analyzer.
+
+### Colored Underlining in Code Window
+
+The TypeScript Analyzer underlines linting errors (in red) and warnings (in green) that it finds in open code windows.  If you hover over an error/warning information about it will be shown in a tooltip.
+
+The TypeScript Analyzer only runs when a file is saved or a run is specifically requested from a context menu.  As a result if you edit a file with errors/warnings these will remain in the file until it is saved, even if the edit fixes the problem.
+
+Colored underlining can be disabled via Tools/Options/TypeScript Analyzer/Show red/green underlining.
+
+### Fix TypeScript Analyzer Errors
+
+The TypeScript Analyzer puts a menu option on the context menu in Solution Explorer that will attempt to fix linting errors in the file or files clicked on.  This uses TSLint's 'fix' option.  It updates files in place on the hard drive.  That is, it overwrites them immediately, so use this option with care.  It also can only fix errors for which fixers have been written.  Please refer to the TSLint documentation for more details.
+
+### Run on Build
+
+There is a 'Run on build' option under Tools/Options/TypeScript Analyzer.  By default this is set to false.  If it is true the analyzer will run before any build and report linting errors in the files being built.
+
+If, additionally, 'Show errors' is set to true then the analyzer will fail a build if it finds any errors when linting the build files.  For these purposes 'errors' are anything displayed as errors in the Error List Window.  See the section on Errors/Warnings below.
 
 ### TSLint Version
 
-The TypeScript Analyzer is using TSLint version 6.1.1.
+The TypeScript Analyzer is using TSLint version 6.1.3.
 
 ### Analyze Using tsconfig.json
 
@@ -26,7 +50,7 @@ By default the TypeScript Analyzer hands individual .ts and .tsx files to TSLint
 
 If this option is set to true then the TypeScript Analyzer only ever passes tsconfig.json files found in the Visual Studio solution to TSLint.  TSLint will lint the files found in those tsconfig.jsons.
 
-Also if this option is set then TSLint can use the additional [TSLint 'semantic' rules](https://palantir.github.io/tslint/usage/type-checking/).  These require a program object to be created, which can only be done from a tsconfig.json file.  These semantic rules are tagged with 'Requires Type Info' on the [TSLint rules page](https://palantir.github.io/tslint/rules/).  For this to work TSLint needs to use TypeScript and the TypeScript Analyzer provides an internal copy, currently at version 3.8.3.
+Also if this option is set then TSLint can use the additional [TSLint 'semantic' rules](https://palantir.github.io/tslint/usage/type-checking/).  These require a program object to be created, which can only be done from a tsconfig.json file.  These semantic rules are tagged with 'Requires Type Info' on the [TSLint rules page](https://palantir.github.io/tslint/rules/).  For this to work TSLint needs to use TypeScript and the TypeScript Analyzer provides an internal copy, currently at version 4.0.3.
 
 ##### Rules For Finding tsconfig.json Files
 
@@ -43,16 +67,6 @@ It's clearly possible in some of the scenarios above that one TypeScript file mi
 
 Note that if 'Use tsconfig.json files' is true then the options 'Ignore nested files' and 'Ignore patterns' apply to the discovery of tsconfig.json files, not the files that are linted.
 
-### Fix TypeScript Analyzer Errors
-
-The TypeScript Analyzer puts a menu option on the context menu in Solution Explorer that will attempt to fix linting errors in the file or files clicked on.  This uses TSLint's 'fix' option.  It updates files in place on the hard drive.  That is, it overwrites them immediately, so use this option with care.  It also can only fix errors for which fixers have been written.  Please refer to the TSLint documentation for more details.
-
-### Run on Build
-
-There is a 'Run on build' option under Tools/Options/TypeScript Analyzer.  By default this is set to false.  If it is true the analyzer will run before any build and report linting errors in the files being built.
-
-If, additionally, 'Show errors' is set to true then the analyzer will fail a build if it finds any errors when linting the build files.  For these purposes 'errors' are anything displayed as errors in the Error List Window.  See the section on Errors/Warnings below.
-
 ### Default tslint.json
 
 The TypeScript Analyzer has a default tslint.json file.  This is used on initial install, or if it's reset with 'Tools/TypeScript Analyzer/Reset TypeScript Analyzer Settings'.  It can be overridden by including your own tslint.json in a project, or by editing it with 'Tools/TypeScript Analyzer/Edit TSLint settings'.
@@ -61,7 +75,7 @@ The current default tslint.json contains all of the recommended rules and settin
 
 ### TSLint Errors/Warnings and defaultSeverity
 
-TSLint now has its own errors and warnings.  However TSLint 'errors' are different from the usual errors in Visual Studio in the sense that they are not serious problems that will halt a build.  Trailing whitespace is by default an 'error' in TSLint for example.
+TSLint has its own errors and warnings.  However TSLint 'errors' are different from the usual errors in Visual Studio in the sense that they are not serious problems that will halt a build.  Trailing whitespace is by default an 'error' in TSLint for example.
 
 As a result all TSLint errors and warnings are by default displayed as warnings in the Visual Studio Error List.
 
@@ -72,6 +86,10 @@ If 'Show errors' is enabled you can configure individual rules to be errors or w
 ### Only Run if Requested
 
 There is an 'Only run if requested' option on Tools/Options/TypeScript Analyzer.  If this is set to true then the analyzer will only run if explicitly requested with 'Run TypeScript Analyzer' from the Solution Explorer context menu, or on a build if 'Run on Build' is also true.  This means we disable the default behavior of running the analyzer whenever an individual .ts or .tsx file is opened or saved.
+
+### Menu Options: TypeScript Analyzer vs Web Code Analysis
+
+The menu options for the TypeScript Analyzer are separate from the menu options for the ESLint, CSSLint and CoffeeLint in Visual Studio 2017 ('Web Code Analysis').  In particular the TypeScript Analyzer can be run for a specific file or files by right-clicking in Solution Explorer and selecting 'Run TypeScript Analyzer'.  Settings can be edited using 'Tools/TypeScript Analyzer/Edit TSLint settings'.  TypeScript Analyzer also has its own entry in the menu in Tools/Options.
 
 ### codelyzer
 

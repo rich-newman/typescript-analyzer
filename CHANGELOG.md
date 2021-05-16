@@ -3,6 +3,18 @@
 These are the changes to each version that have been released
 on the official Visual Studio extension gallery.
 
+## 1.23
+
+**2020-05-06**
+
+- Underlying TSLint upgraded to 6.1.3 (final release), TypeScript 4.0.3.  Version of node used to run these upgraded to 12.18.3.
+- Added colored underlining for warnings and errors in codefiles, added hover to show error.  Can be disabled in Tools/Options.
+- Disabling the TypeScript Analyzer in Tools/Options now clears warnings and errors.  Disabling JavaScript linting in Tools/Options now clears JavaScript warnings and errors.
+- Fixed bug where Analyzer got confused by lowercase filepaths returned from TSLint, which can happen in certain error situations.  All filepaths are now treated as case-insensitive.
+- Source column in Error List window now shows linting errors generated from a build as 'Build'.
+- Fixed some bugs re renaming files and including new files in a project.
+- Simplified threading: removed some locks by invoking onto UI thread earlier when updating error list.  Made some other internal code simplifications.
+
 ## 1.22
 
 **2020-04-12**
