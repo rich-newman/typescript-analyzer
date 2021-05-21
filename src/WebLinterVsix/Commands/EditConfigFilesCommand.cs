@@ -51,10 +51,10 @@ namespace WebLinterVsix
                 string fileName = GetFileName(button.CommandID.ID);
                 string configFile = Path.Combine(folder, fileName);
 
-                if (!string.IsNullOrEmpty(configFile))
-                {
+                if (!string.IsNullOrEmpty(configFile) && File.Exists(configFile))
                     WebLinterPackage.Dte.ExecuteCommand("File.OpenFile", "\"" + configFile + "\"");
-                }
+                else
+                    WebLinterPackage.Dte.StatusBar.Text = $"Configuration file not found: {configFile}";
             }
             catch (Exception ex) { Logger.LogAndWarn(ex); }
         }
