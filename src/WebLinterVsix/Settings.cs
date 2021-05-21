@@ -33,6 +33,7 @@ namespace WebLinterVsix
         {
             SetDefaults();
             base.ResetSettings();
+            base.SaveSettingsToStorage();
         }
 
         // Advanced
