@@ -108,7 +108,6 @@ namespace WebLinterVsix
 
         public void AddSinkManager(SinkManager manager)
         {
-            CheckThread();
             _managers.Add(manager);
         }
 
