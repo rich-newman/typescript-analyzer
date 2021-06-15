@@ -57,7 +57,9 @@ namespace WebLinterVsix.FileListeners
                 if (wpfTextView.TextBuffer.Properties.TryGetProperty("lint_filename", out string fileName) && fileName != null) return;
                 wpfTextView.TextBuffer.Properties.AddProperty("lint_filename", textDocument.FilePath);
                 textDocument.FileActionOccurred += OnFileActionOccurred; // Hook the event whether lintable or not: it may become lintable
-                if (!LintableFiles.IsLintableTsTsxJsJsxFile(textDocument.FilePath)) return;
+                if (!LintableFiles.IsLintableTsTsxJsJsxFile(textDocument.FilePath,
+                    checkIgnoreOptions: !(WebLinterPackage.Settings?.UseTsConfig ?? false)))
+                    return;
                 // Don't run linter again if error list already contains errors for the file.
                 if (!ErrorListDataSource.Instance.HasErrors(textDocument.FilePath) &&
                         WebLinterPackage.Settings != null && !WebLinterPackage.Settings.OnlyRunIfRequested)
@@ -129,7 +131,7 @@ namespace WebLinterVsix.FileListeners
                 // Called from UI thread: file save etc
                 if (WebLinterPackage.Settings != null && !WebLinterPackage.Settings.OnlyRunIfRequested &&
                     (e.FileActionType == FileActionTypes.ContentSavedToDisk || e.FileActionType == FileActionTypes.DocumentRenamed) &&
-                    LintableFiles.IsLintableTsTsxJsJsxFile(e.FilePath)) // We may have changed settings since the event was hooked
+                    LintableFiles.IsLintableTsTsxJsJsxFile(e.FilePath, checkIgnoreOptions: !WebLinterPackage.Settings.UseTsConfig))
                 {
                     await CallLinterService(e.FilePath);
                 }
