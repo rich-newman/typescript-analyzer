@@ -135,17 +135,28 @@ namespace WebLinterVsix.FileListeners
                 {
                     await CallLinterService(e.FilePath);
                 }
+                // Not a lintable file, has been renamed or saved, may have existing errors (was lintable before a config change)
+                else if (e.FileActionType == FileActionTypes.ContentSavedToDisk || e.FileActionType == FileActionTypes.DocumentRenamed)
+                {
+                    ErrorListDataSource.Instance.CleanErrors(new[] { e.FilePath });
+                    WebLinterPackage.TaggerProvider?.RefreshTags();
+                }
                 if (e.FileActionType == FileActionTypes.DocumentRenamed)
                 {
-                    ITextBuffer textBuffer = (sender as ITextDocument)?.TextBuffer;
-                    if (textBuffer != null && textBuffer.Properties.TryGetProperty("lint_filename", out string oldFileName))
-                    {
-                        ErrorListDataSource.Instance.CleanErrors(new[] { oldFileName });
-                        textBuffer.Properties["lint_filename"] = e.FilePath;
-                    }
+                    CleanErrorsForOldFileName(sender, e);
                 }
             }
             catch (Exception ex) { Logger.LogAndWarn(ex); }
+        }
+
+        private static void CleanErrorsForOldFileName(object sender, TextDocumentFileActionEventArgs e)
+        {
+            ITextBuffer textBuffer = (sender as ITextDocument)?.TextBuffer;
+            if (textBuffer != null && textBuffer.Properties.TryGetProperty("lint_filename", out string oldFileName))
+            {
+                ErrorListDataSource.Instance.CleanErrors(new[] { oldFileName });
+                textBuffer.Properties["lint_filename"] = e.FilePath;
+            }
         }
 
         private static async Task CallLinterService(string filePath)
