@@ -40,7 +40,8 @@ namespace WebLinter
                 FileInfo fileInfo = new FileInfo(file);
                 if (!fileInfo.Exists)
                 {
-                    _result.Errors.Add(new LintingError(fileInfo.FullName, 0, 0, true, "") { Message = "The file doesn't exist" });
+                    _result.Errors.Add(
+                        new LintingError(fileInfo.FullName, 0, 0, true, "") { Message = $"The file doesn't exist ({fileInfo.FullName})", Provider = this });
                     return _result;
                 }
                 fileInfos.Add(fileInfo);
