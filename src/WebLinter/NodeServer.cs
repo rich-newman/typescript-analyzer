@@ -40,7 +40,10 @@ namespace WebLinter
                     }
                     else
                     {
-                        return await client.UploadStringTaskAsync(url, json);
+                        Benchmark.Log("Before server call");
+                        var result = await client.UploadStringTaskAsync(url, json);
+                        Benchmark.Log("After server call");
+                        return result;
                     }
                 }
             }

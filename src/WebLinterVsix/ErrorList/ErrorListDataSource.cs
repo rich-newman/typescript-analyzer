@@ -137,6 +137,7 @@ namespace WebLinterVsix
                 Snapshots[error.Key] = snapshot;
             }
             UpdateAllSinks();
+            Benchmark.Log("After UpdateAllSinks");
         }
 
         //[Conditional("DEBUG")]
@@ -161,6 +162,8 @@ namespace WebLinterVsix
         public void CleanErrors(IEnumerable<string> files)
         {
             CheckThread();
+            //Benchmark.Log($"In CleanErrors: There are {files.Length}  files, {Snapshots.Count} snapshots, {_managers.Count} managers.");
+            Benchmark.Log($"In CleanErrors: There are {Snapshots.Count} snapshots, {_managers.Count} managers.");
             foreach (string file in files)
             {
                 if (Snapshots.ContainsKey(file))

@@ -28,6 +28,7 @@ namespace WebLinterVsix
         {
             try
             {
+                Benchmark.Start();
                 if (!LinterService.IsLinterEnabled)
                 {
                     WebLinterPackage.Dte.StatusBar.Text = "TSLint is not enabled in Tools/Options";
@@ -42,6 +43,7 @@ namespace WebLinterVsix
                 Linter.Server.Down();
                 return false;
             }
+            finally { Benchmark.End(); }
         }
 
         internal static async System.Threading.Tasks.Task<bool> LintSelectedItems(bool fixErrors, UIHierarchyItem[] selectedItems)
