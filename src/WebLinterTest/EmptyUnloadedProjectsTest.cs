@@ -61,7 +61,7 @@ namespace WebLinterTest
             {
                 Arrange(@"../../artifacts/empty/noprojects.sln");
 
-                bool hasVSErrors = await LintFilesCommandBase.LintLintLint(false, selectedItems);
+                bool hasVSErrors = await LintFilesCommandBase.LintSelectedItems(false, selectedItems);
 
                 Assert.IsFalse(hasVSErrors);
                 Assert.IsFalse(mockErrorListDataSource.HasErrors());

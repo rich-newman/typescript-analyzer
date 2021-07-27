@@ -1,63 +1,50 @@
 ﻿using EnvDTE;
+using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 
 namespace WebLinterVsix.Helpers
 {
     public static class LintFileLocations
     {
-        public static IEnumerable<string> FindInSolution(Solution solution)
+        private static void FindInSolution(Solution solution, Dictionary<string, string> fileToProjectMap)
         {
-            if (solution.Projects == null) yield break;
+            if (solution.Projects == null) return;
             foreach (Project project in solution.Projects)
-            {
-                foreach (string path in FindInProject(project)) yield return path;
-            }
+                FindInProject(project, fileToProjectMap);
         }
 
-        public static IEnumerable<string> FindInProject(Project project)
+        private static void FindInProject(Project project, Dictionary<string, string> fileToProjectMap)
         {
-            if (project.ProjectItems == null) yield break;
+            if (project.ProjectItems == null) return;
             foreach (ProjectItem projectItem in project.ProjectItems)
-            {
-                foreach (string path in FindInProjectItem(projectItem)) yield return path;
-            }
+                FindInProjectItem(projectItem, fileToProjectMap);
         }
 
-        public static IEnumerable<string> FindInProjectItem(ProjectItem projectItem)
+        private static void FindInProjectItem(ProjectItem projectItem, Dictionary<string, string> fileToProjectMap)
         {
             string itemPath = projectItem.GetFullPath();
-            if (LintableFiles.IsLintableTsTsxJsJsxFile(itemPath))
-                yield return itemPath;
-            // Checking the ignore pattern here is an optimization that prevents us iterating ignored folders
-            if (projectItem.ProjectItems == null || LintableFiles.ContainsIgnorePattern(itemPath)) yield break;
+            if (LintableFiles.IsLintableTsTsxJsJsxFile(itemPath) && !fileToProjectMap.ContainsKey(itemPath))
+                fileToProjectMap.Add(itemPath, projectItem.ContainingProject.Name);
+            if (projectItem.ProjectItems == null) return;
             foreach (ProjectItem subProjectItem in projectItem.ProjectItems)
-            {
-                foreach (var item in FindInProjectItem(subProjectItem)) yield return item;
-            }
+                FindInProjectItem(subProjectItem, fileToProjectMap);
         }
 
-        public static IEnumerable<string> FindPathsFromSelectedItems(UIHierarchyItem[] items)
+        public static string[] FindPathsFromSelectedItems(UIHierarchyItem[] items, out Dictionary<string, string> fileToProjectMap)
         {
-            HashSet<string> seenPaths = new HashSet<string>();
+            fileToProjectMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             foreach (UIHierarchyItem selItem in items)
             {
                 if (!LintableFiles.IsLintable(selItem)) continue;
-                IEnumerable<string> currentEnumerable =
-                    selItem.Object is Solution solution ? FindInSolution(solution) :
-                    selItem.Object is Project project ? FindInProject(project) :
-                        (selItem.Object is ProjectItem projectItem) ?
-                            FindInProjectItem(projectItem) : null;
-                if (currentEnumerable == null) continue;
-                foreach (string path in currentEnumerable)
-                {
-                    if (!seenPaths.Contains(path))
-                    {
-                        seenPaths.Add(path);
-                        yield return path;
-                    }
-                }
+                if (selItem.Object is Solution solution)
+                    FindInSolution(solution, fileToProjectMap);
+                else if (selItem.Object is Project project)
+                    FindInProject(project, fileToProjectMap);
+                else if (selItem.Object is ProjectItem item)
+                    FindInProjectItem(item, fileToProjectMap);
             }
+            return fileToProjectMap.Keys.ToArray();
         }
     }
 }

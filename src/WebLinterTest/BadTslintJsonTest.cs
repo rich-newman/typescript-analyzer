@@ -70,7 +70,7 @@ namespace WebLinterTest
 
             try
             {
-                bool hasVSErrors = await LintFilesCommandBase.LintLintLint(false, selectedItems);
+                bool hasVSErrors = await LintFilesCommandBase.LintSelectedItems(false, selectedItems);
 
                 Assert.IsTrue(hasVSErrors);
                 Assert.IsTrue(mockErrorListDataSource.HasErrors());

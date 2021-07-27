@@ -14,7 +14,7 @@ namespace WebLinterVsix
 {
     internal interface IErrorListDataSource
     {
-        void AddErrors(IEnumerable<LintingError> errors);
+        void AddErrors(IEnumerable<LintingError> errors, Dictionary<string, string> fileToProjectMap);
         void CleanErrors(IEnumerable<string> files);
         void BringToFront();
         void CleanAllErrors();
@@ -124,56 +124,19 @@ namespace WebLinterVsix
                 manager.UpdateSink(Snapshots.Values);
         }
 
-        public void AddErrors(IEnumerable<LintingError> errors)
+        public void AddErrors(IEnumerable<LintingError> errors, Dictionary<string, string> fileToProjectMap)
         {
             CheckThread();
             if (errors == null || !errors.Any()) return;
             var cleanErrors = errors.Where(e => e != null && !string.IsNullOrEmpty(e.FileName));
-            Dictionary<string, string> fileNameToProjectNameMap = CreateFileNameToProjectNameMap();
             //DebugDumpMap(fileNameToProjectNameMap);
             foreach (IGrouping<string, LintingError> error in cleanErrors.GroupBy(t => t.FileName))
             {
-                fileNameToProjectNameMap.TryGetValue(error.Key, out string projectName);
-                TableEntriesSnapshot snapshot = new TableEntriesSnapshot(error.Key, projectName ?? "", error);
+                fileToProjectMap.TryGetValue(error.Key, out string projectName);
+                TableEntriesSnapshot snapshot = new TableEntriesSnapshot(error.Key, projectName, error);
                 Snapshots[error.Key] = snapshot;
             }
             UpdateAllSinks();
-        }
-
-        // This is an optimization for the case where we lint a very large structure: we have a very large number of files
-        // and errors, inside or outside of projects.  Looking up the project for each file individually involves scanning
-        // the project hierarchy, so it's better I think to scan the hierarchy first and create an efficient lookup data structure.
-        // We are on the UI thread
-        private Dictionary<string, string> CreateFileNameToProjectNameMap()
-        {
-            Dictionary<string, string> fileNameToProjectNameMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            Solution solution = WebLinterPackage.Dte.Solution;
-            if (solution?.Projects == null) return fileNameToProjectNameMap;
-            foreach (Project project in solution.Projects)
-            {
-                if (project.ProjectItems == null) continue;
-                string projectName = project.Name;
-                foreach (ProjectItem projectItem in project.ProjectItems)
-                    FindProjectItems(projectItem, projectName, fileNameToProjectNameMap);
-            }
-            return fileNameToProjectNameMap;
-        }
-
-        private void FindProjectItems(ProjectItem projectItem, string projectName, Dictionary<string, string> fileNameToProjectNameMap)
-        {
-            // We can't use ignore paths here as they don't apply for tsconfig results
-            if (projectItem.GetFullPath() is string fileName)
-            {
-                // It's possible for the same file to be in two VS projects, linked in to either, issue #20
-                if (Linter.IsLintableFileExtension(fileName, WebLinterPackage.Settings.LintJsFiles)
-                    && !fileNameToProjectNameMap.ContainsKey(fileName))
-                {
-                    fileNameToProjectNameMap.Add(fileName, projectName);
-                }
-                if (projectItem.ProjectItems == null) return;
-                foreach (ProjectItem subProjectItem in projectItem.ProjectItems)
-                    FindProjectItems(subProjectItem, projectName, fileNameToProjectNameMap);
-            }
         }
 
         //[Conditional("DEBUG")]

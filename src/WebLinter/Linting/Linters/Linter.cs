@@ -33,26 +33,6 @@ namespace WebLinter
         {
             _result = new LintingResult(files);
             if (!_settings.TSLintEnable || !files.Any()) return _result;
-
-            List<FileInfo> fileInfos = new List<FileInfo>();
-            foreach (string file in files)
-            {
-                FileInfo fileInfo = new FileInfo(file);
-                if (!fileInfo.Exists)
-                {
-                    _result.Errors.Add(
-                        new LintingError(fileInfo.FullName, 0, 0, true, "") { Message = $"The file doesn't exist ({fileInfo.FullName})", Provider = this });
-                    return _result;
-                }
-                fileInfos.Add(fileInfo);
-            }
-
-            return await Lint(callSync, fileInfos.ToArray());
-        }
-
-        private async Task<LintingResult> Lint(bool callSync, params FileInfo[] files)
-        {
-            // The ng lint runner doesn't need the files list, does need tslint.json
             ServerPostData postData = CreatePostData(files);
             string output = _settings.UseProjectNGLint ? await _localNgLintRunner.Run(Name, postData, callSync) :
                                                          await Server.CallServer(Name, postData, callSync, _log);
@@ -60,12 +40,12 @@ namespace WebLinter
             return _result;
         }
 
-        private ServerPostData CreatePostData(FileInfo[] files)
+        private ServerPostData CreatePostData(string[] files)
         {
             ServerPostData postData = new ServerPostData
             {
                 Config = Path.Combine(FindWorkingDirectory(files[0]), ConfigFileName).Replace("\\", "/"),
-                Files = files.Select(f => f.FullName.Replace("\\", "/")),
+                Files = files.Select(f => f.Replace("\\", "/")),  // TODO: it's dumb doing a full iteration over the files list here
                 FixErrors = _fixErrors,
                 UseTSConfig = _settings.UseTsConfig
             };
@@ -75,9 +55,9 @@ namespace WebLinter
             return postData;
         }
 
-        private string FindWorkingDirectory(FileInfo file)
+        private string FindWorkingDirectory(string filePath)
         {
-            DirectoryInfo dir = file.Directory;
+            DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(filePath));
 
             while (dir != null)
             {

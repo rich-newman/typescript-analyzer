@@ -62,9 +62,9 @@ namespace WebLinterTest
         {
             MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = solution };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockSolutionHierarchyItem };
-            List<string> results = LintFileLocations.FindPathsFromSelectedItems(selectedItems).ToList();
+            string[] results = LintFileLocations.FindPathsFromSelectedItems(selectedItems, out Dictionary<string, string> fileToProjectMap);
 
-            Assert.AreEqual(9, results.Count);
+            Assert.AreEqual(9, results.Length);
 
             string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react-dom.d.ts");
             string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react.d.ts");
@@ -95,9 +95,9 @@ namespace WebLinterTest
             MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = project };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockSolutionHierarchyItem };
 
-            List<string> results = LintFileLocations.FindPathsFromSelectedItems(selectedItems).ToList();
+            string[] results = LintFileLocations.FindPathsFromSelectedItems(selectedItems, out Dictionary<string, string> fileToProjectMap);
 
-            Assert.AreEqual(1, results.Count);
+            Assert.AreEqual(1, results.Length);
             string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/none/b/file5.ts");
             Assert.IsTrue(results.Contains(expected1));
         }
@@ -113,9 +113,9 @@ namespace WebLinterTest
             MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = projectItem };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockSolutionHierarchyItem };
 
-            List<string> results = LintFileLocations.FindPathsFromSelectedItems(selectedItems).ToList();
+            string[] results = LintFileLocations.FindPathsFromSelectedItems(selectedItems, out Dictionary<string, string> fileToProjectMap);
 
-            Assert.AreEqual(1, results.Count);
+            Assert.AreEqual(1, results.Length);
             Assert.AreEqual(projectItemFullName, results[0]);
             //string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/none/b/file5.ts");
             //Assert.IsTrue(results.Contains(expected1));
@@ -131,9 +131,9 @@ namespace WebLinterTest
 
             try
             {
-                List<string> results = LintFileLocations.FindPathsFromSelectedItems(selectedItems).ToList();
+                string[] results = LintFileLocations.FindPathsFromSelectedItems(selectedItems, out Dictionary<string, string> fileToProjectMap);
 
-                Assert.AreEqual(10, results.Count);
+                Assert.AreEqual(10, results.Length);
 
                 string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react-dom.d.ts");
                 string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react.d.ts");
@@ -173,9 +173,9 @@ namespace WebLinterTest
 
             try
             {
-                List<string> results = LintFileLocations.FindPathsFromSelectedItems(selectedItems).ToList();
+                string[] results = LintFileLocations.FindPathsFromSelectedItems(selectedItems, out Dictionary<string, string> fileToProjectMap);
 
-                Assert.AreEqual(6, results.Count);
+                Assert.AreEqual(6, results.Length);
 
                 string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react-dom.d.ts");
                 string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react.d.ts");

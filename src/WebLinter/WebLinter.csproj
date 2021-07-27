@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Benchmark.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Helpers\AsyncLock.cs" />
     <Compile Include="Helpers\AsyncProcess.cs" />

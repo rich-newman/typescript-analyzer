@@ -24,7 +24,7 @@ namespace WebLinterVsix
         }
 
         public string FilePath { get; }
-        public string ProjectName { get; }
+        public string ProjectName { get; set; }
         public List<LintingError> Errors => _errors;
 
         public override int VersionNumber { get; } = 1;
@@ -77,6 +77,18 @@ namespace WebLinterVsix
                 }
                 else if (columnName == StandardTableKeyNames.ProjectName)
                 {
+                    // The pre-lint work will normally create a file to project map that allows us to set the project name when this class
+                    // is instantiated.  However, there are certain edge cases where this won't happen.  For example, we lint directly with
+                    // a tsconfig.  In that case the project name will be null here and we retrieve it from the filename on the error.
+                    if (ProjectName == null)
+                    {
+                        var _item = WebLinterPackage.Dte.Solution.FindProjectItem(_errors[index].FileName);
+
+                        if (_item != null && _item.Properties != null && _item.ContainingProject != null)
+                            ProjectName = _item.ContainingProject.Name;
+                        else
+                            ProjectName = "";
+                    }
                     content = ProjectName;
                 }
                 else if ((columnName == StandardTableKeyNames.ErrorCodeToolTip) || (columnName == StandardTableKeyNames.HelpLink))

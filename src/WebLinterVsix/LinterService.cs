@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using EnvDTE;
@@ -15,7 +15,7 @@ namespace WebLinterVsix
         public static bool IsLinterEnabled => WebLinterPackage.Settings.TSLintEnable;
 
          public static async Task<bool> Lint(bool showErrorList, bool fixErrors, bool callSync, 
-                                            string[] fileNames, string[] filterFileNames = null)
+            string[] fileNames, bool clearAllErrors, Dictionary<string, string> fileToProjectMap)
         {
 #if DEBUG
             if (fileNames.Length == 0) throw new Exception("LinterService/Lint called with empty fileNames list");
@@ -32,7 +32,8 @@ namespace WebLinterVsix
 
                 if (result != null)
                 {
-                    ErrorListService.ProcessLintingResults(result, fileNames, filterFileNames, showErrorList, fixErrors);
+                    ErrorListService.ProcessLintingResults(result, fileNames, clearAllErrors,
+                        showErrorList, fixErrors, fileToProjectMap);
                     hasVSErrors = result.HasVsErrors;
                 }
             }

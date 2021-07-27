@@ -34,7 +34,7 @@ namespace WebLinterVsix
                     return false;
                 }
                 UIHierarchyItem[] selectedItems = WebLinterPackage.Dte.ToolWindows.SolutionExplorer.SelectedItems as UIHierarchyItem[];
-                return await LintLintLint(fixErrors, selectedItems);
+                return await LintSelectedItems(fixErrors, selectedItems);
             }
             catch (Exception ex)
             {
@@ -44,17 +44,17 @@ namespace WebLinterVsix
             }
         }
 
-        internal static async System.Threading.Tasks.Task<bool> LintLintLint(bool fixErrors, UIHierarchyItem[] selectedItems)
+        internal static async System.Threading.Tasks.Task<bool> LintSelectedItems(bool fixErrors, UIHierarchyItem[] selectedItems)
         {
+            Dictionary<string, string> fileToProjectMap;
             IEnumerable<string> files = WebLinterPackage.Settings.UseTsConfig ?
-                                        TsconfigLocations.FindPathsFromSelectedItems(selectedItems) :
-                                        LintFileLocations.FindPathsFromSelectedItems(selectedItems);
+                                        TsconfigLocations.FindPathsFromSelectedItems(selectedItems, out fileToProjectMap) :
+                                        LintFileLocations.FindPathsFromSelectedItems(selectedItems, out fileToProjectMap);
             if (files.Any())
             {
-                string[] filterFileNames = WebLinterPackage.Settings.UseTsConfig ?
-                                           TsconfigLocations.FindFilterFiles(selectedItems) : null;
-                return await LinterService.Lint(showErrorList: true, fixErrors: fixErrors, callSync: false,
-                                                fileNames: files.ToArray(), filterFileNames: filterFileNames);
+                bool clearAllErrors = AnyItemNotLintableSingleFile(selectedItems);
+                return await LinterService.Lint(showErrorList: true, fixErrors: fixErrors, callSync: false, fileNames: files.ToArray(),
+                                                clearAllErrors, fileToProjectMap);
             }
             else
             {
@@ -64,16 +64,31 @@ namespace WebLinterVsix
             }
         }
 
+        private static bool AnyItemNotLintableSingleFile(UIHierarchyItem[] items)
+        {
+            foreach (UIHierarchyItem selItem in items)
+            {
+                if (!(selItem.Object is ProjectItem item &&
+                    item.GetFullPath() is string projectItemPath &&
+                    LintableFiles.IsLintableTsTsxJsJsxFile(projectItemPath)))
+                    return true;
+            }
+            return false;
+        }
+
         protected async System.Threading.Tasks.Task<bool> LintBuildSelection(bool isBuildingSolution)
         {
             try
             {
                 if (!LinterService.IsLinterEnabled) return false;
-                UIHierarchyItem[] selectedItems = WebLinterPackage.Dte.ToolWindows.SolutionExplorer.SelectedItems as UIHierarchyItem[];
-                IEnumerable<string> files = BuildFileLocations.GetBuildFilesToLint(isBuildingSolution, selectedItems, 
-                                                                                   WebLinterPackage.Settings.UseTsConfig);
+                UIHierarchyItem[] selectedItems = BuildSelectedItems.Get(isBuildingSolution);
+                Dictionary<string, string> fileToProjectMap;
+                string[] files = WebLinterPackage.Settings.UseTsConfig ?
+                                            TsconfigLocations.FindPathsFromSelectedItems(selectedItems, out fileToProjectMap) :
+                                            LintFileLocations.FindPathsFromSelectedItems(selectedItems, out fileToProjectMap);
                 if (!files.Any()) return false;
-                return await LinterService.Lint(showErrorList: true, fixErrors: false, callSync: true, fileNames: files.ToArray());
+                return await LinterService.Lint(showErrorList: true, fixErrors: false, callSync: true,
+                                                fileNames: files, clearAllErrors: true, fileToProjectMap);
             }
             catch (Exception ex)
             {

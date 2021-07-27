@@ -58,5 +58,11 @@ namespace WebLinterVsix
                 return null;
             }
         }
+
+        public static string GetProjectNameFromFilePath(string filePath)
+        {
+            ProjectItem projectItem = WebLinterPackage.Dte.Solution.FindProjectItem(filePath);
+            return projectItem?.ContainingProject?.Name != null ? projectItem.ContainingProject.Name : "";
+        }
     }
 }

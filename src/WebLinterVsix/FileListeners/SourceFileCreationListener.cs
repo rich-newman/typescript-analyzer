@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using WebLinter;
 using WebLinterVsix.Helpers;
 
 namespace WebLinterVsix.FileListeners
@@ -66,7 +67,7 @@ namespace WebLinterVsix.FileListeners
                 {
                     Task.Run(async () =>
                     {
-                        await CallLinterService(textDocument.FilePath);
+                        await LintFile(textDocument.FilePath);
                     });
                 }
             }
@@ -133,7 +134,7 @@ namespace WebLinterVsix.FileListeners
                     (e.FileActionType == FileActionTypes.ContentSavedToDisk || e.FileActionType == FileActionTypes.DocumentRenamed) &&
                     LintableFiles.IsLintableTsTsxJsJsxFile(e.FilePath, checkIgnoreOptions: !WebLinterPackage.Settings.UseTsConfig))
                 {
-                    await CallLinterService(e.FilePath);
+                    await LintFile(e.FilePath);
                 }
                 // Not a lintable file, has been renamed or saved, may have existing errors (was lintable before a config change)
                 else if (e.FileActionType == FileActionTypes.ContentSavedToDisk || e.FileActionType == FileActionTypes.DocumentRenamed)
@@ -159,19 +160,27 @@ namespace WebLinterVsix.FileListeners
             }
         }
 
-        private static async Task CallLinterService(string filePath)
+        private static async Task LintFile(string filePath)
         {
+            Benchmark.Start();
+            Benchmark.Log("In SourceFileCreationListener.LintFile, path=" + filePath);
             if (WebLinterPackage.Settings.UseTsConfig)
             {
-                Tsconfig tsconfig = TsconfigLocations.FindFromProjectItem(filePath);
+                string tsconfig = TsconfigLocations.FindParentTsconfig(filePath);
                 if (tsconfig == null) return;
-                await LinterService.Lint(false, false, false, new string[] { tsconfig.FullName },
-                                                              new string[] { filePath });
+                await LinterService.Lint(false, false, false, new string[] { tsconfig },
+                                         clearAllErrors: false, CreateFileToProjectMap(filePath));
             }
             else
             {
-                await LinterService.Lint(false, false, false, new string[] { filePath });
+                await LinterService.Lint(false, false, false, new string[] { filePath },
+                                         clearAllErrors: false, CreateFileToProjectMap(filePath));
             }
+            Benchmark.End();
         }
+
+        private static Dictionary<string, string> CreateFileToProjectMap(string filePath) =>
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                { { filePath, ProjectHelpers.GetProjectNameFromFilePath(filePath) } };
     }
 }

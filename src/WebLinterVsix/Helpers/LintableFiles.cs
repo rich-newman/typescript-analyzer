@@ -79,7 +79,7 @@ namespace WebLinterVsix.Helpers
 
         public static bool IsLintableTsconfig(string fileName)
         {
-            if (string.IsNullOrEmpty(fileName) || !Path.IsPathRooted(fileName)) return false;
+            if (string.IsNullOrEmpty(fileName) || !Path.IsPathRooted(fileName) || !File.Exists(fileName)) return false;
             if (!fileName.EndsWith("tsconfig.json", ignoreCase: true, culture: null)) return false;
             return IsLintableFile(fileName);
         }

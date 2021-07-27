@@ -16,7 +16,7 @@ namespace WebLinterTest
         private Dictionary<string, IGrouping<string, LintingError>> _snapshots = new Dictionary<string, IGrouping<string, LintingError>>();
         public Dictionary<string, IGrouping<string, LintingError>> Snapshots => _snapshots;
 
-        public void AddErrors(IEnumerable<LintingError> errors)
+        public void AddErrors(IEnumerable<LintingError> errors, Dictionary<string, string> fileToProjectMap)
         {
             if (errors == null || !errors.Any()) return;
             IEnumerable<LintingError> cleanErrors = errors.Where(e => e != null && !string.IsNullOrEmpty(e.FileName));
@@ -113,7 +113,7 @@ namespace WebLinterTest
 
             try
             {
-                bool hasVSErrors = await LintFilesCommandBase.LintLintLint(false, selectedItems);
+                bool hasVSErrors = await LintFilesCommandBase.LintSelectedItems(false, selectedItems);
 
                 Assert.IsFalse(hasVSErrors);
                 Assert.IsTrue(mockErrorListDataSource.HasErrors());
@@ -199,7 +199,7 @@ namespace WebLinterTest
 
             try
             {
-                bool hasVSErrors = await LintFilesCommandBase.LintLintLint(false, selectedItems);
+                bool hasVSErrors = await LintFilesCommandBase.LintSelectedItems(false, selectedItems);
 
                 Assert.IsFalse(hasVSErrors);
                 Assert.IsTrue(mockErrorListDataSource.HasErrors());

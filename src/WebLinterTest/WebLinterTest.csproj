@@ -134,9 +134,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="artifacts\localinstall\multiple\a\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="artifacts\localinstall\multiple\a\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="artifacts\localinstall\multiple\a\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+    <Compile Include="artifacts\localinstall\multiple\b\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="artifacts\localinstall\multiple\b\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="artifacts\localinstall\multiple\b\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="AssemblyMethods.cs" />
     <Compile Include="BadTslintJsonTest.cs" />
-    <Compile Include="BuildFileLocationsTest.cs" />
+    <Compile Include="BuildSelectedItemsTest.cs" />
     <Compile Include="EmptyUnloadedProjectsTest.cs" />
     <Compile Include="LintEndToEndTest.cs" />
     <Compile Include="LintFileLocationsTest.cs" />
@@ -160,19 +166,28 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="artifacts\empty\noprojects.sln" />
+    <Content Include="artifacts\localinstall\multiple\b\node_modules\eslint\dummy.txt" />
+    <Content Include="artifacts\localinstall\multiple\multiple.sln" />
+    <Content Include="artifacts\localinstall\multiple\node_modules\eslint\dummy.txt" />
     <Content Include="artifacts\tsconfig\multiple\tsconfigTest.csproj" />
     <Content Include="artifacts\tsconfig\none\HtmlPage1.html" />
     <Content Include="artifacts\tsconfig\none\tsconfigEmptyTest.csproj" />
     <Content Include="artifacts\tsconfig\Tsconfig.sln" />
     <Content Include="artifacts\tslint.json" />
     <None Include="app.config" />
+    <None Include="artifacts\localinstall\multiple\a\a.csproj" />
+    <None Include="artifacts\localinstall\multiple\a\obj\Debug\a.csproj.CoreCompileInputs.cache" />
+    <None Include="artifacts\localinstall\multiple\a\obj\Debug\a.csprojAssemblyReference.cache" />
+    <None Include="artifacts\localinstall\multiple\b\b.csproj" />
+    <None Include="artifacts\localinstall\multiple\b\obj\Debug\b.csproj.CoreCompileInputs.cache" />
+    <None Include="artifacts\localinstall\multiple\b\obj\Debug\b.csprojAssemblyReference.cache" />
+    <None Include="artifacts\localinstall\multiple\b\package.json" />
+    <None Include="artifacts\localinstall\multiple\package.json" />
     <None Include="artifacts\tsconfig\multiple\a\tsconfig.json" />
     <None Include="artifacts\tsconfig\multiple\b\tsconfig.json" />
     <None Include="artifacts\tsconfig\multiple\tsconfig.json" />
     <Content Include="artifacts\tsconfig\tslint.json" />
-    <None Include="artifacts\tsconfig\none\tsconfig.json">
-      <DependentUpon>HtmlPage1.html</DependentUpon>
-    </None>
+    <None Include="artifacts\tsconfig\none\a\c\tsconfig.json" />
     <None Include="artifacts\tslint\b.ts" />
     <None Include="artifacts\tslint\a.ts" />
     <None Include="artifacts\tslint\c.tsx" />
@@ -187,10 +202,19 @@
     <None Include="artifacts\tslint\cFixed.tsx" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="artifacts\tsconfig\none\a\c\" />
+    <Folder Include="artifacts\localinstall\multiple\a\bin\Debug\" />
+    <Folder Include="artifacts\localinstall\multiple\a\obj\Debug\TempPE\" />
+    <Folder Include="artifacts\localinstall\multiple\a\Properties\" />
+    <Folder Include="artifacts\localinstall\multiple\b\bin\Debug\" />
+    <Folder Include="artifacts\localinstall\multiple\b\obj\Debug\TempPE\" />
+    <Folder Include="artifacts\localinstall\multiple\b\Properties\" />
+    <Folder Include="artifacts\localinstall\none\" />
     <Folder Include="artifacts\tsconfig\none\b\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="artifacts\localinstall\multiple\a\fileA.ts" />
+    <TypeScriptCompile Include="artifacts\localinstall\multiple\a\fileAA.ts" />
+    <TypeScriptCompile Include="artifacts\localinstall\multiple\b\fileB.ts" />
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\a\c\file4.ts" />
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\a\c\file6.tsx" />
     <TypeScriptCompile Include="artifacts\tsconfig\multiple\a\file1.ts" />

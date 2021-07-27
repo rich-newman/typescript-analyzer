@@ -1,6 +1,7 @@
 ﻿using EnvDTE;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using WebLinterVsix;
@@ -30,7 +31,7 @@ namespace WebLinterTest
             dte.Solution.Open(Path.GetFullPath(@"../../artifacts/tsconfig/Tsconfig.sln"));
             solution = dte.Solution;
 
-            settings = new MockSettings() { UseTsConfig = true };
+            settings = new MockSettings() { UseTsConfig = true, IgnoreNestedFiles = false };
         }
 
         [TestInitialize]
@@ -67,27 +68,27 @@ namespace WebLinterTest
         public void FindForSingleItem()
         {
             string projectItemFullName = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/file1.ts");
-            Tsconfig result = TsconfigLocations.FindFromProjectItem(projectItemFullName);
+            string result = TsconfigLocations.FindParentTsconfig(projectItemFullName);
             string expected = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
-            Assert.AreEqual(expected, result.FullName);
+            Assert.AreEqual(expected, result);
         }
 
         [TestMethod, TestCategory("tsconfig Locations")]
         public void FindForSingleItemSubfolder()
         {
             string projectItemFullName = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/test.ts");
-            Tsconfig result = TsconfigLocations.FindFromProjectItem(projectItemFullName);
+            string result = TsconfigLocations.FindParentTsconfig(projectItemFullName);
             string expected = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
-            Assert.AreEqual(expected, result.FullName);
+            Assert.AreEqual(expected, result);
         }
 
         [TestMethod, TestCategory("tsconfig Locations")]
         public void FindForSingleItemRoot()
         {
             string projectItemFullName = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/c/file4.ts");
-            Tsconfig result = TsconfigLocations.FindFromProjectItem(projectItemFullName);
+            string result = TsconfigLocations.FindParentTsconfig(projectItemFullName);
             string expected = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
-            Assert.AreEqual(expected, result.FullName);
+            Assert.AreEqual(expected, result);
         }
 
         [TestMethod, TestCategory("tsconfig Locations")]
@@ -95,7 +96,7 @@ namespace WebLinterTest
         {
             // Note there's a tsconfig.json in the folder, but it's not in the project: it shouldn't be picked up
             string projectItemFullName = Path.GetFullPath(@"../../artifacts/tsconfig/none/b/file2.ts");
-            Tsconfig result = TsconfigLocations.FindFromProjectItem(projectItemFullName);
+            string result = TsconfigLocations.FindParentTsconfig(projectItemFullName);
             Assert.IsNull(result);
         }
 
@@ -104,24 +105,40 @@ namespace WebLinterTest
         {
             string projectFullName = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfigTest.csproj");
             Project project = FindProject(projectFullName, solution);
-            Tsconfig[] results = TsconfigLocations.FindInProject(project).ToArray();
-            string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
-            string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
-            string expected3 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/tsconfig.json");
-            Assert.AreEqual(3, results.Length);
-            Assert.IsTrue(Contains(results, expected1));
-            Assert.IsTrue(Contains(results, expected2));
-            Assert.IsTrue(Contains(results, expected3));
+            HashSet<string> results = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, string> fileToProjectMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            TsconfigLocations.FindTsconfigsInProject(project, results, fileToProjectMap);
+            string expectedConfig1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
+            string expectedConfig2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
+            string expectedConfig3 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/tsconfig.json");
+            Assert.AreEqual(3, results.Count);
+            Assert.IsTrue(results.Contains(expectedConfig1));
+            Assert.IsTrue(results.Contains(expectedConfig2));
+            Assert.IsTrue(results.Contains(expectedConfig3));
+
+            // The fileToProjectMap contains all 9 files in tsconfigTest.csproj
+            Assert.AreEqual(9, fileToProjectMap.Keys.Count);
+            TestMapContainsAlltsconfigTestFiles(fileToProjectMap);
         }
 
         [TestMethod, TestCategory("tsconfig Locations")]
         public void FindInProjectNotsconfig()
         {
+            // Folder b contains a tsconfig on disk that's not included in the VS project
+            // Folder c contains a tsconfig in the VS project (tsconfigEmptyTest.csproj) that doesn't exist on disk
+            // In both cases we don't lint with these
             string projectFullName = Path.GetFullPath(@"../../artifacts/tsconfig/none/tsconfigEmptyTest.csproj");
             Project project = FindProject(projectFullName, solution);
-            Tsconfig[] results = TsconfigLocations.FindInProject(project).ToArray();
+            HashSet<string> results = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, string> fileToProjectMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            TsconfigLocations.FindTsconfigsInProject(project, results, fileToProjectMap);
             Assert.IsNotNull(results);
-            Assert.AreEqual(0, results.Length);
+            Assert.AreEqual(0, results.Count);
+            // We iterate the project looking for tsconfigs, and create a map of all files -> project names as we go
+            // So the fileToProjectMap correctly contains the mapping for file5.ts, which is in tsconfigEmptyTest, even though we find
+            // no tsconfigs
+            Assert.AreEqual(1, fileToProjectMap.Keys.Count);
+            Assert.AreEqual("tsconfigEmptyTest", fileToProjectMap[Path.GetFullPath(@"../../artifacts/tsconfig/none/b/file5.ts")]);
         }
 
         [TestMethod, TestCategory("tsconfig Locations")]
@@ -136,12 +153,14 @@ namespace WebLinterTest
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockFile4HierarchyItem };
 
             // Act
-            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems).ToArray();
+            string[] results = TsconfigLocations.FindPathsFromSelectedItems(selectedItems, out Dictionary<string, string> fileToProjectMap);
 
             // Assert
             string expected = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
             Assert.AreEqual(1, results.Length);
-            Assert.IsTrue(Contains(results, expected));
+            Assert.IsTrue(results.Contains(expected));
+            Assert.AreEqual(1, fileToProjectMap.Keys.Count);
+            Assert.AreEqual("tsconfigTest", fileToProjectMap[mainFile4FullName]);
         }
 
         [TestMethod, TestCategory("tsconfig Locations")]
@@ -154,11 +173,13 @@ namespace WebLinterTest
             MockUIHierarchyItem mockTsconfigHierarchyItem = new MockUIHierarchyItem() { Object = tsconfig };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockTsconfigHierarchyItem };
 
-            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems).ToArray();
+            string[] results = TsconfigLocations.FindPathsFromSelectedItems(selectedItems, out Dictionary<string, string> fileToProjectMap);
 
             string expected = mainProjectTsconfigFullName;
             Assert.AreEqual(1, results.Length);
-            Assert.IsTrue(Contains(results, expected));
+            Assert.IsTrue(results.Contains(expected));
+            // If we lint having selected a tsconfig we don't search the project structure pre-lint, so can't construct the map
+            Assert.AreEqual(0, fileToProjectMap.Keys.Count);
         }
 
         [TestMethod, TestCategory("tsconfig Locations")]
@@ -171,9 +192,11 @@ namespace WebLinterTest
             MockUIHierarchyItem mockFile2HierarchyItem = new MockUIHierarchyItem() { Object = file2 };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockFile2HierarchyItem };
 
-            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems).ToArray();
+            Dictionary<string, string> fileToProjectMap;
+            string[] results = TsconfigLocations.FindPathsFromSelectedItems(selectedItems, out fileToProjectMap);
 
             Assert.AreEqual(0, results.Length);
+            Assert.AreEqual(0, fileToProjectMap.Keys.Count);
         }
 
         [TestMethod, TestCategory("tsconfig Locations")]
@@ -182,16 +205,17 @@ namespace WebLinterTest
             MockUIHierarchyItem mockSolutionHierarchyItem = new MockUIHierarchyItem() { Object = solution };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockSolutionHierarchyItem };
 
-            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems).ToArray();
+            string[] results = TsconfigLocations.FindPathsFromSelectedItems(selectedItems, out Dictionary<string, string> fileToProjectMap);
 
-            string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
-            string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
-            string expected3 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/tsconfig.json");
+            string expectedConfig1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
+            string expectedConfig2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
+            string expectedConfig3 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/tsconfig.json");
             Assert.AreEqual(3, results.Length);
-            Assert.IsTrue(Contains(results, expected1));
-            Assert.IsTrue(Contains(results, expected2));
-            Assert.IsTrue(Contains(results, expected3));
+            Assert.IsTrue(results.Contains(expectedConfig1));
+            Assert.IsTrue(results.Contains(expectedConfig2));
+            Assert.IsTrue(results.Contains(expectedConfig3));
 
+            TestMapContainsAlltsconfigTestAndtsconfigEmptyTestFiles(fileToProjectMap);
         }
 
         [TestMethod, TestCategory("tsconfig Locations")]
@@ -203,16 +227,17 @@ namespace WebLinterTest
             MockUIHierarchyItem mockProjectHierarchyItem = new MockUIHierarchyItem() { Object = mainProject };
             UIHierarchyItem[] selectedItems = new UIHierarchyItem[] { mockProjectHierarchyItem };
 
-            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems).ToArray();
+            string[] results = TsconfigLocations.FindPathsFromSelectedItems(selectedItems, out Dictionary<string, string> fileToProjectMap);
 
             string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
             string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
             string expected3 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/tsconfig.json");
             Assert.AreEqual(3, results.Length);
-            Assert.IsTrue(Contains(results, expected1));
-            Assert.IsTrue(Contains(results, expected2));
-            Assert.IsTrue(Contains(results, expected3));
-
+            Assert.IsTrue(results.Contains(expected1));
+            Assert.IsTrue(results.Contains(expected2));
+            Assert.IsTrue(results.Contains(expected3));
+            Assert.AreEqual(9, fileToProjectMap.Keys.Count);
+            TestMapContainsAlltsconfigTestFiles(fileToProjectMap);
         }
 
         [TestMethod, TestCategory("tsconfig Locations")]
@@ -242,24 +267,32 @@ namespace WebLinterTest
                                                   mockFile1HierarchyItem, mockFile2HierarchyItem, mockFile4HierarchyItem
                                               };
 
-            Tsconfig[] results = TsconfigLocations.FindFromSelectedItems(selectedItems).ToArray();
+            string[] results = TsconfigLocations.FindPathsFromSelectedItems(selectedItems, out Dictionary<string, string> fileToProjectMap);
 
             string expected = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
             Assert.AreEqual(1, results.Length);
-            Assert.IsTrue(Contains(results, expected));
+            Assert.IsTrue(results.Contains(expected));
+            Assert.AreEqual(2, fileToProjectMap.Keys.Count);
+            string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/file1.ts");
+            string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/c/file4.ts");
+            Assert.AreEqual("tsconfigTest", fileToProjectMap[expected1]);
+            Assert.AreEqual("tsconfigTest", fileToProjectMap[expected2]);
         }
 
         [TestMethod, TestCategory("tsconfig Locations")]
         public void FindInSolution()
         {
-            Tsconfig[] results = TsconfigLocations.FindInSolution(solution).ToArray();
+            HashSet<string> results = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, string> fileToProjectMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            TsconfigLocations.FindTsconfigsInSolution(solution, results, fileToProjectMap);
             string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
             string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
             string expected3 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/tsconfig.json");
-            Assert.AreEqual(3, results.Length);
-            Assert.IsTrue(Contains(results, expected1));
-            Assert.IsTrue(Contains(results, expected2));
-            Assert.IsTrue(Contains(results, expected3));
+            Assert.AreEqual(3, results.Count);
+            Assert.IsTrue(results.Contains(expected1));
+            Assert.IsTrue(results.Contains(expected2));
+            Assert.IsTrue(results.Contains(expected3));
+            TestMapContainsAlltsconfigTestAndtsconfigEmptyTestFiles(fileToProjectMap);
         }
 
         [TestMethod, TestCategory("tsconfig Locations")]
@@ -268,14 +301,16 @@ namespace WebLinterTest
             settings.IgnorePatterns = new string[] { @"\multiple\a\" };
             try
             {
-                Tsconfig[] results = TsconfigLocations.FindInSolution(solution).ToArray();
+                HashSet<string> results = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                Dictionary<string, string> fileToProjectMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                TsconfigLocations.FindTsconfigsInSolution(solution, results, fileToProjectMap);
                 string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
                 string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
                 string expected3 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/tsconfig.json");
-                Assert.AreEqual(2, results.Length);
-                Assert.IsTrue(Contains(results, expected1));
-                Assert.IsFalse(Contains(results, expected2));  // IsFalse test: the file has been excluded
-                Assert.IsTrue(Contains(results, expected3));
+                Assert.AreEqual(2, results.Count);
+                Assert.IsTrue(results.Contains(expected1));
+                Assert.IsFalse(results.Contains(expected2));  // IsFalse test: the file has been excluded
+                Assert.IsTrue(results.Contains(expected3));
             }
             finally
             {
@@ -283,35 +318,68 @@ namespace WebLinterTest
             }
         }
 
-        [TestMethod, TestCategory("tsconfig Locations")]
-        public void FindInSolutionIncludeNested()
-        {
-            settings.IgnoreNestedFiles = false;
-            try
-            {
-                Tsconfig[] results = TsconfigLocations.FindInSolution(solution).ToArray();
-                string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
-                string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
-                string expected3 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/tsconfig.json");
-                // Nested tsconfig in tsconfigEmptyTest
-                string expected4 = Path.GetFullPath(@"../../artifacts/tsconfig/none/tsconfig.json");
-                // C:\Source\typescript-analyzer2\src\WebLinterTest\artifacts\tsconfig\none\tsconfig.json
-                Assert.AreEqual(4, results.Length);
-                Assert.IsTrue(Contains(results, expected1));
-                Assert.IsTrue(Contains(results, expected2));
-                Assert.IsTrue(Contains(results, expected3));
-                Assert.IsTrue(Contains(results, expected4));
-            }
-            finally
-            {
-                settings.IgnoreNestedFiles = true;
-            }
+        //[TestMethod, TestCategory("tsconfig Locations")]
+        //public void FindInSolutionExcludeNested()
+        //{
+        //    settings.IgnoreNestedFiles = true;
+        //    try
+        //    {
+        //        HashSet<string> results = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        //        Dictionary<string, string> fileToProjectMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        //        TsconfigLocations.FindTsconfigsInSolution(solution, results, fileToProjectMap);
+        //        string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
+        //        string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
+        //        string expected3 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/tsconfig.json");
+        //        // Nested tsconfig in tsconfigEmptyTest
+        //        string expected4 = Path.GetFullPath(@"../../artifacts/tsconfig/none/tsconfig.json");
+        //        // C:\Source\typescript-analyzer2\src\WebLinterTest\artifacts\tsconfig\none\tsconfig.json
+        //        Assert.AreEqual(4, results.Length);
+        //        Assert.IsTrue(Contains(results, expected1));
+        //        Assert.IsTrue(Contains(results, expected2));
+        //        Assert.IsTrue(Contains(results, expected3));
+        //        Assert.IsTrue(Contains(results, expected4));
+        //    }
+        //    finally
+        //    {
+        //        settings.IgnoreNestedFiles = false;
+        //    }
 
+        //}
+
+        private static void TestMapContainsAlltsconfigTestAndtsconfigEmptyTestFiles(Dictionary<string, string> fileToProjectMap)
+        {
+            Assert.AreEqual(10, fileToProjectMap.Keys.Count); // 9 in testconfigTest, 1 in tsconfigEmptyTest
+            TestMapContainsAlltsconfigTestFiles(fileToProjectMap);
+            string expected10 = Path.GetFullPath(@"../../artifacts/tsconfig/none/b/file5.ts"); // In tsconfigEmptyTest, not tsconfigTest
+            Assert.AreEqual("tsconfigEmptyTest", fileToProjectMap[expected10]);
+        }
+
+        private static void TestMapContainsAlltsconfigTestFiles(Dictionary<string, string> fileToProjectMap)
+        {
+            string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react-dom.d.ts");
+            string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/react.d.ts");
+            string expected3 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/test.ts");
+            string expected4 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/file1.ts");
+            string expected5 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/c/file4.ts");
+            string expected6 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/file3.ts");
+            string expected7 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/c/file6.tsx");
+            string expected8 = Path.GetFullPath(@"../../artifacts/tsconfig/file9.ts"); // Linked file in Tsconfig.sln/tsconfigTest.csproj
+            string expected9 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/file7.ts"); // Nested file under HtmlPage1.html
+            //string expected10 = Path.GetFullPath(@"../../artifacts/tsconfig/none/b/file5.ts"); // In tsconfigEmptyTest, not tsconfigTest
+
+            Assert.AreEqual("tsconfigTest", fileToProjectMap[expected1]);
+            Assert.AreEqual("tsconfigTest", fileToProjectMap[expected2]);
+            Assert.AreEqual("tsconfigTest", fileToProjectMap[expected3]);
+            Assert.AreEqual("tsconfigTest", fileToProjectMap[expected4]);
+            Assert.AreEqual("tsconfigTest", fileToProjectMap[expected5]);
+            Assert.AreEqual("tsconfigTest", fileToProjectMap[expected6]);
+            Assert.AreEqual("tsconfigTest", fileToProjectMap[expected7]);
+            Assert.AreEqual("tsconfigTest", fileToProjectMap[expected8]);
+            Assert.AreEqual("tsconfigTest", fileToProjectMap[expected9]);
         }
 
         public static Project FindProject(string projectFullName, Solution solution)
         {
-            var test = solution.Projects.GetEnumerator();
             foreach (Project project in solution.Projects)
                 if (project.FullName == projectFullName) return project;
             return null;
@@ -338,15 +406,6 @@ namespace WebLinterTest
                 if (result != null) return result;
             }
             return null;
-        }
-
-        public bool Contains(Tsconfig[] ary, string value)
-        {
-            foreach (Tsconfig item in ary)
-            {
-                if (item.FullName == value) return true;
-            }
-            return false;
         }
     }
 
