@@ -82,6 +82,7 @@ namespace WebLinterVsix
         {
             try
             {
+                Benchmark.Start();
                 if (!LinterService.IsLinterEnabled) return false;
                 UIHierarchyItem[] selectedItems = BuildSelectedItems.Get(isBuildingSolution);
                 Dictionary<string, string> fileToProjectMap;
@@ -98,6 +99,7 @@ namespace WebLinterVsix
                 Linter.Server.Down();
                 return false;
             }
+            finally { Benchmark.End(); }
         }
 
     }
