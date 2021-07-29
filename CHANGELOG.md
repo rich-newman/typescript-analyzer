@@ -7,7 +7,7 @@ on the official Visual Studio extension gallery.
 
 **Not yet released. Release date TBD.**
 
-- Speed improvements: a previous optimization to create a map for project names after linting was slow with individual files.  This has been removed and replaced where appropriate with a similar map being created before linting as we identify files to lint. Other more minor speed optimizations have also been made.  These include speeding things up by always using backslash as the file separator where we can, instead of trying to use forwardslash in Node.
+- Speed improvements: a previous optimization to create a map for project names after linting was slow with individual files.  This has been removed and replaced where appropriate with a similar map being created before linting as we identify files to lint. Other more minor speed optimizations have also been made.  These include speeding things up by always using backslash as the file separator where we can, instead of trying to use forwardslash in Node.  Also clearing down of old errors where a file no longer has errors has been made faster.
 - .d.ts files are now ignored in linting.  This can be overridden by removing the .d.ts entry from Tools/Options/TypeScript Analyzer/Ignore Patterns.
 - Some bugs have been fixed when settings are reset with Tools/TypeScript Analyzer/Reset TypeScript Analyzer settings... Previously the settings didn't always save correctly, and the 'Lint .js and .jsx files' option didn't always reset correctly. 
 - We now show a sensible message if we try to edit the default config file after it has been deleted.  The default config file is tslint.json in the user profile folder, usually c:\Users\{username}\tslint.json. 
