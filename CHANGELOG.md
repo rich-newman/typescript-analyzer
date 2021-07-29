@@ -7,13 +7,13 @@ on the official Visual Studio extension gallery.
 
 **Not yet released. Release date TBD.**
 
-- Speed improvements: a previous optimization to create a map for project names after linting was slow with individual files.  This has been removed and replaced where appropriate with a similar map being created before linting as we identify files to lint. Other more minor speed optimizations have also been made.
-- .d.ts files ignored in linting.  Can be overridden by removing the .d.ts entry from Tools/Options/TypeScript Analyzer/Ignore Patterns.
-- Fixed bugs re settings not saving correctly and re 'Lint .js and .jsx files' not resetting to false when settings are reset with Tools/TypeScript Analyzer/Reset TypeScript Analyzer settings...
-- Show a sensible message if we try to edit the default config file (tslint.json in the user profile folder, usually c:\Users\{username}) and it has been deleted.
-- Improve behavior of ignore options when running with tsconfig.json: they apply to the tsconfig.json files, not individual files, which can be ignored in the tsconfig.json files themselves.
-- Improve behavior where a config change means an open file with linting errors is no longer lintable: errors clear on next run.
-- Benchmarking code available in build.  To use this set a BENCHMARK compilation flag in the projects and run a release build.
+- Speed improvements: a previous optimization to create a map for project names after linting was slow with individual files.  This has been removed and replaced where appropriate with a similar map being created before linting as we identify files to lint. Other more minor speed optimizations have also been made.  This includes speeding things up by always using backslash as the file separator where we can, instead of trying to use forwardslash in Node.
+- .d.ts files are now ignored in linting.  This can be overridden by removing the .d.ts entry from Tools/Options/TypeScript Analyzer/Ignore Patterns.
+- Bugs have been fixed re settings not saving correctly and re 'Lint .js and .jsx files' not resetting to false when settings are reset with Tools/TypeScript Analyzer/Reset TypeScript Analyzer settings...
+- We now show a sensible message if we try to edit the default config file (tslint.json in the user profile folder, usually c:\Users\{username}) after it has been deleted.
+- Behavior of ignore options when running with tsconfig.json has been improved. The ignore options now consistently apply to the tsconfig.json files, not individual files, which can be ignored in the tsconfig.json files themselves.
+- Behavior has been improved where a config change means an open file with linting errors is no longer lintable.  Now any errors will clear on the next run.
+- Benchmarking code is now available in build.  To use this set a BENCHMARK compilation flag in the projects and run a release build.
 
 ## 1.23
 
