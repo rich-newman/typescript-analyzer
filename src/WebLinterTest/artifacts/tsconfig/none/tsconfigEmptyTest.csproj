@@ -22,7 +22,6 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>2.2</TypeScriptToolsVersion>
-    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -59,6 +58,7 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="a\c\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -66,9 +66,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="HtmlPage1.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="a\c\tsconfig.json" />
+    <Content Include="tsconfig.json">
+      <DependentUpon>HtmlPage1.html</DependentUpon>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
