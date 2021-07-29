@@ -31,7 +31,7 @@ namespace WebLinterTest
             dte.Solution.Open(Path.GetFullPath(@"../../artifacts/tsconfig/Tsconfig.sln"));
             solution = dte.Solution;
 
-            settings = new MockSettings() { UseTsConfig = true, IgnoreNestedFiles = false };
+            settings = new MockSettings() { UseTsConfig = true, IgnoreNestedFiles = true };
         }
 
         [TestInitialize]
@@ -302,33 +302,31 @@ namespace WebLinterTest
             }
         }
 
-        //[TestMethod, TestCategory("tsconfig Locations")]
-        //public void FindInSolutionExcludeNested()
-        //{
-        //    settings.IgnoreNestedFiles = true;
-        //    try
-        //    {
-        //        HashSet<string> results = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        //        Dictionary<string, string> fileToProjectMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        //        TsconfigLocations.FindTsconfigsInSolution(solution, results, fileToProjectMap);
-        //        string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
-        //        string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
-        //        string expected3 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/tsconfig.json");
-        //        // Nested tsconfig in tsconfigEmptyTest
-        //        string expected4 = Path.GetFullPath(@"../../artifacts/tsconfig/none/tsconfig.json");
-        //        // C:\Source\typescript-analyzer2\src\WebLinterTest\artifacts\tsconfig\none\tsconfig.json
-        //        Assert.AreEqual(4, results.Length);
-        //        Assert.IsTrue(Contains(results, expected1));
-        //        Assert.IsTrue(Contains(results, expected2));
-        //        Assert.IsTrue(Contains(results, expected3));
-        //        Assert.IsTrue(Contains(results, expected4));
-        //    }
-        //    finally
-        //    {
-        //        settings.IgnoreNestedFiles = false;
-        //    }
-
-        //}
+        [TestMethod, TestCategory("tsconfig Locations")]
+        public void FindInSolutionIncludeNested()
+        {
+            settings.IgnoreNestedFiles = false;
+            try
+            {
+                HashSet<string> results = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                TsconfigLocations.FindTsconfigsInSolution(solution, results);
+                string expected1 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/tsconfig.json");
+                string expected2 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/a/tsconfig.json");
+                string expected3 = Path.GetFullPath(@"../../artifacts/tsconfig/multiple/b/tsconfig.json");
+                // Nested tsconfig in tsconfigEmptyTest
+                string expected4 = Path.GetFullPath(@"../../artifacts/tsconfig/none/tsconfig.json");
+                // C:\Source\typescript-analyzer\src\WebLinterTest\artifacts\tsconfig\none\tsconfig.json
+                Assert.AreEqual(4, results.Count);
+                Assert.IsTrue(results.Contains(expected1));
+                Assert.IsTrue(results.Contains(expected2));
+                Assert.IsTrue(results.Contains(expected3));
+                Assert.IsTrue(results.Contains(expected4));
+            }
+            finally
+            {
+                settings.IgnoreNestedFiles = true;
+            }
+        }
 
         public static Project FindProject(string projectFullName, Solution solution)
         {
