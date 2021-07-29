@@ -3,6 +3,18 @@
 These are the changes to each version that have been released
 on the official Visual Studio extension gallery.
 
+## 1.24
+
+**Not yet released. Release date TBD.**
+
+- Speed improvements: a previous optimization to create a map for project names after linting was slow with individual files.  This has been removed and replaced where appropriate with a similar map being created before linting as we identify files to lint.
+- .d.ts files ignored in linting.  Can be overridden by removing the .d.ts entry from Tools/Options/TypeScript Analyzer/Ignore Patterns.
+- Fixed bugs re settings not saving correctly and re 'Lint .js and .jsx files' not resetting to false when settings are reset with Tools/TypeScript Analyzer/Reset TypeScript Analyzer settings...
+- Show a sensible message if we try to edit the default config file (tslint.json in the user profile folder, usually c:\Users\{username}) and it has been deleted.
+- Improve behavior of ignore options when running with tsconfig.json: they apply to the tsconfig.json files, not individual files, which can be ignored in the tsconfig.json files themselves.
+- Improve behavior where a config change means an open file with linting errors is no longer lintable: errors clear on next run.
+- Benchmarking code available in build.  To use this set a BENCHMARK compilation flag in the projects and run a release build.
+
 ## 1.23
 
 **2020-05-06**
