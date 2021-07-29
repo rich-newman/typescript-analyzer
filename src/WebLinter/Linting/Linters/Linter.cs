@@ -44,8 +44,8 @@ namespace WebLinter
         {
             ServerPostData postData = new ServerPostData
             {
-                Config = Path.Combine(FindWorkingDirectory(files[0]), ConfigFileName).Replace("\\", "/"),
-                Files = files.Select(f => f.Replace("\\", "/")),  // TODO: it's dumb doing a full iteration over the files list here
+                Config = Path.Combine(FindWorkingDirectory(files[0]), ConfigFileName),
+                Files = files,
                 FixErrors = _fixErrors,
                 UseTSConfig = _settings.UseTsConfig
             };
@@ -94,7 +94,7 @@ namespace WebLinter
             bool hasVSErrors = false;
             foreach (JObject obj in array)
             {
-                string fileName = obj["name"]?.Value<string>().Replace("/", "\\");
+                string fileName = obj["name"]?.Value<string>().Replace("/", "\\");  // This is Windows, slashes are backwards
                 if (string.IsNullOrEmpty(fileName)) continue;
 
                 int lineNumber = obj["startPosition"]?["line"]?.Value<int>() ?? 0;
