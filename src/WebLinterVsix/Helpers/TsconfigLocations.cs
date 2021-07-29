@@ -44,9 +44,9 @@ namespace WebLinterVsix.Helpers
             {
                 if (!LintableFiles.IsLintable(selItem)) continue;
                 if (selItem.Object is Solution solution)
-                    FindTsconfigsInSolution(solution, tsconfigFiles, fileToProjectMap);
+                    FindTsconfigsInSolution(solution, tsconfigFiles);
                 else if (selItem.Object is Project project)
-                    FindTsconfigsInProject(project, tsconfigFiles, fileToProjectMap);
+                    FindTsconfigsInProject(project, tsconfigFiles);
                 else if (selItem.Object is ProjectItem item && item.GetFullPath() is string projectItemPath)
                     FindTsconfigsFromSelectedProjectItem(projectItemPath, item, tsconfigFiles, fileToProjectMap);
             }
@@ -64,35 +64,32 @@ namespace WebLinterVsix.Helpers
             }
             else if (item.Kind == EnvDTE.Constants.vsProjectItemKindPhysicalFolder || LintableFiles.IsLintableTsconfig(projectItemPath))
             {
-                FindTsConfigsInProjectItem(item, result, fileToProjectMap);
+                FindTsConfigsInProjectItem(item, result);
             }
         }
 
-        internal static void FindTsconfigsInSolution(Solution solution, HashSet<string> result, Dictionary<string, string> fileToProjectMap)
+        internal static void FindTsconfigsInSolution(Solution solution, HashSet<string> result)
         {
             if (solution.Projects == null) return;
             foreach (Project project in solution.Projects)
-                FindTsconfigsInProject(project, result, fileToProjectMap);
+                FindTsconfigsInProject(project, result);
         }
 
-        internal static void FindTsconfigsInProject(Project project, HashSet<string> result, Dictionary<string, string> fileToProjectMap)
+        internal static void FindTsconfigsInProject(Project project, HashSet<string> result)
         {
             if (project.ProjectItems == null) return;
             foreach (ProjectItem projectItem in project.ProjectItems)
-                FindTsConfigsInProjectItem(projectItem, result, fileToProjectMap);
+                FindTsConfigsInProjectItem(projectItem, result);
         }
 
-        private static void FindTsConfigsInProjectItem(ProjectItem projectItem, HashSet<string> result,
-                                                       Dictionary<string, string> fileToProjectMap)
+        private static void FindTsConfigsInProjectItem(ProjectItem projectItem, HashSet<string> result)
         {
             string itemPath = projectItem.GetFullPath();
-            if (LintableFiles.IsLintableTsTsxJsJsxFile(itemPath) && !fileToProjectMap.ContainsKey(itemPath))
-                fileToProjectMap.Add(itemPath, projectItem.ContainingProject.Name);
             if (LintableFiles.IsLintableTsconfig(itemPath) && !result.Contains(itemPath)) result.Add(itemPath);
             // A project item can be a folder or a nested file, so we may need to continue searching down the tree
             if (projectItem.ProjectItems == null || LintableFiles.ContainsIgnorePattern(itemPath)) return;
             foreach (ProjectItem subProjectItem in projectItem.ProjectItems)
-                FindTsConfigsInProjectItem(subProjectItem, result, fileToProjectMap);
+                FindTsConfigsInProjectItem(subProjectItem, result);
         }
 
     }
