@@ -134,7 +134,7 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="app.config" />
-    <Content Include="TypeScriptAnalyzerNode\log.txt">
+	<Content Include="TypeScriptAnalyzerNode\log.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -143,6 +143,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\server.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\.package-lock.json">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -678,6 +682,42 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\function-bind\.editorconfig">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\function-bind\.eslintrc">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\function-bind\.jscs.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\function-bind\implementation.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\function-bind\index.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\function-bind\LICENSE">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\function-bind\package.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\function-bind\test\.eslintrc">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\function-bind\test\index.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\glob\common.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -695,6 +735,22 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\glob\sync.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\has\LICENSE-MIT">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\has\package.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\has\src\index.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\has\test\index.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -735,6 +791,38 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\inherits\package.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\is-core-module\.eslintignore">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\is-core-module\.eslintrc">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\is-core-module\.nycrc">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\is-core-module\core.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\is-core-module\index.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\is-core-module\LICENSE">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\is-core-module\package.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\is-core-module\test\index.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1023,10 +1111,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\path-parse\package.json">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\path-parse\test.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1475,6 +1559,22 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TypeScriptAnalyzerNode\node_modules\tslib\tslib.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslib\modules\index.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslib\modules\package.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslib\test\validateModuleExportsMatchCommonJS\index.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslib\test\validateModuleExportsMatchCommonJS\package.json">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -3466,203 +3566,203 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\.editorconfig">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\.editorconfig">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\.fimbullinter.yaml">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\.fimbullinter.yaml">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\.wotanrc.yaml">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\.wotanrc.yaml">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\index.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\index.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\index.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\index.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\LICENSE">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\LICENSE">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\package.json">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\package.json">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\yarn.lock">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\yarn.lock">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\index.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\index.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\index.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\index.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\node.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\node.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\node.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\node.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\type.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\type.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\type.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\type.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\2.8\index.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\2.8\index.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\2.8\index.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\2.8\index.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\2.8\node.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\2.8\node.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\2.8\node.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\2.8\node.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\2.8\type.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\2.8\type.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\2.8\type.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\2.8\type.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\2.9\index.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\2.9\index.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\2.9\index.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\2.9\index.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\2.9\node.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\2.9\node.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\2.9\node.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\2.9\node.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\2.9\type.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\2.9\type.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\2.9\type.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\2.9\type.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\3.0\index.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\3.0\index.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\3.0\index.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\3.0\index.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\3.0\node.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\3.0\node.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\3.0\node.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\3.0\node.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\3.0\type.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\3.0\type.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\3.0\type.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\3.0\type.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\next\index.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\next\index.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\next\index.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\next\index.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\next\node.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\next\node.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\next\node.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\next\node.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\next\type.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\next\type.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\typeguard\next\type.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\typeguard\next\type.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\util\control-flow.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\util\control-flow.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\util\control-flow.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\util\control-flow.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\util\convert-ast.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\util\convert-ast.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\util\convert-ast.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\util\convert-ast.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\util\index.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\util\index.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\util\index.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\util\index.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\util\type.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\util\type.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\util\type.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\util\type.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\util\usage.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\util\usage.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\util\usage.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\util\usage.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\util\util.d.ts">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\util\util.d.ts">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TypeScriptAnalyzerNode\node_modules\tsutils\util\util.js">
+    <Content Include="TypeScriptAnalyzerNode\node_modules\tslint\node_modules\tsutils\util\util.js">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
