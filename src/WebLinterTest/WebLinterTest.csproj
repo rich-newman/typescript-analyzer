@@ -134,12 +134,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="artifacts\localinstall\multiple\a\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="artifacts\localinstall\multiple\a\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="artifacts\localinstall\multiple\a\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
-    <Compile Include="artifacts\localinstall\multiple\b\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="artifacts\localinstall\multiple\b\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="artifacts\localinstall\multiple\b\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="AssemblyMethods.cs" />
     <Compile Include="BadTslintJsonTest.cs" />
     <Compile Include="BuildSelectedItemsTest.cs" />
@@ -176,11 +170,7 @@
     <Content Include="artifacts\tslint.json" />
     <None Include="app.config" />
     <None Include="artifacts\localinstall\multiple\a\a.csproj" />
-    <None Include="artifacts\localinstall\multiple\a\obj\Debug\a.csproj.CoreCompileInputs.cache" />
-    <None Include="artifacts\localinstall\multiple\a\obj\Debug\a.csprojAssemblyReference.cache" />
     <None Include="artifacts\localinstall\multiple\b\b.csproj" />
-    <None Include="artifacts\localinstall\multiple\b\obj\Debug\b.csproj.CoreCompileInputs.cache" />
-    <None Include="artifacts\localinstall\multiple\b\obj\Debug\b.csprojAssemblyReference.cache" />
     <None Include="artifacts\localinstall\multiple\b\package.json" />
     <None Include="artifacts\localinstall\multiple\package.json" />
     <None Include="artifacts\tsconfig\multiple\a\tsconfig.json" />
@@ -202,11 +192,7 @@
     <None Include="artifacts\tslint\cFixed.tsx" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="artifacts\localinstall\multiple\a\bin\Debug\" />
-    <Folder Include="artifacts\localinstall\multiple\a\obj\Debug\TempPE\" />
     <Folder Include="artifacts\localinstall\multiple\a\Properties\" />
-    <Folder Include="artifacts\localinstall\multiple\b\bin\Debug\" />
-    <Folder Include="artifacts\localinstall\multiple\b\obj\Debug\TempPE\" />
     <Folder Include="artifacts\localinstall\multiple\b\Properties\" />
     <Folder Include="artifacts\localinstall\none\" />
     <Folder Include="artifacts\tsconfig\none\b\" />
