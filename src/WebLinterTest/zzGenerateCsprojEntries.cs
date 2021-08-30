@@ -16,13 +16,13 @@ namespace WebLinterTest
         [TestMethod]
         public void GenerateEntriesTest()
         {
-            // Results are in typescript-analyzer\src\WebLinterVsix\TypeScriptAnalyzerNode\temp.txt
+            // Results are in typescript-analyzer\src\WebLinterVsix\Node\temp.txt
             // and need to be used to update WebLinterVsix.csproj
             result = "";
             string assemblyDirectory = WebLinter.NodeServer.ExecutionPath;
             assemblyDirectory = assemblyDirectory.Replace("WebLinterTest\\bin\\Debug", "WebLinterVsix");
             Assert.IsTrue(Directory.Exists(assemblyDirectory), $"Source folder for node files ({assemblyDirectory}) doesn't exist");
-            pathLocation = assemblyDirectory.LastIndexOf("\\TypeScriptAnalyzerNode") + 1;
+            pathLocation = assemblyDirectory.LastIndexOf($"\\{WebLinter.Constants.NODE_FOLDER_NAME}") + 1;
             ProcessDirectory(assemblyDirectory);
             File.WriteAllText(assemblyDirectory + "\\temp.txt", result);
         }
