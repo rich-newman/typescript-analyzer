@@ -97,7 +97,7 @@ namespace WebLinterVsix
             {
                 Logger.LogAndWarn(ex);
                 Linter.Server.Down();
-                return false;
+                return true;  // Return value is true if we have VS errors
             }
             finally { Benchmark.End(); }
         }
