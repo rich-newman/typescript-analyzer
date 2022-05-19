@@ -1,3 +1,25 @@
+## This project is now deprecated.  Please use the new TypeScript Analyzer based on ESLint, and Prettier.
+
+### Links
+
+There are versions of the new TypeScript Analyzer available for download for [Visual Studio 2022](), and for either of [Visual Studio 2017 or Visual Studio 2019]().  The [code is available on GitHub](), and [documentation]() is also available.  It is also available through the Extensions Manager in Visual Studio.
+
+### Advantages of Upgrading
+
+The new version of the TypeScript Analyzer has some advantages over the current one:
+
+- It underlines errors in the code window in red and green, with details if you hover, as well as showing them in the Error List
+- It runs automatically as code is entered, after a three-second pause, so you don't have to explicitly run or save a file to trigger it.  Fixing still has to be done deliberately via the context menus.
+- It works in Visual Studio folder view.
+- It works better with JavaScript.
+- It will work with almost any of the very numerous ESLint plugins, so you are not constrained to just linting TypeScript.
+
+### Disadvantage of Upgrading
+
+Please note that the new version by default uses recommended rules for ESLint and Prettier, which are different to the recommended rules for TSLint.  Thus upgrading may generate a lot of warnings and errors in your project.  In particular Prettier formats very aggressively, although it can be [disabled in favor of more gentle formatting rules]().  There are some tools to migrate TSLint rules to ESLint, but in general it's just better to go with the new rules.
+
+
+
 ## TypeScript Analyzer
 
 An extension to Visual Studio 2017 and Visual Studio 2019 that runs [TSLint](https://palantir.github.io/tslint/) on TypeScript files. 

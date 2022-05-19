@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Community.VisualStudio.Toolkit.15</id>
+    <version>15.0.445</version>
+    <authors>VSIX Community</authors>
+    <license type="expression">Apache-2.0</license>
+    <licenseUrl>https://licenses.nuget.org/Apache-2.0</licenseUrl>
+    <icon>Icon.png</icon>
+    <projectUrl>https://github.com/VsixCommunity/Community.VisualStudio.Toolkit</projectUrl>
+    <description>A community driven effort for a better Visual Studio experience developing extensions.</description>
+    <copyright>© Mads Kristensen. All rights reserved.</copyright>
+    <tags>VisualStudio, VSSDK, SDK</tags>
+    <repository type="git" url="https://github.com/VsixCommunity/Community.VisualStudio.Toolkit" commit="c13028e2f4cc46f9186eddd522c2c6f763c397c5" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.6">
+        <dependency id="Community.VisualStudio.Toolkit.Analyzers" version="1.0.445" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.VisualStudio.SDK" version="15.0.1" include="All" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="PresentationCore" targetFramework=".NETFramework4.6" />
+      <frameworkAssembly assemblyName="PresentationFramework" targetFramework=".NETFramework4.6" />
+      <frameworkAssembly assemblyName="System.Design" targetFramework=".NETFramework4.6" />
+      <frameworkAssembly assemblyName="System.Windows" targetFramework=".NETFramework4.6" />
+      <frameworkAssembly assemblyName="WindowsBase" targetFramework=".NETFramework4.6" />
+    </frameworkAssemblies>
+  </metadata>
+</package>
