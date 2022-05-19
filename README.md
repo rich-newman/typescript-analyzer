@@ -2,11 +2,11 @@
 
 ### Links
 
-There are versions of the new TypeScript Analyzer available for download for [Visual Studio 2022](), and for either of [Visual Studio 2017 or Visual Studio 2019]().  The [code is available on GitHub](), and [documentation]() is also available.  It is also available through the Extensions Manager in Visual Studio.
+There are versions of the new TypeScript Analyzer available for download for [Visual Studio 2022](), and for either of [Visual Studio 2017 or Visual Studio 2019]().  The [code is available on GitHub](), and [documentation]() is available.  The extension is also available through the Extensions Manager in Visual Studio.
 
 ### Motivation
 
-[TSLint was deprecated in favor of ESLint some time ago](https://www.npmjs.com/package/tslint).  As a result this extension, which is based on TSLint, has been upgraded to take advantage of ESLint's more powerful capabilities.
+This extension is based on TSLint.  [TSLint was deprecated in favor of ESLint some time ago](https://www.npmjs.com/package/tslint).  As a result this extension has been upgraded to take advantage of ESLint's more powerful capabilities.
 
 ### Advantages of Upgrading
 
@@ -20,7 +20,7 @@ The new version of the TypeScript Analyzer has some advantages over the one in t
 
 ### Disadvantage of Upgrading
 
-Please note that the new version by default uses recommended rules for ESLint and Prettier, which are different to the recommended rules for TSLint.  Thus upgrading may generate a lot of warnings and errors in your project.  In particular Prettier formats very aggressively, although it can be [disabled in favor of more gentle formatting rules]().  There are some tools to migrate TSLint rules to ESLint, but in general it's just better to go with the new rules.
+Please note that the new version by default uses recommended rules for ESLint and Prettier, which are different to the recommended rules for TSLint.  Thus upgrading may generate a lot of warnings and errors in your project.  In particular Prettier formats very aggressively, although it can be [disabled in favor of more gentle formatting rules](https://rich-newman.github.io/typescript-analyzer-eslint-prettier/formatting.html#disableprettier).  There are some tools to migrate TSLint rules to ESLint, but in general it's just better to go with the new rules.
 
 ***
 ***
