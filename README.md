@@ -4,9 +4,13 @@
 
 There are versions of the new TypeScript Analyzer available for download for [Visual Studio 2022](), and for either of [Visual Studio 2017 or Visual Studio 2019]().  The [code is available on GitHub](), and [documentation]() is also available.  It is also available through the Extensions Manager in Visual Studio.
 
+### Motivation
+
+[TSLint was deprecated in favor of ESLint some time ago](https://www.npmjs.com/package/tslint).  As a result this extension, which is based on TSLint, has been upgraded to take advantage of ESLint's more powerful capabilities.
+
 ### Advantages of Upgrading
 
-The new version of the TypeScript Analyzer has some advantages over the current one:
+The new version of the TypeScript Analyzer has some advantages over the one in this repository:
 
 - It underlines errors in the code window in red and green, with details if you hover, as well as showing them in the Error List
 - It runs automatically as code is entered, after a three-second pause, so you don't have to explicitly run or save a file to trigger it.  Fixing still has to be done deliberately via the context menus.
