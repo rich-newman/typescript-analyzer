@@ -1,4 +1,4 @@
-## This project is now deprecated.  Please use the new TypeScript Analyzer based on ESLint, and Prettier.
+## This project is now deprecated.  Please use the new TypeScript Analyzer based on ESLint and Prettier.
 
 ### Links
 
