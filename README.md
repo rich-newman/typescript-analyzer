@@ -2,7 +2,7 @@
 
 ### Links
 
-There are versions of the new TypeScript Analyzer available for download for [Visual Studio 2022](), and for either of [Visual Studio 2017 or Visual Studio 2019]().  The [code is available on GitHub](), and [documentation]() is available.  The extension is also available through the Extensions Manager in Visual Studio.
+There are versions of the new TypeScript Analyzer available for download for [Visual Studio 2022](https://marketplace.visualstudio.com/items?itemName=RichNewman.TypeScriptAnalyzerEslintPrettier), and for either of [Visual Studio 2017 or Visual Studio 2019](https://marketplace.visualstudio.com/items?itemName=RichNewman.TypeScriptAnalyzerEslintPrettier2019).  The [code is available on GitHub](https://github.com/rich-newman/typescript-analyzer-eslint-prettier), and [documentation](https://rich-newman.github.io/typescript-analyzer-eslint-prettier/contents.html) is available.  The extension is also available through the Extensions Manager in Visual Studio.
 
 ### Motivation
 
