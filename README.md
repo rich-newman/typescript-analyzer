@@ -18,7 +18,8 @@ The new version of the TypeScript Analyzer has some advantages over the current 
 
 Please note that the new version by default uses recommended rules for ESLint and Prettier, which are different to the recommended rules for TSLint.  Thus upgrading may generate a lot of warnings and errors in your project.  In particular Prettier formats very aggressively, although it can be [disabled in favor of more gentle formatting rules]().  There are some tools to migrate TSLint rules to ESLint, but in general it's just better to go with the new rules.
 
-
+***
+***
 
 ## TypeScript Analyzer
 
