@@ -3,7 +3,7 @@
 These are the changes to each version that have been released
 on the official Visual Studio extension gallery.
 
-## 1.24
+## 1.25
 
 **Not yet released. Release date TBD.**
 
@@ -14,6 +14,16 @@ on the official Visual Studio extension gallery.
 - Behavior of ignore options when running with tsconfig.json has been improved. The ignore options now consistently apply to the tsconfig.json files, not individual files.  Individual files can be ignored in the tsconfig.json files themselves.
 - Behavior has been improved where a config change means an open file with linting errors is no longer lintable.  Now any errors will clear on the next run.
 - Benchmarking code is now available in build.  To use this set a BENCHMARK compilation flag in the projects and run a release build.
+
+## 1.24
+
+**2022-06-24**
+
+- No functionality changes.  Patch release to upgrade versions of dependent packages with vulnerabilities:
+- NewtonSoft.Json was upgraded to v13.0.1. 
+- All npm packages were updated to latest SemVer version, whilst keeping TSLint at 6.1.3 and TypeScript at 4.0.3 as at previous release
+- Specifically this updated minimalist to 1.2.6, path-parse to 1.0.7
+- Released from ProductionPatch240622 branch
 
 ## 1.23
 
