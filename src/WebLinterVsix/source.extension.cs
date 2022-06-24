@@ -6,7 +6,7 @@ namespace WebLinterVsix
         public const string Name = "TypeScript Analyzer";
         public const string Description = @"Provides static analysis directly in Visual Studio for TypeScript files (.ts and .tsx) using TSLint";
         public const string Language = "en-US";
-        public const string Version = "1.0";
+        public const string Version = "1.24";
         public const string Author = "Rich Newman";
         public const string Tags = "TSLint";
     }
